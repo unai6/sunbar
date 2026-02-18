@@ -71,6 +71,9 @@ function apiVenueToDomain(apiVenue: ApiVenue): Venue {
 }
 
 const MAX_BBOX_DEGREES = 0.05
+const METERS_PER_DEGREE_LAT = 111320
+const DEFAULT_SEARCH_RADIUS_M = 500
+const TOAST_DURATION_MS = 5000
 
 function isBboxTooLarge(bbox: BoundingBox): boolean {
   return (bbox.north - bbox.south) > MAX_BBOX_DEGREES || (bbox.east - bbox.west) > MAX_BBOX_DEGREES
@@ -126,7 +129,7 @@ export function useVenues() {
         severity: 'warn',
         summary: t('toast.error.title'),
         detail: t('toast.error.bboxTooLarge'),
-        life: 5000
+        life: TOAST_DURATION_MS
       })
       return
     }
@@ -169,7 +172,7 @@ export function useVenues() {
         severity: 'error',
         summary: t('toast.error.title'),
         detail,
-        life: 5000
+        life: TOAST_DURATION_MS
       })
 
       error.value = detail
@@ -182,12 +185,12 @@ export function useVenues() {
   async function fetchVenuesNearby(
     latitude: number,
     longitude: number,
-    radiusMeters: number = 500,
+    radiusMeters: number = DEFAULT_SEARCH_RADIUS_M,
     datetime?: Date
   ): Promise<void> {
     // Convert radius to approximate bbox
-    const latDelta = radiusMeters / 111320 // ~111km per degree latitude
-    const lonDelta = radiusMeters / (111320 * Math.cos(latitude * Math.PI / 180))
+    const latDelta = radiusMeters / METERS_PER_DEGREE_LAT
+    const lonDelta = radiusMeters / (METERS_PER_DEGREE_LAT * Math.cos(latitude * Math.PI / 180))
 
     const bbox: BoundingBox = {
       south: latitude - latDelta,

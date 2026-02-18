@@ -33,12 +33,13 @@ export default defineCachedEventHandler(
     }
 
     // Validate bbox size (prevent huge queries)
+    const MAX_BBOX_DEGREES = 0.05
     const latDiff = north - south
     const lonDiff = east - west
-    if (latDiff > 0.05 || lonDiff > 0.05) {
+    if (latDiff > MAX_BBOX_DEGREES || lonDiff > MAX_BBOX_DEGREES) {
       throw createError({
         statusCode: 400,
-        statusMessage: 'Bounding box too large. Max 0.05 degrees (~5km)'
+        statusMessage: `Bounding box too large. Max ${MAX_BBOX_DEGREES} degrees (~5km)`
       })
     }
 

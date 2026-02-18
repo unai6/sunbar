@@ -29,10 +29,17 @@ const {
 
 const { state: geoState, getCurrentPosition } = useGeolocation()
 
+// Constants
+const DEFAULT_CENTER: [number, number] = [41.39, 2.1] // Barcelona
+const DEFAULT_ZOOM = 15
+const LOCATE_ME_ZOOM = 16
+const VENUE_SELECT_ZOOM = 17
+const TOAST_DURATION_MS = 5000
+
 // Refs
 const mapRef = ref<{ flyTo: (lat: number, lng: number, zoom?: number) => void; closePopups: () => void } | null>(null)
-const mapCenter = ref<[number, number]>([41.39, 2.1]) // Barcelona default
-const mapZoom = ref(15)
+const mapCenter = ref<[number, number]>(DEFAULT_CENTER)
+const mapZoom = ref(DEFAULT_ZOOM)
 const selectedVenueId = ref<string | null>(null)
 const selectedVenue = ref<Venue | null>(null)
 const showVenueDetail = ref(false)
@@ -82,7 +89,7 @@ function handleVenueClick(venue: Venue): void {
 
 function handleVenueSelect(venue: Venue): void {
   selectedVenueId.value = venue.id
-  mapRef.value?.flyTo(venue.coordinates.latitude, venue.coordinates.longitude, 17)
+  mapRef.value?.flyTo(venue.coordinates.latitude, venue.coordinates.longitude, VENUE_SELECT_ZOOM)
 }
 
 async function handleLocateMe(): Promise<void> {
@@ -90,8 +97,8 @@ async function handleLocateMe(): Promise<void> {
     await getCurrentPosition()
     if (geoState.value.latitude && geoState.value.longitude) {
       mapCenter.value = [geoState.value.latitude, geoState.value.longitude]
-      mapZoom.value = 16
-      mapRef.value?.flyTo(geoState.value.latitude, geoState.value.longitude, 16)
+      mapZoom.value = LOCATE_ME_ZOOM
+      mapRef.value?.flyTo(geoState.value.latitude, geoState.value.longitude, LOCATE_ME_ZOOM)
     }
   } catch (e) {
     console.error('Failed to get location:', e)
@@ -99,7 +106,7 @@ async function handleLocateMe(): Promise<void> {
       severity: 'error',
       summary: t('toast.error.title'),
       detail: t('toast.error.geolocation'),
-      life: 5000
+      life: TOAST_DURATION_MS
     })
   }
 }

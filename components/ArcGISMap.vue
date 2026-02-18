@@ -16,6 +16,11 @@ const emit = defineEmits<{
   'venue-click': [venue: Venue]
 }>()
 
+// Constants
+const MIN_ZOOM = 10
+const MAX_ZOOM = 20
+const FLY_TO_DURATION_MS = 1000
+
 // Refs
 const mapContainer = ref<HTMLDivElement | null>(null)
 const isLoading = ref(true)
@@ -40,7 +45,7 @@ defineExpose({
       view.goTo({
         center: [lng, lat],
         zoom: zoom || view.zoom
-      }, { duration: 1000 })
+      }, { duration: FLY_TO_DURATION_MS })
     }
   },
   closePopups: () => {
@@ -164,7 +169,7 @@ async function initializeMap(): Promise<void> {
       map,
       center: [props.center[1], props.center[0]],
       zoom: props.zoom,
-      constraints: { minZoom: 10, maxZoom: 20 },
+      constraints: { minZoom: MIN_ZOOM, maxZoom: MAX_ZOOM },
       popupEnabled: false
     })
 
@@ -211,7 +216,7 @@ watch(() => props.venues, () => updateVenueMarkers(), { deep: true })
 
 watch(() => props.center, (newCenter) => {
   if (view) {
-    view.goTo({ center: [newCenter[1], newCenter[0]], zoom: props.zoom }, { duration: 1000 })
+    view.goTo({ center: [newCenter[1], newCenter[0]], zoom: props.zoom }, { duration: FLY_TO_DURATION_MS })
   }
 })
 </script>

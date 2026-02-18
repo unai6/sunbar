@@ -1,5 +1,8 @@
 import { ref, onMounted } from 'vue'
 
+const GEOLOCATION_TIMEOUT_MS = 10000
+const GEOLOCATION_MAX_AGE_MS = 60000
+
 export interface GeolocationState {
   latitude: number | null;
   longitude: number | null;
@@ -48,8 +51,8 @@ export function useGeolocation() {
         },
         {
           enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 60000
+          timeout: GEOLOCATION_TIMEOUT_MS,
+          maximumAge: GEOLOCATION_MAX_AGE_MS
         }
       )
     })
