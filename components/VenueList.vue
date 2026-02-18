@@ -68,14 +68,14 @@ function getVenueIcon(type: VenueType): string {
           <i :class="getVenueIcon(venue.type)" />
         </div>
 
-        <div class="flex-1 min-w-0">
+        <div class="flex-1 min-w-0 flex flex-col gap-1">
           <h4 class="text-sm font-medium text-gray-800 m-0 truncate">
             {{ venue.name }}
           </h4>
-          <div class="flex items-center gap-2 mt-1">
-            <span class="text-xs text-gray-500">
-              {{ $t(`venueType.label.${venue.type}`) }}
-            </span>
+          <span class="text-xs text-gray-500">
+            {{ $t(`venueType.label.${venue.type}`) }}
+          </span>
+          <div class="flex flex-wrap gap-2 mt-1">
             <span
               v-if="venue.outdoor_seating"
               class="inline-flex items-center gap-1 text-[10px] text-emerald-600 bg-emerald-100 px-1.5 py-0.5 rounded"
@@ -83,17 +83,18 @@ function getVenueIcon(type: VenueType): string {
               <i class="pi pi-external-link" />
               {{ $t('venueList.label.outdoor') }}
             </span>
+            <div class="shrink-0">
+              <Tag :severity="venue.isSunny() ? 'info' : 'secondary'">
+                <template #default>
+                  <i :class="[venue.isSunny() ? 'pi pi-sun' : 'pi pi-cloud', 'mr-1']" />
+                  {{ venue.isSunny() ? $t('venueList.status.sunny') : $t('venueList.status.shaded') }}
+                </template>
+              </Tag>
+            </div>
           </div>
         </div>
 
-        <div class="shrink-0">
-          <Tag :severity="venue.isSunny() ? 'warning' : 'secondary'">
-            <template #default>
-              <i :class="[venue.isSunny() ? 'pi pi-sun' : 'pi pi-cloud', 'mr-1']" />
-              {{ venue.isSunny() ? $t('venueList.status.sunny') : $t('venueList.status.shaded') }}
-            </template>
-          </Tag>
-        </div>
+        <!-- Tag moved above for better layout -->
       </div>
     </div>
   </div>

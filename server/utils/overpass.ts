@@ -2,7 +2,7 @@
  * Overpass API utility with server-side caching and retry logic
  */
 
-interface OverpassElement {
+export interface OverpassElement {
   type: string
   id: number
   lat?: number
@@ -12,7 +12,7 @@ interface OverpassElement {
   tags?: Record<string, string>
 }
 
-interface OverpassResponse {
+export interface OverpassResponse {
   elements: OverpassElement[]
 }
 
@@ -159,5 +159,3 @@ export function buildBuildingQuery(
     out center;
   `
 }
-
-export type { OverpassElement, OverpassResponse }
