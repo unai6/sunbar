@@ -1,113 +1,71 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
 import Dialog from 'primevue/dialog'
 import ProgressSpinner from 'primevue/progressspinner'
-import type { Venue } from '~/domain/entities/Venue'
-import type { BoundingBox } from '~/domain/repositories/VenueRepository'
-import type { VenueFilters } from '~/composables/useVenues'
+import type { VenueErrorCode } from '~/composables/useVenues'
 
 const toast = useToast()
 const { t } = useI18n()
 
-// Composables
+const TOAST_DURATION_MS = 5000
+
+const ERROR_TOAST_MAP: Record<VenueErrorCode, { severity: 'error' | 'warn'; key: string }> = {
+  'bbox-too-large': { severity: 'warn', key: 'toast.error.bboxTooLarge' },
+  'network': { severity: 'error', key: 'toast.error.network' },
+  'fetch-failed': { severity: 'error', key: 'toast.error.fetchVenues' }
+}
+
 const {
   loading,
   filters,
   sunnyVenues,
   shadedVenues,
   filteredVenues,
-  fetchVenuesByBoundingBox,
-  setFilters
-} = useVenues()
-
-const {
   sunInfo,
   selectedDateTime,
-  updateSunInfo,
-  setDateTime
-} = useSunInfo()
+  mapRef,
+  mapCenter,
+  mapZoom,
+  selectedVenueId,
+  selectedVenue,
+  showVenueDetail,
+  handleSearch: search,
+  handleBoundsChanged,
+  handleDateTimeUpdate: updateDateTime,
+  handleFilterUpdate: updateFilters,
+  handleVenueClick,
+  handleVenueSelect,
+  handleLocateMe
+} = useMapExplorer()
 
-const { state: geoState, getCurrentPosition } = useGeolocation()
-
-// Constants
-const DEFAULT_CENTER: [number, number] = [41.39, 2.1] // Barcelona
-const DEFAULT_ZOOM = 15
-const LOCATE_ME_ZOOM = 16
-const VENUE_SELECT_ZOOM = 17
-const TOAST_DURATION_MS = 5000
-
-// Refs
-const mapRef = ref<{ flyTo: (lat: number, lng: number, zoom?: number) => void; closePopups: () => void } | null>(null)
-const mapCenter = ref<[number, number]>(DEFAULT_CENTER)
-const mapZoom = ref(DEFAULT_ZOOM)
-const selectedVenueId = ref<string | null>(null)
-const selectedVenue = ref<Venue | null>(null)
-const showVenueDetail = ref(false)
-const currentBounds = ref<BoundingBox | null>(null)
-
-// Methods
-async function handleSearch(): Promise<void> {
-  if (!currentBounds.value) return
-
-  await fetchVenuesByBoundingBox(currentBounds.value, selectedDateTime.value)
-
-  // Update sun info for map center
-  const centerLat = (currentBounds.value.north + currentBounds.value.south) / 2
-  const centerLng = (currentBounds.value.east + currentBounds.value.west) / 2
-  updateSunInfo(centerLat, centerLng, selectedDateTime.value)
+function showVenueError(errorCode: VenueErrorCode): void {
+  const { severity, key } = ERROR_TOAST_MAP[errorCode]
+  toast.add({
+    severity,
+    summary: t('toast.error.title'),
+    detail: t(key),
+    life: TOAST_DURATION_MS
+  })
 }
 
-function handleBoundsChanged(bounds: BoundingBox): void {
-  currentBounds.value = bounds
-
-  // Update sun info for new center
-  const centerLat = (bounds.north + bounds.south) / 2
-  const centerLng = (bounds.east + bounds.west) / 2
-  updateSunInfo(centerLat, centerLng, selectedDateTime.value)
+async function handleSearch(): Promise<void> {
+  const errorCode = await search()
+  if (errorCode) showVenueError(errorCode)
 }
 
 async function handleDateTimeUpdate(datetime: Date): Promise<void> {
-  setDateTime(datetime)
-
-  if (currentBounds.value) {
-    // Update sun position panel for the new time
-    const centerLat = (currentBounds.value.north + currentBounds.value.south) / 2
-    const centerLng = (currentBounds.value.east + currentBounds.value.west) / 2
-    updateSunInfo(centerLat, centerLng, datetime)
-
-    // Re-fetch venues with updated shadow analysis
-    await fetchVenuesByBoundingBox(currentBounds.value, datetime)
-  }
+  const errorCode = await updateDateTime(datetime)
+  if (errorCode) showVenueError(errorCode)
 }
 
-async function handleFilterUpdate(newFilters: Partial<VenueFilters>): Promise<void> {
-  setFilters(newFilters)
-  await handleSearch()
+async function handleFilterUpdate(newFilters: Parameters<typeof updateFilters>[0]): Promise<void> {
+  const errorCode = await updateFilters(newFilters)
+  if (errorCode) showVenueError(errorCode)
 }
 
-function handleVenueClick(venue: Venue): void {
-  // Close any open map popups before showing the dialog
-  mapRef.value?.closePopups()
-  selectedVenue.value = venue
-  showVenueDetail.value = true
-}
-
-function handleVenueSelect(venue: Venue): void {
-  selectedVenueId.value = venue.id
-  mapRef.value?.flyTo(venue.coordinates.latitude, venue.coordinates.longitude, VENUE_SELECT_ZOOM)
-}
-
-async function handleLocateMe(): Promise<void> {
-  try {
-    await getCurrentPosition()
-    if (geoState.value.latitude && geoState.value.longitude) {
-      mapCenter.value = [geoState.value.latitude, geoState.value.longitude]
-      mapZoom.value = LOCATE_ME_ZOOM
-      mapRef.value?.flyTo(geoState.value.latitude, geoState.value.longitude, LOCATE_ME_ZOOM)
-    }
-  } catch (err) {
-    console.error('Geolocation error:', err)
-
+async function onLocateMe(): Promise<void> {
+  const { error } = await attempt(() => handleLocateMe())
+  if (error) {
+    console.error('Geolocation error:', error)
     toast.add({
       severity: 'error',
       summary: t('toast.error.title'),
@@ -116,20 +74,6 @@ async function handleLocateMe(): Promise<void> {
     })
   }
 }
-
-// Initialize with user location if available
-onMounted(async () => {
-  try {
-    await getCurrentPosition()
-    if (geoState.value.latitude && geoState.value.longitude) {
-      mapCenter.value = [geoState.value.latitude, geoState.value.longitude]
-      updateSunInfo(geoState.value.latitude, geoState.value.longitude)
-    }
-  } catch {
-    // Use default location (Madrid)
-    updateSunInfo(mapCenter.value[0], mapCenter.value[1])
-  }
-})
 </script>
 
 <template>
@@ -147,7 +91,7 @@ onMounted(async () => {
         @search="handleSearch"
         @update-datetime="handleDateTimeUpdate"
         @update-filters="handleFilterUpdate"
-        @locate-me="handleLocateMe"
+        @locate-me="onLocateMe"
       />
     </aside>
 

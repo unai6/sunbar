@@ -154,7 +154,7 @@ async function initializeMap(): Promise<void> {
 
   isLoading.value = true
 
-  try {
+  const { error } = await attempt(async () => {
     await loadArcGISModules()
 
     venueGraphicsLayer = new GraphicsLayer({ title: 'Venues' })
@@ -165,7 +165,7 @@ async function initializeMap(): Promise<void> {
     })
 
     view = new MapView({
-      container: mapContainer.value,
+      container: mapContainer.value!,
       map,
       center: [props.center[1], props.center[0]],
       zoom: props.zoom,
@@ -195,12 +195,13 @@ async function initializeMap(): Promise<void> {
 
     emitBounds()
     if (props.venues.length > 0) updateVenueMarkers()
+  })
 
-    isLoading.value = false
-  } catch (err) {
-    console.error('Failed to initialize ArcGIS map:', err)
-    isLoading.value = false
+  if (error) {
+    console.error('Failed to initialize ArcGIS map:', error)
   }
+
+  isLoading.value = false
 }
 
 onMounted(() => initializeMap())

@@ -71,16 +71,23 @@ function apiVenueToDomain(apiVenue: ApiVenue): Venue {
 }
 
 const MAX_BBOX_DEGREES = 0.05
-const TOAST_DURATION_MS = 5000
+
+export type VenueErrorCode = 'bbox-too-large' | 'network' | 'fetch-failed'
 
 function isBboxTooLarge(bbox: BoundingBox): boolean {
   return (bbox.north - bbox.south) > MAX_BBOX_DEGREES || (bbox.east - bbox.west) > MAX_BBOX_DEGREES
 }
 
-export function useVenues() {
-  const toast = useToast()
-  const { t } = useI18n()
+function classifyFetchError(e: Error): VenueErrorCode {
+  const err = e as Error & { statusCode?: number; data?: { statusMessage?: string } }
+  const statusMessage = err.data?.statusMessage || ''
 
+  if (statusMessage.includes('Bounding box too large')) return 'bbox-too-large'
+  if (err.statusCode === 0 || e.message === 'Failed to fetch') return 'network'
+  return 'fetch-failed'
+}
+
+export function useVenues() {
   // State
   const venues = ref<Venue[]>([])
   const loading = ref(false)
@@ -120,22 +127,16 @@ export function useVenues() {
   async function fetchVenuesByBoundingBox(
     bbox: BoundingBox,
     datetime?: Date
-  ): Promise<void> {
-    // Client-side bbox validation — fail fast before hitting the server
+  ): Promise<VenueErrorCode | null> {
     if (isBboxTooLarge(bbox)) {
-      toast.add({
-        severity: 'warn',
-        summary: t('toast.error.title'),
-        detail: t('toast.error.bboxTooLarge'),
-        life: TOAST_DURATION_MS
-      })
-      return
+      error.value = 'bbox-too-large'
+      return 'bbox-too-large'
     }
 
     loading.value = true
     error.value = null
 
-    try {
+    const { data, error: fetchError } = await attempt(async () => {
       const params = new URLSearchParams({
         south: bbox.south.toString(),
         west: bbox.west.toString(),
@@ -144,34 +145,21 @@ export function useVenues() {
         ...(datetime && { datetime: datetime.toISOString() })
       })
 
-      const response = await $fetch<ApiResponse>(`/api/venues?${params}`)
+      return $fetch<ApiResponse>(`/api/venues?${params}`)
+    })
 
-      venues.value = response.venues.map(apiVenueToDomain)
-      lastBbox.value = bbox
-    } catch (e: unknown) {
-      const err = e as { statusCode?: number; data?: { statusMessage?: string } }
-      const statusMessage = err.data?.statusMessage || ''
-
-      // Pick the right toast message based on error type
-      let detail = t('toast.error.fetchVenues')
-      if (statusMessage.includes('Bounding box too large')) {
-        detail = t('toast.error.bboxTooLarge')
-      } else if (err.statusCode === 0 || (e instanceof TypeError && e.message === 'Failed to fetch')) {
-        detail = t('toast.error.network')
-      }
-
-      toast.add({
-        severity: 'error',
-        summary: t('toast.error.title'),
-        detail,
-        life: TOAST_DURATION_MS
-      })
-
-      error.value = detail
+    if (fetchError) {
+      const errorCode = classifyFetchError(fetchError)
+      error.value = errorCode
       venues.value = []
-    } finally {
       loading.value = false
+      return errorCode
     }
+
+    venues.value = data.venues.map(apiVenueToDomain)
+    lastBbox.value = bbox
+    loading.value = false
+    return null
   }
 
   function setFilters(newFilters: Partial<VenueFilters>): void {

@@ -16,21 +16,18 @@ export function useSunInfo() {
 
   // Actions
   function updateSunInfo(latitude: number, longitude: number, date?: Date): void {
-    try {
-      const useCase = createUseCase()
-      const datetime = date || selectedDateTime.value
+    const datetime = date || selectedDateTime.value
+    const { data, error } = attemptSync(() =>
+      createUseCase().execute({ latitude, longitude, date: datetime })
+    )
 
-      sunInfo.value = useCase.execute({
-        latitude,
-        longitude,
-        date: datetime
-      })
-
-      currentLocation.value = { latitude, longitude }
-    } catch {
-      // If sun calculation fails (e.g. invalid coordinates), keep previous state
+    if (error) {
       sunInfo.value = null
+      return
     }
+
+    sunInfo.value = data
+    currentLocation.value = { latitude, longitude }
   }
 
   function setDateTime(datetime: Date): void {
