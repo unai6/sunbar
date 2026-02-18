@@ -28,7 +28,7 @@ function openDirections(): void {
 </script>
 
 <template>
-  <div class="p-5 flex flex-col gap-4 bg-white min-w-[350px]">
+  <div class="p-5 flex flex-col gap-4 bg-white w-full max-w-md mx-auto sm:min-w-[350px] min-w-0 overflow-x-hidden">
     <!-- Sunlight Status Banner -->
     <div
       :class="[
