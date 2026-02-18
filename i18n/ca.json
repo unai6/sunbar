@@ -1,0 +1,134 @@
+{
+  "app": {
+    "title": {
+      "main": "SunBar - Troba Terrasses Assolellades"
+    },
+    "meta": {
+      "description": "Descobreix bars i restaurants amb terrasses assolellades"
+    }
+  },
+  "header": {
+    "label": {
+      "tagline": "Troba terrasses assolellades a prop teu",
+      "language": "Idioma"
+    },
+    "button": {
+      "menu": "Menú"
+    }
+  },
+  "controlPanel": {
+    "title": {
+      "searchArea": "Àrea de Cerca",
+      "dateTime": "Data i Hora",
+      "sunPosition": "Posició del Sol",
+      "filters": "Filtres",
+      "results": "Resultats"
+    },
+    "button": {
+      "searchThisArea": "Cercar en aquesta Àrea",
+      "useMyLocation": "La Meva Ubicació",
+      "now": "Ara"
+    },
+    "label": {
+      "altitude": "Altitud",
+      "azimuth": "Azimut",
+      "sunrise": "Sortida del sol",
+      "sunset": "Posta del sol",
+      "total": "Total",
+      "sunny": "Assolellat",
+      "shaded": "A l'ombra",
+      "minusOneHour": "-1 hora",
+      "plusOneHour": "+1 hora"
+    },
+    "filter": {
+      "onlySunnyVenues": "Només llocs assolellats",
+      "onlyOutdoorSeating": "Només amb terrassa exterior"
+    },
+    "message": {
+      "nighttime": "Actualment és de nit"
+    }
+  },
+  "venueList": {
+    "title": {
+      "nearbyVenues": "Llocs Propers"
+    },
+    "label": {
+      "found": "trobats",
+      "outdoor": "Exterior"
+    },
+    "message": {
+      "noVenuesFound": "No s'han trobat llocs",
+      "tryDifferentArea": "Prova a cercar en una altra àrea"
+    },
+    "status": {
+      "sunny": "Assolellat",
+      "shaded": "A l'ombra"
+    }
+  },
+  "venueDetail": {
+    "title": {
+      "currentlySunny": "Actualment Assolellat!",
+      "currentlyShaded": "Actualment a l'Ombra",
+      "venueDetails": "Detalls del Local"
+    },
+    "label": {
+      "type": "Tipus",
+      "terrace": "Terrassa",
+      "address": "Adreça",
+      "confidence": "confiança",
+      "available": "Disponible",
+      "no": "No"
+    },
+    "button": {
+      "getDirections": "Com Arribar-hi"
+    }
+  },
+  "venueType": {
+    "label": {
+      "bar": "Bar",
+      "restaurant": "Restaurant",
+      "cafe": "Cafeteria",
+      "pub": "Pub",
+      "biergarten": "Jardí de Cervesa"
+    }
+  },
+  "map": {
+    "title": {
+      "legend": "Estat de Llum Solar"
+    },
+    "label": {
+      "sunny": "Assolellat",
+      "shaded": "A l'ombra",
+      "partiallySunny": "Parcialment Assolellat"
+    },
+    "message": {
+      "loadingMap": "Carregant mapa...",
+      "outdoorSeating": "Terrassa exterior"
+    }
+  },
+  "sunlight": {
+    "description": {
+      "directSunlight": "Llum solar directa",
+      "inBuildingShadow": "A l'ombra d'un edifici",
+      "partialShadow": "Ombra parcial d'edificis propers"
+    }
+  },
+  "common": {
+    "label": {
+      "loading": "Carregant...",
+      "error": "Error"
+    },
+    "message": {
+      "errorOccurred": "S'ha produït un error"
+    }
+  },
+  "toast": {
+    "error": {
+      "title": "Error",
+      "bboxTooLarge": "L'àrea és massa gran. Fes zoom per cercar (màx. ~5km).",
+      "fetchVenues": "No s'han pogut carregar els locals. Torna-ho a provar.",
+      "geolocation": "No s'ha pogut obtenir la teva ubicació. Activa els serveis d'ubicació.",
+      "network": "Error de xarxa. Comprova la teva connexió i torna-ho a provar."
+    }
+  }
+}

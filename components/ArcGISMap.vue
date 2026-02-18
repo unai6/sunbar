@@ -37,6 +37,7 @@ let Graphic: typeof import('@arcgis/core/Graphic').default
 let Point: typeof import('@arcgis/core/geometry/Point').default
 let SimpleMarkerSymbol: typeof import('@arcgis/core/symbols/SimpleMarkerSymbol').default
 let webMercatorToGeographic: typeof import('@arcgis/core/geometry/support/webMercatorUtils').webMercatorToGeographic
+let reactiveUtils: typeof import('@arcgis/core/core/reactiveUtils')
 
 // Expose methods
 defineExpose({
@@ -79,7 +80,8 @@ async function loadArcGISModules(): Promise<void> {
     GraphicModule,
     PointModule,
     SimpleMarkerSymbolModule,
-    webMercatorUtilsModule
+    webMercatorUtilsModule,
+    reactiveUtilsModule
   ] = await Promise.all([
     import('@arcgis/core/views/MapView'),
     import('@arcgis/core/Map'),
@@ -87,7 +89,8 @@ async function loadArcGISModules(): Promise<void> {
     import('@arcgis/core/Graphic'),
     import('@arcgis/core/geometry/Point'),
     import('@arcgis/core/symbols/SimpleMarkerSymbol'),
-    import('@arcgis/core/geometry/support/webMercatorUtils')
+    import('@arcgis/core/geometry/support/webMercatorUtils'),
+    import('@arcgis/core/core/reactiveUtils')
   ])
 
   MapView = MapViewModule.default
@@ -97,6 +100,7 @@ async function loadArcGISModules(): Promise<void> {
   Point = PointModule.default
   SimpleMarkerSymbol = SimpleMarkerSymbolModule.default
   webMercatorToGeographic = webMercatorUtilsModule.webMercatorToGeographic
+  reactiveUtils = reactiveUtilsModule
 }
 
 function createSunnySymbol(): __esri.SimpleMarkerSymbol | null {
@@ -175,9 +179,12 @@ async function initializeMap(): Promise<void> {
 
     await view.when()
 
-    view.watch('stationary', (stationary: boolean) => {
-      if (stationary) emitBounds()
-    })
+    reactiveUtils.watch(
+      () => view!.stationary,
+      (stationary: boolean) => {
+        if (stationary) emitBounds()
+      }
+    )
 
     view.on('click', async (event) => {
       const response = await view!.hitTest(event)

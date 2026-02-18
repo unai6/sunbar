@@ -1,30 +1,42 @@
 <script setup lang="ts">
+import Select from 'primevue/select'
+
 const { locale, setLocale, locales } = useI18n()
 
 const availableLocales = computed(() => {
   return locales.value as Array<{ code: string; name: string }>
 })
 
-async function switchLocale(code: string): Promise<void> {
-  await setLocale(code as 'es' | 'en')
-}
+const selectedLocale = computed({
+  get: () => availableLocales.value.find(l => l.code === locale.value),
+  set: (val) => {
+    if (val) setLocale(val.code as 'es' | 'en' | 'ca')
+  }
+})
 </script>
 
 <template>
-  <div class="flex items-center gap-1">
-    <button
-      v-for="loc in availableLocales"
-      :key="loc.code"
-      :title="loc.name"
-      :class="[
-        'flex items-center justify-center px-3 py-2 border-2 rounded-full text-xs font-semibold tracking-wide cursor-pointer transition-all duration-200',
-        locale === loc.code
-          ? 'border-amber-500 bg-amber-100 text-amber-700'
-          : 'border-gray-200 bg-gray-50 text-gray-500 hover:bg-gray-100 hover:border-gray-300 hover:text-gray-700'
-      ]"
-      @click="switchLocale(loc.code)"
-    >
-      {{ loc.code.toUpperCase() }}
-    </button>
-  </div>
+  <Select
+    v-model="selectedLocale"
+    :options="availableLocales"
+    option-label="name"
+    class="lg:w-40 xs:w-20 text-sm"
+    :pt="{
+      root: { class: 'border-gray-200 bg-gray-50 hover:border-gray-300 rounded-lg' },
+      label: { class: 'text-sm py-1.5 px-3' }
+    }"
+  >
+    <template #value="{ value }">
+      <div v-if="value" class="flex items-center gap-2">
+        <span class="font-semibold text-amber-700">{{ value.code.toUpperCase() }}</span>
+        <span class="text-gray-600 hidden sm:inline">{{ value.name }}</span>
+      </div>
+    </template>
+    <template #option="{ option }">
+      <div class="flex items-center gap-2">
+        <span class="font-semibold w-6">{{ option.code.toUpperCase() }}</span>
+        <span>{{ option.name }}</span>
+      </div>
+    </template>
+  </Select>
 </template>
