@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import Button from 'primevue/button'
-import Calendar from 'primevue/calendar'
+import DatePicker from 'primevue/datepicker'
 import Checkbox from 'primevue/checkbox'
 import Tag from 'primevue/tag'
 import type { GetSunInfoResult } from '~/application/use-cases/GetSunInfoUseCase'
@@ -40,8 +40,8 @@ watch(() => props.filters, (newVal) => {
 }, { deep: true })
 
 // Methods
-const handleDateTimeChange = (value: Date | null): void => {
-  if (value) {
+const handleDateTimeChange = (value: Date | Date[] | (Date | null)[] | null | undefined): void => {
+  if (value instanceof Date) {
     emit('update-datetime', value)
   }
 }
@@ -101,12 +101,12 @@ const formatTime = (date: Date): string => {
         {{ $t('controlPanel.title.dateTime') }}
       </h3>
       <div class="flex flex-col gap-2">
-        <Calendar
+        <DatePicker
           v-model="localDateTime"
-          :show-time="true"
+          show-time
           hour-format="24"
-          :show-icon="true"
-          :show-button-bar="true"
+          show-icon
+          show-button-bar
           date-format="dd/mm/yy"
           class="w-full"
           @update:model-value="handleDateTimeChange"

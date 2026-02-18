@@ -114,34 +114,6 @@ const createShadedSymbol = (): __esri.SimpleMarkerSymbol | null => {
   })
 }
 
-const buildPopupContent = (venue: Venue, isSunny: boolean): string => {
-  const typeLabel = t(`venueType.label.${venue.type}`)
-  const outdoorSeatingLabel = t('map.message.outdoorSeating')
-  const sunnyLabel = t('map.label.sunny')
-  const shadedLabel = t('map.label.shaded')
-
-  return `
-    <div style="font-family: system-ui, -apple-system, sans-serif; padding: 4px 0;">
-      <p style="color: #6b7280; margin: 0 0 8px 0; font-size: 13px;">
-        ${typeLabel}${venue.outdoor_seating ? ` • 🪑 ${outdoorSeatingLabel}` : ''}
-      </p>
-      <div style="
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 13px;
-        ${isSunny ? 'background: #fef3c7; color: #b45309;' : 'background: #f1f5f9; color: #475569;'}
-      ">
-        ${isSunny ? `☀️ ${sunnyLabel}` : `🌥️ ${shadedLabel}`}
-      </div>
-      ${venue.address ? `<p style="margin: 10px 0 0 0; font-size: 12px; color: #9ca3af;">${venue.address}</p>` : ''}
-    </div>
-  `
-}
-
 const updateVenueMarkers = (): void => {
   if (!venueGraphicsLayer || !Graphic || !Point) return
 
@@ -167,10 +139,6 @@ const updateVenueMarkers = (): void => {
         isSunny,
         address: venue.address,
         outdoor_seating: venue.outdoor_seating
-      },
-      popupTemplate: {
-        title: '{name}',
-        content: buildPopupContent(venue, isSunny)
       }
     })
 
@@ -199,7 +167,7 @@ const initializeMap = async (): Promise<void> => {
       center: [props.center[1], props.center[0]],
       zoom: props.zoom,
       constraints: { minZoom: 10, maxZoom: 20 },
-      popup: { dockEnabled: false }
+      popup: { autoOpenEnabled: false }
     })
 
     await view.when()
@@ -280,16 +248,6 @@ watch(() => props.center, (newCenter) => {
 .esri-ui-corner .esri-component {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
   border-radius: 8px !important;
-}
-
-.esri-popup__main-container {
-  border-radius: 12px !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
-}
-
-.esri-popup__header-title {
-  font-weight: 600 !important;
-  font-size: 15px !important;
 }
 
 .esri-attribution {

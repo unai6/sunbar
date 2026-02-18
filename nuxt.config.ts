@@ -1,3 +1,5 @@
+import Aura from '@primeuix/themes/aura'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -28,10 +30,10 @@ export default defineNuxtConfig({
 
   primevue: {
     options: {
-      ripple: true
-    },
-    components: {
-      include: '*'
+      ripple: true,
+      theme: {
+        preset: Aura
+      }
     }
   },
 
