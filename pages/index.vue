@@ -2,21 +2,31 @@
 import { ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import ProgressSpinner from 'primevue/progressspinner'
-import type { VenueErrorCode } from '~/composables/useVenues'
+import { VenueErrorCode } from '~/composables/useVenues'
+
+enum MobileTab {
+  CONTROLS = 'controls',
+  VENUES = 'venues'
+}
+
+enum ToastSeverity {
+  ERROR = 'error',
+  WARN = 'warn'
+}
 
 const toast = useToast()
 const { t } = useI18n()
 
 // Mobile menu state
 const mobileMenuOpen = ref(false)
-const mobileTab = ref<'controls' | 'venues'>('controls')
+const mobileTab = ref<MobileTab>(MobileTab.CONTROLS)
 
 const TOAST_DURATION_MS = 5000
 
-const ERROR_TOAST_MAP: Record<VenueErrorCode, { severity: 'error' | 'warn'; key: string }> = {
-  'bbox-too-large': { severity: 'warn', key: 'toast.error.bboxTooLarge' },
-  'network': { severity: 'error', key: 'toast.error.network' },
-  'fetch-failed': { severity: 'error', key: 'toast.error.fetchVenues' }
+const ERROR_TOAST_MAP: Record<VenueErrorCode, { severity: ToastSeverity; key: string }> = {
+  [VenueErrorCode.BBOX_TOO_LARGE]: { severity: ToastSeverity.WARN, key: 'toast.error.bboxTooLarge' },
+  [VenueErrorCode.NETWORK]: { severity: ToastSeverity.ERROR, key: 'toast.error.network' },
+  [VenueErrorCode.FETCH_FAILED]: { severity: ToastSeverity.ERROR, key: 'toast.error.fetchVenues' }
 }
 
 const {
@@ -72,7 +82,7 @@ async function onLocateMe(): Promise<void> {
   if (error) {
     console.error('Geolocation error:', error)
     toast.add({
-      severity: 'error',
+      severity: ToastSeverity.ERROR,
       summary: t('toast.error.title'),
       detail: t('toast.error.geolocation'),
       life: TOAST_DURATION_MS
@@ -85,7 +95,8 @@ async function onLocateMe(): Promise<void> {
   <div class="relative h-full">
     <!-- Mobile Burger Button -->
     <button
-      class="md:hidden fixed top-4 right-4 z-[300] flex items-center justify-center w-12 h-12 rounded-full bg-white shadow-lg border border-gray-200 text-gray-700 text-xl cursor-pointer transition-colors duration-200 hover:bg-gray-100"
+      class="md:hidden fixed z-[300] flex items-center justify-center w-12 h-12 rounded-full bg-white shadow-lg border border-gray-200 text-gray-700 text-xl cursor-pointer transition-colors duration-200 hover:bg-gray-100"
+      style="top: calc(1rem + env(safe-area-inset-top, 0px)); right: calc(1rem + env(safe-area-inset-right, 0px))"
       :aria-label="$t('header.button.menu')"
       @click="mobileMenuOpen = true"
     >
@@ -116,6 +127,7 @@ async function onLocateMe(): Promise<void> {
         <div
           v-if="mobileMenuOpen"
           class="md:hidden fixed top-0 right-0 bottom-0 w-[320px] max-w-[85vw] bg-white shadow-[-4px_0_20px_rgba(0,0,0,0.15)] z-[500] flex flex-col overflow-hidden"
+          style="padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px)"
         >
           <!-- Drawer Header -->
           <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 shrink-0">
@@ -141,9 +153,9 @@ async function onLocateMe(): Promise<void> {
             <button
               :class="[
                 'flex-1 py-3 text-sm font-semibold text-center cursor-pointer border-none transition-colors duration-200',
-                mobileTab === 'controls' ? 'text-amber-600 bg-amber-50 border-b-2 border-b-amber-500' : 'text-gray-500 bg-white hover:bg-gray-50'
+                mobileTab === MobileTab.CONTROLS ? 'text-amber-600 bg-amber-50 border-b-2 border-b-amber-500' : 'text-gray-500 bg-white hover:bg-gray-50'
               ]"
-              @click="mobileTab = 'controls'"
+              @click="mobileTab = MobileTab.CONTROLS"
             >
               <i class="pi pi-sliders-h mr-1" />
               {{ $t('controlPanel.title.searchArea') }}
@@ -151,9 +163,9 @@ async function onLocateMe(): Promise<void> {
             <button
               :class="[
                 'flex-1 py-3 text-sm font-semibold text-center cursor-pointer border-none transition-colors duration-200',
-                mobileTab === 'venues' ? 'text-amber-600 bg-amber-50 border-b-2 border-b-amber-500' : 'text-gray-500 bg-white hover:bg-gray-50'
+                mobileTab === MobileTab.VENUES ? 'text-amber-600 bg-amber-50 border-b-2 border-b-amber-500' : 'text-gray-500 bg-white hover:bg-gray-50'
               ]"
-              @click="mobileTab = 'venues'"
+              @click="mobileTab = MobileTab.VENUES"
             >
               <i class="pi pi-list mr-1" />
               {{ $t('venueList.title.nearbyVenues') }}
@@ -163,7 +175,7 @@ async function onLocateMe(): Promise<void> {
           <!-- Tab Content -->
           <div class="flex-1 overflow-y-auto">
             <ControlPanel
-              v-show="mobileTab === 'controls'"
+              v-show="mobileTab === MobileTab.CONTROLS"
               :loading="loading"
               :venues-count="filteredVenues.length"
               :sunny-count="sunnyVenues.length"
@@ -177,7 +189,7 @@ async function onLocateMe(): Promise<void> {
               @locate-me="() => { onLocateMe(); mobileMenuOpen = false }"
             />
             <VenueList
-              v-show="mobileTab === 'venues'"
+              v-show="mobileTab === MobileTab.VENUES"
               :venues="filteredVenues"
               :selected-venue-id="selectedVenueId"
               :loading="loading"

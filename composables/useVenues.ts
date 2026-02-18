@@ -72,7 +72,11 @@ function apiVenueToDomain(apiVenue: ApiVenue): Venue {
 
 const MAX_BBOX_DEGREES = 0.05
 
-export type VenueErrorCode = 'bbox-too-large' | 'network' | 'fetch-failed'
+export enum VenueErrorCode {
+  BBOX_TOO_LARGE = 'bbox-too-large',
+  NETWORK = 'network',
+  FETCH_FAILED = 'fetch-failed'
+}
 
 function isBboxTooLarge(bbox: BoundingBox): boolean {
   return (bbox.north - bbox.south) > MAX_BBOX_DEGREES || (bbox.east - bbox.west) > MAX_BBOX_DEGREES
@@ -82,9 +86,9 @@ function classifyFetchError(e: Error): VenueErrorCode {
   const err = e as Error & { statusCode?: number; data?: { statusMessage?: string } }
   const statusMessage = err.data?.statusMessage || ''
 
-  if (statusMessage.includes('Bounding box too large')) return 'bbox-too-large'
-  if (err.statusCode === 0 || e.message === 'Failed to fetch') return 'network'
-  return 'fetch-failed'
+  if (statusMessage.includes('Bounding box too large')) return VenueErrorCode.BBOX_TOO_LARGE
+  if (err.statusCode === 0 || e.message === 'Failed to fetch') return VenueErrorCode.NETWORK
+  return VenueErrorCode.FETCH_FAILED
 }
 
 export function useVenues() {
@@ -129,8 +133,8 @@ export function useVenues() {
     datetime?: Date
   ): Promise<VenueErrorCode | null> {
     if (isBboxTooLarge(bbox)) {
-      error.value = 'bbox-too-large'
-      return 'bbox-too-large'
+      error.value = VenueErrorCode.BBOX_TOO_LARGE
+      return VenueErrorCode.BBOX_TOO_LARGE
     }
 
     loading.value = true

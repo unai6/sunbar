@@ -169,7 +169,7 @@ async function initializeMap(): Promise<void> {
     })
 
     view = new MapView({
-      container: mapContainer.value!,
+      container: mapContainer.value,
       map,
       center: [props.center[1], props.center[0]],
       zoom: props.zoom,

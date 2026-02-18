@@ -68,6 +68,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       meta: [
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
         { name: 'theme-color', content: '#D97706' },
         { name: 'msapplication-TileColor', content: '#D97706' },
         { name: 'msapplication-config', content: '/browserconfig.xml' },
