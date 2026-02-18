@@ -4,6 +4,7 @@ import Dialog from 'primevue/dialog'
 import ProgressSpinner from 'primevue/progressspinner'
 import type { Venue } from '~/domain/entities/Venue'
 import type { BoundingBox } from '~/domain/repositories/VenueRepository'
+import type { VenueFilters } from '~/composables/useVenues'
 
 const toast = useToast()
 const { t } = useI18n()
@@ -79,6 +80,11 @@ async function handleDateTimeUpdate(datetime: Date): Promise<void> {
   }
 }
 
+async function handleFilterUpdate(newFilters: Partial<VenueFilters>): Promise<void> {
+  setFilters(newFilters)
+  await handleSearch()
+}
+
 function handleVenueClick(venue: Venue): void {
   // Close any open map popups before showing the dialog
   mapRef.value?.closePopups()
@@ -140,7 +146,7 @@ onMounted(async () => {
         :filters="filters"
         @search="handleSearch"
         @update-datetime="handleDateTimeUpdate"
-        @update-filters="setFilters"
+        @update-filters="handleFilterUpdate"
         @locate-me="handleLocateMe"
       />
     </aside>
