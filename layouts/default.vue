@@ -16,9 +16,9 @@ import Toast from 'primevue/toast'
           </div>
           <p class="text-gray-500 text-sm hidden sm:block">{{ $t('header.label.tagline') }}</p>
         </div>
-        <div class="flex items-center">
+        <!-- <div class="flex items-center">
           <LocaleSwitcher />
-        </div>
+        </div> -->
       </div>
     </header>
 
