@@ -66,15 +66,11 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'SunBar - Find Sunny Terraces',
       meta: [
-        { name: 'description', content: 'Discover bars and restaurants with sunny terraces' },
         { name: 'theme-color', content: '#D97706' },
         { name: 'msapplication-TileColor', content: '#D97706' },
         { name: 'msapplication-config', content: '/browserconfig.xml' },
         { property: 'og:type', content: 'website' },
-        { property: 'og:title', content: 'SunBar - Find Sunny Terraces' },
-        { property: 'og:description', content: 'Discover bars and restaurants with sunny terraces' },
         { property: 'og:image', content: '/icon-512x512.png' }
       ],
       link: [
