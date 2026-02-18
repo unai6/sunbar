@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { SunlightStatus, SunlightStatusType } from '../../domain/value-objects/SunlightStatus'
+import { SunlightStatus, SunlightStatusType } from '~/domain/value-objects/SunlightStatus'
 
 describe('SunlightStatus', () => {
   describe('factory methods', () => {

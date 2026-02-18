@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
-import { GetSunInfoUseCase, type GetSunInfoQuery } from '../../application/use-cases/GetSunInfoUseCase'
-import { SunPosition } from '../../domain/value-objects/SunPosition'
+import { GetSunInfoUseCase, type GetSunInfoQuery } from '~/application/use-cases/GetSunInfoUseCase'
+import { SunPosition } from '~/domain/value-objects/SunPosition'
 
 describe('GetSunInfoUseCase', () => {
   const createMockSunCalculator = () => ({

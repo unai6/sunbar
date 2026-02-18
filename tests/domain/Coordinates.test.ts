@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { Coordinates } from '../../domain/value-objects/Coordinates'
+import { Coordinates } from '~/domain/value-objects/Coordinates'
 
 describe('Coordinates', () => {
   describe('create', () => {

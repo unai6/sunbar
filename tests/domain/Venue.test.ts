@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
-import { Venue, VenueType } from '../../domain/entities/Venue'
-import { Coordinates } from '../../domain/value-objects/Coordinates'
-import { SunlightStatus } from '../../domain/value-objects/SunlightStatus'
+import { Venue, VenueType } from '~/domain/entities/Venue'
+import { Coordinates } from '~/domain/value-objects/Coordinates'
+import { SunlightStatus } from '~/domain/value-objects/SunlightStatus'
 
 describe('Venue', () => {
   const validCoordinates = Coordinates.create({ latitude: 40.4168, longitude: -3.7038 })

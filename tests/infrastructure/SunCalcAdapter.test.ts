@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { SunCalcAdapter } from '../../infrastructure/adapters/SunCalcAdapter'
-import { Coordinates } from '../../domain/value-objects/Coordinates'
+import { SunCalcAdapter } from '~/infrastructure/adapters/SunCalcAdapter'
+import { Coordinates } from '~/domain/value-objects/Coordinates'
 
 describe('SunCalcAdapter', () => {
   const adapter = new SunCalcAdapter()

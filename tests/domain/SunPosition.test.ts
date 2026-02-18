@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { SunPosition } from '../../domain/value-objects/SunPosition'
+import { SunPosition } from '~/domain/value-objects/SunPosition'
 
 describe('SunPosition', () => {
   describe('create', () => {

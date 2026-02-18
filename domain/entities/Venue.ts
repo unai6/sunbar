@@ -1,5 +1,5 @@
-import type { Coordinates } from '../value-objects/Coordinates'
-import type { SunlightStatus } from '../value-objects/SunlightStatus'
+import type { Coordinates } from '~/domain/value-objects/Coordinates'
+import type { SunlightStatus } from '~/domain/value-objects/SunlightStatus'
 
 /**
  * VenueType - Types of venues we support

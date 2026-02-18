@@ -1,5 +1,5 @@
-import type { SunCalculatorService } from '../../domain/services/SunCalculatorService'
-import { Coordinates } from '../../domain/value-objects/Coordinates'
+import type { SunCalculatorService } from '~/domain/services/SunCalculatorService'
+import { Coordinates } from '~/domain/value-objects/Coordinates'
 
 export interface GetSunInfoQuery {
   latitude: number;

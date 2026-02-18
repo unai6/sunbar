@@ -1,7 +1,7 @@
 import SunCalc from 'suncalc'
-import type { SunCalculatorService } from '../../domain/services/SunCalculatorService'
-import type { Coordinates } from '../../domain/value-objects/Coordinates'
-import { SunPosition } from '../../domain/value-objects/SunPosition'
+import type { SunCalculatorService } from '~/domain/services/SunCalculatorService'
+import type { Coordinates } from '~/domain/value-objects/Coordinates'
+import { SunPosition } from '~/domain/value-objects/SunPosition'
 
 /**
  * SunCalc Adapter
