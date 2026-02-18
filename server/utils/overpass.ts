@@ -105,11 +105,11 @@ export async function executeOverpassQuery(query: string): Promise<OverpassRespo
 
       const data = await response.json()
       return data
-    } catch (error) {
-      if (isNuxtError(error)) throw error
+    } catch (err) {
+      if (isNuxtError(err)) throw err
 
-      console.warn(`[Overpass] Attempt ${attempt + 1}/${MAX_RETRIES} failed: ${isAbortError(error) ? 'timeout' : error}`)
-      lastError = error as Error
+      console.warn(`[Overpass] Attempt ${attempt + 1}/${MAX_RETRIES} failed: ${isAbortError(err) ? 'timeout' : err}`)
+      lastError = err as Error
       await sleep(INITIAL_DELAY_MS * (attempt + 1))
     }
   }

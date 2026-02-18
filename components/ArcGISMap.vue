@@ -197,8 +197,8 @@ async function initializeMap(): Promise<void> {
     if (props.venues.length > 0) updateVenueMarkers()
 
     isLoading.value = false
-  } catch (error) {
-    console.error('Failed to initialize ArcGIS map:', error)
+  } catch (err) {
+    console.error('Failed to initialize ArcGIS map:', err)
     isLoading.value = false
   }
 }

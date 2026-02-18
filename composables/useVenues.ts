@@ -158,7 +158,7 @@ export function useVenues() {
       let detail = t('toast.error.fetchVenues')
       if (statusMessage.includes('Bounding box too large')) {
         detail = t('toast.error.bboxTooLarge')
-      } else if (err.statusCode === 0 || (e instanceof TypeError && (e as TypeError).message === 'Failed to fetch')) {
+      } else if (err.statusCode === 0 || (e instanceof TypeError && e.message === 'Failed to fetch')) {
         detail = t('toast.error.network')
       }
 

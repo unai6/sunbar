@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import Dialog from 'primevue/dialog'
 import ProgressSpinner from 'primevue/progressspinner'
 import type { Venue } from '~/domain/entities/Venue'
@@ -11,7 +11,6 @@ const { t } = useI18n()
 // Composables
 const {
   loading,
-  error,
   filters,
   sunnyVenues,
   shadedVenues,
@@ -100,7 +99,9 @@ async function handleLocateMe(): Promise<void> {
       mapZoom.value = LOCATE_ME_ZOOM
       mapRef.value?.flyTo(geoState.value.latitude, geoState.value.longitude, LOCATE_ME_ZOOM)
     }
-  } catch (e) {
+  } catch (err) {
+    console.error('Geolocation error:', err)
+
     toast.add({
       severity: 'error',
       summary: t('toast.error.title'),
