@@ -71,8 +71,6 @@ function apiVenueToDomain(apiVenue: ApiVenue): Venue {
 }
 
 const MAX_BBOX_DEGREES = 0.05
-const METERS_PER_DEGREE_LAT = 111320
-const DEFAULT_SEARCH_RADIUS_M = 500
 const TOAST_DURATION_MS = 5000
 
 function isBboxTooLarge(bbox: BoundingBox): boolean {
@@ -176,39 +174,8 @@ export function useVenues() {
     }
   }
 
-  async function fetchVenuesNearby(
-    latitude: number,
-    longitude: number,
-    radiusMeters: number = DEFAULT_SEARCH_RADIUS_M,
-    datetime?: Date
-  ): Promise<void> {
-    // Convert radius to approximate bbox
-    const latDelta = radiusMeters / METERS_PER_DEGREE_LAT
-    const lonDelta = radiusMeters / (METERS_PER_DEGREE_LAT * Math.cos(latitude * Math.PI / 180))
-
-    const bbox: BoundingBox = {
-      south: latitude - latDelta,
-      north: latitude + latDelta,
-      west: longitude - lonDelta,
-      east: longitude + lonDelta
-    }
-
-    await fetchVenuesByBoundingBox(bbox, datetime)
-  }
-
-  async function refreshSunlightStatus(datetime?: Date): Promise<void> {
-    if (!lastBbox.value) return
-    await fetchVenuesByBoundingBox(lastBbox.value, datetime)
-  }
-
   function setFilters(newFilters: Partial<VenueFilters>): void {
     filters.value = { ...filters.value, ...newFilters }
-  }
-
-  function clearVenues(): void {
-    venues.value = []
-    lastBbox.value = null
-    error.value = null
   }
 
   return {
@@ -226,9 +193,6 @@ export function useVenues() {
 
     // Actions
     fetchVenuesByBoundingBox,
-    fetchVenuesNearby,
-    refreshSunlightStatus,
-    setFilters,
-    clearVenues
+    setFilters
   }
 }

@@ -21,7 +21,6 @@
     "@arcgis/core": "^4.34.8",
     "@nuxtjs/i18n": "^10.2.3",
     "@primevue/themes": "^4.2.0",
-    "@vueuse/core": "^11.0.0",
     "nuxt": "^3.13.0",
     "primeicons": "^7.0.0",
     "primevue": "^4.2.0",

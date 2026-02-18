@@ -245,15 +245,3 @@ watch(() => props.center, (newCenter) => {
     </div>
   </div>
 </template>
-
-<style>
-/* Global ArcGIS widget overrides */
-.esri-ui-corner .esri-component {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-  border-radius: 8px !important;
-}
-
-.esri-attribution {
-  font-size: 10px !important;
-}
-</style>

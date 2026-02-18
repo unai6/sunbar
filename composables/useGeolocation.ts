@@ -1,4 +1,4 @@
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 const GEOLOCATION_TIMEOUT_MS = 10000
 const GEOLOCATION_MAX_AGE_MS = 60000
@@ -20,15 +20,9 @@ export function useGeolocation() {
     loading: false
   })
 
-  const isSupported = ref(false)
-
-  onMounted(() => {
-    isSupported.value = 'geolocation' in navigator
-  })
-
   function getCurrentPosition(): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
-      if (!isSupported.value) {
+      if (!('geolocation' in navigator)) {
         reject(new Error('Geolocation is not supported'))
         return
       }
@@ -58,14 +52,8 @@ export function useGeolocation() {
     })
   }
 
-  function hasLocation(): boolean {
-    return state.value.latitude !== null && state.value.longitude !== null
-  }
-
   return {
     state,
-    isSupported,
-    getCurrentPosition,
-    hasLocation
+    getCurrentPosition
   }
 }
