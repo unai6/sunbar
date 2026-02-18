@@ -4,12 +4,13 @@ Find sunny bars and restaurants near you! SunBar uses GIS shadow analysis to det
 
 ## Features
 
-- 🗺️ **Interactive Map**: Browse bars, restaurants, cafés, and pubs on an OpenStreetMap-powered map
+- 🗺️ **Interactive Map**: Browse bars, restaurants, cafés, and pubs on an ArcGIS-powered map
 - ☀️ **Sun Analysis**: Real-time calculation of sun position using SunCalc
 - 🏢 **Shadow Detection**: Estimates which venues might be shaded by nearby buildings
 - 📅 **Time Travel**: Check sun conditions for any date/time
 - 🎯 **Geolocation**: Find venues near your current location
 - 🪑 **Outdoor Seating Filter**: Focus on venues with outdoor seating
+- 🌍 **Internationalization**: Available in Spanish (default) and English
 
 ## Architecture
 
@@ -25,11 +26,16 @@ sunbar/
 ├── application/               # Use cases / Application services
 │   └── use-cases/             # Business operations
 ├── infrastructure/            # External adapters
-│   └── adapters/              # Implementations (Overpass, SunCalc)
+│   └── adapters/              # Implementations (SunCalc, ShadowAnalyzer)
+├── server/                    # Nuxt server API (BFF layer)
+│   └── api/                   # API endpoints
 ├── composables/               # Vue composables (UI integration)
-├── components/                # Vue/PrimeVue components
+├── components/                # Vue/PrimeVue components (Tailwind CSS)
 ├── pages/                     # Nuxt pages
 ├── layouts/                   # Nuxt layouts
+├── i18n/                      # Internationalization
+│   ├── es.json                # Spanish translations
+│   └── en.json                # English translations
 └── tests/                     # Vitest tests
 ```
 
@@ -44,9 +50,11 @@ sunbar/
 - **Nuxt 3**: Vue.js framework with SSR support
 - **TypeScript**: Full type safety
 - **PrimeVue**: UI component library
-- **Leaflet**: Interactive maps
+- **Tailwind CSS**: Utility-first CSS framework
+- **ArcGIS JS SDK**: Interactive 2D maps
 - **SunCalc**: Sun position calculations
-- **Overpass API**: OpenStreetMap data queries
+- **Overpass API**: OpenStreetMap data queries (with BFF pattern)
+- **@nuxtjs/i18n**: Internationalization (Spanish/English)
 - **Vitest**: Unit testing
 
 ## Getting Started
