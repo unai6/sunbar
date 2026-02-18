@@ -23,7 +23,7 @@ export function useGeolocation() {
     isSupported.value = 'geolocation' in navigator
   })
 
-  const getCurrentPosition = (): Promise<GeolocationPosition> => {
+  function getCurrentPosition(): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
       if (!isSupported.value) {
         reject(new Error('Geolocation is not supported'))
@@ -55,7 +55,7 @@ export function useGeolocation() {
     })
   }
 
-  const hasLocation = (): boolean => {
+  function hasLocation(): boolean {
     return state.value.latitude !== null && state.value.longitude !== null
   }
 

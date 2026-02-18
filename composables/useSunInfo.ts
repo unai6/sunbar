@@ -40,13 +40,13 @@ export function useSunInfo() {
   })
 
   // Create use case
-  const createUseCase = (): GetSunInfoUseCase => {
+  function createUseCase(): GetSunInfoUseCase {
     const sunCalculator = new SunCalcAdapter()
     return new GetSunInfoUseCase(sunCalculator)
   }
 
   // Actions
-  const updateSunInfo = (latitude: number, longitude: number, date?: Date): void => {
+  function updateSunInfo(latitude: number, longitude: number, date?: Date): void {
     const useCase = createUseCase()
     const datetime = date || selectedDateTime.value
 
@@ -59,7 +59,7 @@ export function useSunInfo() {
     currentLocation.value = { latitude, longitude }
   }
 
-  const setDateTime = (datetime: Date): void => {
+  function setDateTime(datetime: Date): void {
     selectedDateTime.value = datetime
 
     if (currentLocation.value) {
@@ -71,11 +71,11 @@ export function useSunInfo() {
     }
   }
 
-  const setToCurrentTime = (): void => {
+  function setToCurrentTime(): void {
     setDateTime(new Date())
   }
 
-  const addHours = (hours: number): void => {
+  function addHours(hours: number): void {
     const newDate = new Date(selectedDateTime.value)
     newDate.setHours(newDate.getHours() + hours)
     setDateTime(newDate)

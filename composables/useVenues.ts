@@ -116,10 +116,10 @@ export function useVenues() {
   })
 
   // Actions
-  const fetchVenuesByBoundingBox = async (
+  async function fetchVenuesByBoundingBox(
     bbox: BoundingBox,
     datetime?: Date
-  ): Promise<void> => {
+  ): Promise<void> {
     // Client-side bbox validation — fail fast before hitting the server
     if (isBboxTooLarge(bbox)) {
       toast.add({
@@ -179,12 +179,12 @@ export function useVenues() {
     }
   }
 
-  const fetchVenuesNearby = async (
+  async function fetchVenuesNearby(
     latitude: number,
     longitude: number,
     radiusMeters: number = 500,
     datetime?: Date
-  ): Promise<void> => {
+  ): Promise<void> {
     // Convert radius to approximate bbox
     const latDelta = radiusMeters / 111320 // ~111km per degree latitude
     const lonDelta = radiusMeters / (111320 * Math.cos(latitude * Math.PI / 180))
@@ -199,16 +199,16 @@ export function useVenues() {
     await fetchVenuesByBoundingBox(bbox, datetime)
   }
 
-  const refreshSunlightStatus = async (datetime?: Date): Promise<void> => {
+  async function refreshSunlightStatus(datetime?: Date): Promise<void> {
     if (!lastBbox.value) return
     await fetchVenuesByBoundingBox(lastBbox.value, datetime)
   }
 
-  const setFilters = (newFilters: Partial<VenueFilters>): void => {
+  function setFilters(newFilters: Partial<VenueFilters>): void {
     filters.value = { ...filters.value, ...newFilters }
   }
 
-  const clearVenues = (): void => {
+  function clearVenues(): void {
     venues.value = []
     lastBbox.value = null
     error.value = null

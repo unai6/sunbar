@@ -50,7 +50,7 @@ defineExpose({
   }
 })
 
-const emitBounds = (): void => {
+function emitBounds(): void {
   if (!view || !webMercatorToGeographic) return
   const extent = view.extent
   if (extent) {
@@ -64,7 +64,7 @@ const emitBounds = (): void => {
   }
 }
 
-const loadArcGISModules = async () => {
+async function loadArcGISModules(): Promise<void> {
   await import('@arcgis/core/assets/esri/themes/light/main.css')
 
   const [
@@ -94,7 +94,7 @@ const loadArcGISModules = async () => {
   webMercatorToGeographic = webMercatorUtilsModule.webMercatorToGeographic
 }
 
-const createSunnySymbol = (): __esri.SimpleMarkerSymbol | null => {
+function createSunnySymbol(): __esri.SimpleMarkerSymbol | null {
   if (!SimpleMarkerSymbol) return null
   return new SimpleMarkerSymbol({
     size: 16,
@@ -103,7 +103,7 @@ const createSunnySymbol = (): __esri.SimpleMarkerSymbol | null => {
   })
 }
 
-const createShadedSymbol = (): __esri.SimpleMarkerSymbol | null => {
+function createShadedSymbol(): __esri.SimpleMarkerSymbol | null {
   if (!SimpleMarkerSymbol) return null
   return new SimpleMarkerSymbol({
     size: 12,
@@ -112,7 +112,7 @@ const createShadedSymbol = (): __esri.SimpleMarkerSymbol | null => {
   })
 }
 
-const updateVenueMarkers = (): void => {
+function updateVenueMarkers(): void {
   if (!venueGraphicsLayer || !Graphic || !Point) return
 
   venueGraphicsLayer.removeAll()
@@ -144,7 +144,7 @@ const updateVenueMarkers = (): void => {
   })
 }
 
-const initializeMap = async (): Promise<void> => {
+async function initializeMap(): Promise<void> {
   if (!mapContainer.value) return
 
   isLoading.value = true

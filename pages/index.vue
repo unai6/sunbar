@@ -39,7 +39,7 @@ const showVenueDetail = ref(false)
 const currentBounds = ref<BoundingBox | null>(null)
 
 // Methods
-const handleSearch = async (): Promise<void> => {
+async function handleSearch(): Promise<void> {
   if (!currentBounds.value) return
 
   await fetchVenuesByBoundingBox(currentBounds.value, selectedDateTime.value)
@@ -50,7 +50,7 @@ const handleSearch = async (): Promise<void> => {
   updateSunInfo(centerLat, centerLng, selectedDateTime.value)
 }
 
-const handleBoundsChanged = (bounds: BoundingBox): void => {
+function handleBoundsChanged(bounds: BoundingBox): void {
   currentBounds.value = bounds
 
   // Update sun info for new center
@@ -59,7 +59,7 @@ const handleBoundsChanged = (bounds: BoundingBox): void => {
   updateSunInfo(centerLat, centerLng, selectedDateTime.value)
 }
 
-const handleDateTimeUpdate = async (datetime: Date): Promise<void> => {
+async function handleDateTimeUpdate(datetime: Date): Promise<void> {
   setDateTime(datetime)
 
   if (currentBounds.value) {
@@ -73,19 +73,19 @@ const handleDateTimeUpdate = async (datetime: Date): Promise<void> => {
   }
 }
 
-const handleVenueClick = (venue: Venue): void => {
+function handleVenueClick(venue: Venue): void {
   // Close any open map popups before showing the dialog
   mapRef.value?.closePopups()
   selectedVenue.value = venue
   showVenueDetail.value = true
 }
 
-const handleVenueSelect = (venue: Venue): void => {
+function handleVenueSelect(venue: Venue): void {
   selectedVenueId.value = venue.id
   mapRef.value?.flyTo(venue.coordinates.latitude, venue.coordinates.longitude, 17)
 }
 
-const handleLocateMe = async (): Promise<void> => {
+async function handleLocateMe(): Promise<void> {
   try {
     await getCurrentPosition()
     if (geoState.value.latitude && geoState.value.longitude) {

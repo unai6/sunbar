@@ -15,7 +15,7 @@ defineEmits<{
   'venue-select': [venue: Venue]
 }>()
 
-const getVenueIcon = (type: VenueType): string => {
+function getVenueIcon(type: VenueType): string {
   const icons: Record<string, string> = {
     bar: 'pi pi-star',
     restaurant: 'pi pi-bookmark',

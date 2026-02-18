@@ -9,16 +9,16 @@ const availableLocales = computed(() => {
   return locales.value as Array<{ code: string; name: string }>
 })
 
-const switchLocale = async (code: string) => {
+async function switchLocale(code: string): Promise<void> {
   await setLocale(code as 'es' | 'en')
   closeMenu()
 }
 
-const toggleMenu = () => {
+function toggleMenu(): void {
   menuOpen.value = !menuOpen.value
 }
 
-const closeMenu = () => {
+function closeMenu(): void {
   menuOpen.value = false
 }
 </script>

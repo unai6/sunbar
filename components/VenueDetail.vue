@@ -8,19 +8,19 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const openUrl = (url: string | undefined): void => {
+function openUrl(url: string | undefined): void {
   if (url) {
     globalThis.open(url, '_blank')
   }
 }
 
-const callPhone = (phone: string | undefined): void => {
+function callPhone(phone: string | undefined): void {
   if (phone) {
     globalThis.location.href = `tel:${phone}`
   }
 }
 
-const openDirections = (): void => {
+function openDirections(): void {
   const { latitude, longitude } = props.venue.coordinates
   const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`
   globalThis.open(url, '_blank')

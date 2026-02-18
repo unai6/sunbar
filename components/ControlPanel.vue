@@ -40,30 +40,30 @@ watch(() => props.filters, (newVal) => {
 }, { deep: true })
 
 // Methods
-const handleDateTimeChange = (value: Date | Date[] | (Date | null)[] | null | undefined): void => {
+function handleDateTimeChange(value: Date | Date[] | (Date | null)[] | null | undefined): void {
   if (value instanceof Date) {
     emit('update-datetime', value)
   }
 }
 
-const adjustTime = (hours: number): void => {
+function adjustTime(hours: number): void {
   const newDate = new Date(localDateTime.value)
   newDate.setHours(newDate.getHours() + hours)
   localDateTime.value = newDate
   emit('update-datetime', newDate)
 }
 
-const setToNow = (): void => {
+function setToNow(): void {
   const now = new Date()
   localDateTime.value = now
   emit('update-datetime', now)
 }
 
-const emitFilters = (): void => {
+function emitFilters(): void {
   emit('update-filters', localFilters.value)
 }
 
-const formatTime = (date: Date): string => {
+function formatTime(date: Date): string {
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
 </script>
