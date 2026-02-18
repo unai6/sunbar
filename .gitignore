@@ -5,6 +5,7 @@ node_modules/
 .output/
 .nuxt/
 dist/
+.netlify/
 
 # Environment files
 .env

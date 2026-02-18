@@ -100,6 +100,10 @@ export default defineNuxtConfig({
     }
   },
 
+  nitro: {
+    preset: 'netlify'
+  },
+
   // Ensure ArcGIS works with SSR disabled for the map component
   ssr: false,
 
