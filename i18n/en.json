@@ -29,6 +29,12 @@
       "useMyLocation": "Use My Location",
       "now": "Now"
     },
+    "mobile": {
+      "search": "Search",
+      "locate": "Locate",
+      "venues": "Venues",
+      "settings": "Settings"
+    },
     "label": {
       "altitude": "Altitude",
       "azimuth": "Azimuth",

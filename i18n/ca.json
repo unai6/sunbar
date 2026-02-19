@@ -29,6 +29,12 @@
       "useMyLocation": "La Meva Ubicació",
       "now": "Ara"
     },
+    "mobile": {
+      "search": "Cercar",
+      "locate": "Ubicar",
+      "venues": "Llocs",
+      "settings": "Ajustos"
+    },
     "label": {
       "altitude": "Altitud",
       "azimuth": "Azimut",

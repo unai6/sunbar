@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import Dialog from 'primevue/dialog'
+import Drawer from 'primevue/drawer'
 import ProgressSpinner from 'primevue/progressspinner'
 import { ref } from 'vue'
 import { VenueErrorCode } from '~/composables/useVenues'
-
-enum MobileTab {
-  CONTROLS = 'controls',
-  VENUES = 'venues'
-}
 
 enum ToastSeverity {
   ERROR = 'error',
@@ -17,9 +13,9 @@ enum ToastSeverity {
 const toast = useToast()
 const { t } = useI18n()
 
-// Mobile menu state
-const mobileMenuOpen = ref(false)
-const mobileTab = ref<MobileTab>(MobileTab.CONTROLS)
+// Mobile bottom drawers state
+const showVenuesDrawer = ref(false)
+const showSettingsDrawer = ref(false)
 
 const TOAST_DURATION_MS = 5000
 
@@ -98,112 +94,137 @@ async function onLocateMe(): Promise<void> {
 
 <template>
   <div class="relative h-full">
-    <!-- Mobile Burger Button -->
-    <button
-      class="md:hidden fixed z-[300] flex items-center justify-center w-12 h-12 rounded-full bg-white shadow-lg border border-gray-200 text-gray-700 text-xl cursor-pointer transition-colors duration-200 hover:bg-gray-100"
-      style="top: calc(1rem + env(safe-area-inset-top, 0px)); right: calc(1rem + env(safe-area-inset-right, 0px))"
-      :aria-label="$t('header.button.menu')"
-      @click="mobileMenuOpen = true"
+    <!-- Mobile Top Bar -->
+    <div
+      class="md:hidden fixed top-0 left-0 right-0 z-[300] bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 py-3 flex items-center justify-between"
+      style="padding-top: calc(0.75rem + env(safe-area-inset-top, 0px))"
     >
-      <i class="pi pi-bars" />
-    </button>
+      <div class="flex items-center gap-2">
+        <i class="pi pi-sun text-xl text-amber-500" />
+        <span class="text-lg font-bold bg-gradient-to-br from-amber-500 to-amber-600 bg-clip-text text-transparent">
+          SunBar
+        </span>
+      </div>
+      <LocaleSwitcher />
+    </div>
 
-    <!-- Mobile Slide-out Drawer -->
-    <Teleport to="body">
-      <Transition
-        enter-active-class="transition-opacity duration-300"
-        leave-active-class="transition-opacity duration-300"
-        enter-from-class="opacity-0"
-        leave-to-class="opacity-0"
-      >
-        <div
-          v-if="mobileMenuOpen"
-          class="md:hidden fixed inset-0 bg-black/40 z-[400]"
-          @click="mobileMenuOpen = false"
-        />
-      </Transition>
-
-      <Transition
-        enter-active-class="transition-transform duration-300 ease-out"
-        leave-active-class="transition-transform duration-300 ease-in"
-        enter-from-class="translate-x-full"
-        leave-to-class="translate-x-full"
-      >
-        <div
-          v-if="mobileMenuOpen"
-          class="md:hidden fixed top-0 right-0 bottom-0 w-[320px] max-w-[85vw] bg-white shadow-[-4px_0_20px_rgba(0,0,0,0.15)] z-[500] flex flex-col overflow-hidden"
-          style="padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px)"
+    <!-- Mobile Bottom Action Bar -->
+    <div
+      class="md:hidden fixed bottom-0 left-0 right-0 z-[300] bg-white border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]"
+      style="padding-bottom: env(safe-area-inset-bottom, 0px)"
+    >
+      <div class="grid grid-cols-4 gap-1 p-2">
+        <!-- Search Area Button -->
+        <button
+          :disabled="loading"
+          class="flex flex-col items-center justify-center py-2 px-1 rounded-lg transition-all duration-200 active:scale-95 disabled:opacity-50"
+          :class="loading ? 'bg-gray-100 text-gray-400' : 'bg-amber-500 text-white active:bg-amber-600'"
+          @click="handleSearch"
         >
-          <!-- Drawer Header -->
-          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 shrink-0">
-            <div class="flex items-center gap-2">
-              <i class="pi pi-sun text-xl text-amber-500" />
-              <span class="text-xl font-bold bg-gradient-to-br from-amber-500 to-amber-600 bg-clip-text text-transparent">
-                SunBar
-              </span>
-            </div>
-            <div class="flex items-center gap-2">
-              <LocaleSwitcher />
-              <button
-                class="flex items-center justify-center w-9 h-9 border-none rounded-lg bg-gray-100 text-gray-500 cursor-pointer transition-colors duration-200 hover:bg-gray-200"
-                @click="mobileMenuOpen = false"
-              >
-                <i class="pi pi-times" />
-              </button>
-            </div>
-          </div>
+          <i :class="loading ? 'pi pi-spin pi-spinner text-lg' : 'pi pi-refresh text-lg'" />
+          <span class="text-xs mt-1 font-medium">{{ $t('controlPanel.mobile.search') }}</span>
+        </button>
 
-          <!-- Drawer Content: Tabs for Controls & Venues -->
-          <div class="flex border-b border-gray-200 shrink-0">
-            <button
-              :class="[
-                'flex-1 py-3 text-sm font-semibold text-center cursor-pointer border-none transition-colors duration-200',
-                mobileTab === MobileTab.CONTROLS ? 'text-amber-600 bg-amber-50 border-b-2 border-b-amber-500' : 'text-gray-500 bg-white hover:bg-gray-50'
-              ]"
-              @click="mobileTab = MobileTab.CONTROLS"
-            >
-              <i class="pi pi-sliders-h mr-1" />
-              {{ $t('controlPanel.title.searchArea') }}
-            </button>
-            <button
-              :class="[
-                'flex-1 py-3 text-sm font-semibold text-center cursor-pointer border-none transition-colors duration-200',
-                mobileTab === MobileTab.VENUES ? 'text-amber-600 bg-amber-50 border-b-2 border-b-amber-500' : 'text-gray-500 bg-white hover:bg-gray-50'
-              ]"
-              @click="mobileTab = MobileTab.VENUES"
-            >
-              <i class="pi pi-list mr-1" />
-              {{ $t('venueList.title.nearbyVenues') }}
-            </button>
-          </div>
+        <!-- Locate Me Button -->
+        <button
+          class="flex flex-col items-center justify-center py-2 px-1 rounded-lg text-gray-700 transition-all duration-200 hover:bg-gray-100 active:scale-95 active:bg-gray-200"
+          @click="onLocateMe"
+        >
+          <i class="pi pi-map-marker text-lg" />
+          <span class="text-xs mt-1">{{ $t('controlPanel.mobile.locate') }}</span>
+        </button>
 
-          <!-- Tab Content -->
-          <div class="flex-1 overflow-y-auto">
-            <ControlPanel
-              v-show="mobileTab === MobileTab.CONTROLS"
-              :loading="loading"
-              :venues-count="filteredVenues.length"
-              :sunny-count="sunnyVenues.length"
-              :shaded-count="shadedVenues.length"
-              :sun-info="sunInfo"
-              :selected-date-time="selectedDateTime"
-              :filters="filters"
-              @search="() => { handleSearch(); mobileMenuOpen = false }"
-              @update-datetime="handleDateTimeUpdate"
-              @update-filters="handleFilterUpdate"
-              @locate-me="() => { onLocateMe(); mobileMenuOpen = false }"
-            />
-            <VenueList
-              v-show="mobileTab === MobileTab.VENUES"
-              :venues="filteredVenues"
-              :selected-venue-id="selectedVenueId"
-              :loading="loading"
-              @venue-select="(v) => { handleVenueSelect(v); mobileMenuOpen = false }"
-            />
-          </div>
+        <!-- Venues List Button -->
+        <button
+          class="flex flex-col items-center justify-center py-2 px-1 rounded-lg text-gray-700 transition-all duration-200 hover:bg-gray-100 active:scale-95 active:bg-gray-200 relative"
+          @click="showVenuesDrawer = true"
+        >
+          <i class="pi pi-list text-lg" />
+          <span class="text-xs mt-1">{{ $t('controlPanel.mobile.venues') }}</span>
+          <span
+            v-if="filteredVenues.length > 0"
+            class="absolute top-1 right-1 bg-amber-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1"
+          >
+            {{ filteredVenues.length > 99 ? '99+' : filteredVenues.length }}
+          </span>
+        </button>
+
+        <!-- Settings Button -->
+        <button
+          class="flex flex-col items-center justify-center py-2 px-1 rounded-lg text-gray-700 transition-all duration-200 hover:bg-gray-100 active:scale-95 active:bg-gray-200"
+          @click="showSettingsDrawer = true"
+        >
+          <i class="pi pi-sliders-h text-lg" />
+          <span class="text-xs mt-1">{{ $t('controlPanel.mobile.settings') }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Venues Bottom Drawer -->
+    <Drawer
+      v-model:visible="showVenuesDrawer"
+      position="bottom"
+      class="md:hidden !h-full"
+      :show-close-icon="false"
+    >
+      <template #header>
+        <div class="flex items-center justify-between w-full">
+          <h2 class="text-lg font-semibold flex items-center gap-2">
+            <i class="pi pi-list text-amber-500" />
+            {{ $t('venueList.title.nearbyVenues') }}
+            <span class="text-sm text-gray-500">({{ filteredVenues.length }})</span>
+          </h2>
+          <button
+            class="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+            @click="showVenuesDrawer = false"
+          >
+            <i class="pi pi-times" />
+          </button>
         </div>
-      </Transition>
-    </Teleport>
+      </template>
+      <VenueList
+        :venues="filteredVenues"
+        :selected-venue-id="selectedVenueId"
+        :loading="loading"
+        @venue-select="(v) => { handleVenueSelect(v); showVenuesDrawer = false }"
+      />
+    </Drawer>
+
+    <!-- Mobile Settings Bottom Drawer -->
+    <Drawer
+      v-model:visible="showSettingsDrawer"
+      position="bottom"
+      class="md:hidden !h-full"
+      :show-close-icon="false"
+    >
+      <template #header>
+        <div class="flex items-center justify-between w-full">
+          <h2 class="text-lg font-semibold flex items-center gap-2">
+            <i class="pi pi-sliders-h text-amber-500" />
+            {{ $t('controlPanel.mobile.settings') }}
+          </h2>
+          <button
+            class="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+            @click="showSettingsDrawer = false"
+          >
+            <i class="pi pi-times" />
+          </button>
+        </div>
+      </template>
+      <ControlPanel
+        :loading="loading"
+        :venues-count="filteredVenues.length"
+        :sunny-count="sunnyVenues.length"
+        :shaded-count="shadedVenues.length"
+        :sun-info="sunInfo"
+        :selected-date-time="selectedDateTime"
+        :filters="filters"
+        :hide-search-section="true"
+        @update-datetime="handleDateTimeUpdate"
+        @update-filters="handleFilterUpdate"
+      />
+      />
+    </Drawer>
 
     <!-- Desktop Layout -->
     <div class="h-full md:grid md:grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr_300px] gap-0">
@@ -225,7 +246,11 @@ async function onLocateMe(): Promise<void> {
       </aside>
 
       <!-- Map (always rendered, single instance) -->
-      <div class="relative h-full">
+      <div
+        class="relative h-full"
+        :style="{ paddingTop: 'calc(3.5rem + env(safe-area-inset-top, 0px))', paddingBottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))' }"
+        :class="{ 'md:!p-0': true }"
+      >
         <div v-if="loading" class="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
           <ProgressSpinner />
         </div>

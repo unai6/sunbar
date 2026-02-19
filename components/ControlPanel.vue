@@ -15,6 +15,7 @@ interface Props {
   sunInfo: GetSunInfoResult | null
   selectedDateTime: Date
   filters: VenueFilters
+  hideSearchSection?: boolean
 }
 
 const props = defineProps<Props>()
@@ -70,19 +71,16 @@ function formatTime(date: Date): string {
 
 <template>
   <div class="p-4">
-    <!-- Language Switcher -->
-    <div class="mb-4 flex justify-between items-center">
-      <div class="flex items-center gap-2">
-        <i class="pi pi-sun text-xl text-amber-500" />
-        <span class="text-lg font-bold bg-gradient-to-br from-amber-500 to-amber-600 bg-clip-text text-transparent">
-          SunBar
-        </span>
-      </div>
-      <LocaleSwitcher />
+    <!-- Header -->
+    <div v-if="!hideSearchSection" class="mb-4 flex items-center gap-2">
+      <i class="pi pi-sun text-xl text-amber-500" />
+      <span class="text-lg font-bold bg-gradient-to-br from-amber-500 to-amber-600 bg-clip-text text-transparent">
+        SunBar
+      </span>
     </div>
 
     <!-- Search Section -->
-    <div class="mb-6">
+    <div v-if="!hideSearchSection" class="mb-6">
       <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">
         <i class="pi pi-search text-gray-500" />
         {{ $t('controlPanel.title.searchArea') }}
