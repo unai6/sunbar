@@ -80,7 +80,7 @@ function formatTime(date: Date): string {
     </div>
 
     <!-- Search Section -->
-    <div v-if="!hideSearchSection" class="mb-6">
+    <div v-if="!hideSearchSection" class="mb-6 md:mb-4">
       <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">
         <i class="pi pi-search text-gray-500" />
         {{ $t('controlPanel.title.searchArea') }}
@@ -104,7 +104,7 @@ function formatTime(date: Date): string {
     </div>
 
     <!-- Date/Time Section -->
-    <div class="mb-6">
+    <div class="mb-6 md:mb-4">
       <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">
         <i class="pi pi-clock text-gray-500" />
         {{ $t('controlPanel.title.dateTime') }}
@@ -149,27 +149,27 @@ function formatTime(date: Date): string {
     </div>
 
     <!-- Sun Info Section -->
-    <div v-if="sunInfo" class="mb-6">
+    <div v-if="sunInfo" class="mb-6 md:mb-4">
       <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">
         <i :class="['pi pi-sun', sunInfo.isDaytime ? 'text-amber-500' : 'text-gray-500']" />
         {{ $t('controlPanel.title.sunPosition') }}
       </h3>
-      <div class="grid grid-cols-2 gap-3">
-        <div class="flex flex-col bg-gray-50 px-3 py-2 rounded-lg">
+      <div class="grid grid-cols-2 gap-3 md:gap-2">
+        <div class="flex flex-col bg-gray-50 px-3 py-2 md:px-2 md:py-1.5 rounded-lg">
           <span class="text-xs text-gray-500">{{ $t('controlPanel.label.altitude') }}</span>
-          <span class="text-base font-semibold text-gray-800">{{ sunInfo.position.altitudeDegrees.toFixed(1) }}°</span>
+          <span class="text-base md:text-sm font-semibold text-gray-800">{{ sunInfo.position.altitudeDegrees.toFixed(1) }}°</span>
         </div>
         <div class="flex flex-col bg-gray-50 px-3 py-2 rounded-lg">
           <span class="text-xs text-gray-500">{{ $t('controlPanel.label.azimuth') }}</span>
-          <span class="text-base font-semibold text-gray-800">{{ sunInfo.position.azimuthDegrees.toFixed(1) }}°</span>
+          <span class="text-base md:text-sm font-semibold text-gray-800">{{ sunInfo.position.azimuthDegrees.toFixed(1) }}°</span>
         </div>
         <div class="flex flex-col bg-gray-50 px-3 py-2 rounded-lg">
           <span class="text-xs text-gray-500">{{ $t('controlPanel.label.sunrise') }}</span>
-          <span class="text-base font-semibold text-gray-800">{{ formatTime(sunInfo.times.sunrise) }}</span>
+          <span class="text-base md:text-sm font-semibold text-gray-800">{{ formatTime(sunInfo.times.sunrise) }}</span>
         </div>
         <div class="flex flex-col bg-gray-50 px-3 py-2 rounded-lg">
           <span class="text-xs text-gray-500">{{ $t('controlPanel.label.sunset') }}</span>
-          <span class="text-base font-semibold text-gray-800">{{ formatTime(sunInfo.times.sunset) }}</span>
+          <span class="text-base md:text-sm font-semibold text-gray-800">{{ formatTime(sunInfo.times.sunset) }}</span>
         </div>
       </div>
       <Tag
@@ -183,12 +183,12 @@ function formatTime(date: Date): string {
     </div>
 
     <!-- Filters Section -->
-    <div class="mb-6">
+    <div class="mb-6 md:mb-4">
       <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">
         <i class="pi pi-filter text-gray-500" />
         {{ $t('controlPanel.title.filters') }}
       </h3>
-      <div class="flex flex-col gap-3">
+      <div class="flex flex-col gap-3 md:gap-2">
         <div class="flex items-center gap-2">
           <Checkbox
             v-model="localFilters.onlySunny"
@@ -217,22 +217,22 @@ function formatTime(date: Date): string {
     </div>
 
     <!-- Stats Section -->
-    <div class="mb-6">
+    <div class="mb-6 md:mb-4">
       <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">
         <i class="pi pi-chart-bar text-gray-500" />
         {{ $t('controlPanel.title.results') }}
       </h3>
       <div class="grid grid-cols-3 gap-2">
-        <div class="flex flex-col items-center py-3 px-2 rounded-lg bg-gray-50">
-          <span class="text-2xl font-bold text-gray-700">{{ venuesCount }}</span>
+        <div class="flex flex-col items-center py-3 px-2 md:py-2 md:px-1 rounded-lg bg-gray-50">
+          <span class="text-2xl md:text-xl font-bold text-gray-700">{{ venuesCount }}</span>
           <span class="text-xs text-gray-500">{{ $t('controlPanel.label.total') }}</span>
         </div>
-        <div class="flex flex-col items-center py-3 px-2 rounded-lg bg-amber-100">
-          <span class="text-2xl font-bold text-amber-600">{{ sunnyCount }}</span>
+        <div class="flex flex-col items-center py-3 px-2 md:py-2 md:px-1 rounded-lg bg-amber-100">
+          <span class="text-2xl md:text-xl font-bold text-amber-600">{{ sunnyCount }}</span>
           <span class="text-xs text-gray-500">{{ $t('controlPanel.label.sunny') }}</span>
         </div>
-        <div class="flex flex-col items-center py-3 px-2 rounded-lg bg-gray-100">
-          <span class="text-2xl font-bold text-gray-500">{{ shadedCount }}</span>
+        <div class="flex flex-col items-center py-3 px-2 md:py-2 md:px-1 rounded-lg bg-gray-100">
+          <span class="text-2xl md:text-xl font-bold text-gray-500">{{ shadedCount }}</span>
           <span class="text-xs text-gray-500">{{ $t('controlPanel.label.shaded') }}</span>
         </div>
       </div>
