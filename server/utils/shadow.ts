@@ -2,32 +2,32 @@ const DEFAULT_FLOOR_HEIGHT = 3 // meters per floor
 const DEFAULT_HEIGHT = 10 // meters if nothing known
 
 export interface Building {
-  id: string
-  latitude: number
-  longitude: number
-  height: number
+  id: string;
+  latitude: number;
+  longitude: number;
+  height: number;
 }
 
 export interface Venue {
-  id: string
-  name: string
-  type: string
-  latitude: number
-  longitude: number
-  address?: string
-  outdoor_seating?: boolean
-  phone?: string
-  website?: string
-  openingHours?: string
-  rating?: number
-  priceRange?: string
-  description?: string
+  id: string;
+  name: string;
+  type: string;
+  latitude: number;
+  longitude: number;
+  address?: string;
+  outdoor_seating?: boolean;
+  phone?: string;
+  website?: string;
+  openingHours?: string;
+  rating?: number;
+  priceRange?: string;
+  description?: string;
   socialMedia?: {
-    facebook?: string
-    instagram?: string
-    twitter?: string
-  }
-  sunlightStatus?: 'sunny' | 'shaded' | 'partially_sunny'
+    facebook?: string;
+    instagram?: string;
+    twitter?: string;
+  };
+  sunlightStatus?: 'sunny' | 'shaded' | 'partially_sunny';
 }
 
 /**
@@ -67,16 +67,18 @@ function buildAddress(tags: Record<string, string>): string | undefined {
 /**
  * Parse buildings from Overpass response
  */
-export function parseBuildings(elements: Array<{
-  type: string
-  id: number
-  lat?: number
-  lon?: number
-  center?: { lat: number; lon: number }
-  tags?: Record<string, string>
-}>): Building[] {
+export function parseBuildings(
+  elements: Array<{
+    type: string;
+    id: number;
+    lat?: number;
+    lon?: number;
+    center?: { lat: number; lon: number };
+    tags?: Record<string, string>;
+  }>
+): Building[] {
   return elements
-    .map(el => {
+    .map((el) => {
       const tags = el.tags || {}
       const lat = el.lat ?? el.center?.lat
       const lon = el.lon ?? el.center?.lon
@@ -102,15 +104,23 @@ export function parseBuildings(elements: Array<{
 /**
  * Parse venues from Overpass response
  */
-export function parseVenues(elements: Array<{
-  type: string
-  id: number
-  lat?: number
-  lon?: number
-  center?: { lat: number; lon: number }
-  tags?: Record<string, string>
-}>): Venue[] {
-  const validTypes = new Set(['bar', 'restaurant', 'cafe', 'pub', 'biergarten'])
+export function parseVenues(
+  elements: Array<{
+    type: string;
+    id: number;
+    lat?: number;
+    lon?: number;
+    center?: { lat: number; lon: number };
+    tags?: Record<string, string>;
+  }>
+): Venue[] {
+  const validTypes = new Set([
+    'bar',
+    'restaurant',
+    'cafe',
+    'pub',
+    'biergarten'
+  ])
 
   const parsed: Venue[] = []
 
@@ -143,7 +153,7 @@ export function parseVenues(elements: Array<{
 /**
  * Calculate distance between two points in meters using Haversine formula
  */
-export function distanceInMeters(
+function distanceInMeters(
   lat1: number,
   lon1: number,
   lat2: number,
@@ -197,7 +207,12 @@ function buildingCastsShadow(
   const angleToVenue = normalizeAngle((Math.atan2(dLng, dLat) * 180) / Math.PI)
 
   const angleDiff = angleDifference(angleToVenue, shadowDirection)
-  const distance = distanceInMeters(venue.latitude, venue.longitude, building.latitude, building.longitude)
+  const distance = distanceInMeters(
+    venue.latitude,
+    venue.longitude,
+    building.latitude,
+    building.longitude
+  )
 
   return angleDiff < 45 && distance < shadowLength
 }
@@ -220,7 +235,7 @@ export function analyzeVenueShadow(
   const shadowDirection = normalizeAngle(sunAzimuthDegrees + 180)
 
   // Find buildings within 100m that could cast shadows
-  const nearbyBuildings = buildings.filter(building => {
+  const nearbyBuildings = buildings.filter((building) => {
     const distance = distanceInMeters(
       venue.latitude,
       venue.longitude,
@@ -235,7 +250,7 @@ export function analyzeVenueShadow(
   }
 
   // Count buildings casting shadow
-  const shadowingCount = nearbyBuildings.filter(building =>
+  const shadowingCount = nearbyBuildings.filter((building) =>
     buildingCastsShadow(venue, building, shadowDirection, sunAltitudeRadians)
   ).length
 

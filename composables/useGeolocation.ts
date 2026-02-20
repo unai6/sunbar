@@ -1,15 +1,10 @@
 import { ref } from 'vue'
+import type { GeolocationState } from '~/shared/types'
 
 const GEOLOCATION_TIMEOUT_MS = 10000
 const GEOLOCATION_MAX_AGE_MS = 60000
 
-export interface GeolocationState {
-  latitude: number | null;
-  longitude: number | null;
-  accuracy: number | null;
-  error: string | null;
-  loading: boolean;
-}
+export type { GeolocationState }
 
 export function useGeolocation() {
   const state = ref<GeolocationState>({

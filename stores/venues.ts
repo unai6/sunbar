@@ -1,12 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { Venue } from '~/domain/entities/Venue'
-import type { BoundingBox } from '~/domain/repositories/VenueRepository'
-
-export interface VenueFilters {
-  onlySunny: boolean;
-  onlyWithOutdoorSeating: boolean;
-}
+import type { BoundingBox, VenueFilters } from '~/shared/types'
 
 export const useVenuesStore = defineStore('venues', () => {
   // State

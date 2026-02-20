@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Venue } from '~/domain/entities/Venue'
-import type { BoundingBox } from '~/domain/repositories/VenueRepository'
+import type { BoundingBox } from '~/shared/types'
 
 const DEFAULT_CENTER: [number, number] = [41.39, 2.1] // Barcelona
 const DEFAULT_ZOOM = 15

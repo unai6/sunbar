@@ -1,10 +1,10 @@
 import SunCalc from 'suncalc'
 
 export interface SunPosition {
-  azimuthDegrees: number
-  altitudeDegrees: number
-  azimuthRadians: number
-  altitudeRadians: number
+  azimuthDegrees: number;
+  altitudeDegrees: number;
+  azimuthRadians: number;
+  altitudeRadians: number;
 }
 
 /**
@@ -31,11 +31,4 @@ export function calculateSunPosition(
     azimuthRadians: position.azimuth,
     altitudeRadians: position.altitude
   }
-}
-
-/**
- * Check if it's daytime (sun above horizon)
- */
-export function isDaytime(altitude: number): boolean {
-  return altitude > 0
 }

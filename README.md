@@ -21,7 +21,7 @@ sunbar/
 ├── domain/                    # Core business logic (no dependencies)
 │   ├── entities/              # Business entities (Venue, Building)
 │   ├── value-objects/         # Immutable value objects (Coordinates, SunPosition)
-│   ├── repositories/          # Repository interfaces (ports)
+│   ├── types/                 # Shared type definitions (BoundingBox)
 │   └── services/              # Domain service interfaces
 ├── application/               # Use cases / Application services
 │   └── use-cases/             # Business operations
@@ -124,10 +124,10 @@ interface Venue {
 
 // Sunlight status
 enum SunlightStatusType {
-  SUNNY = 'SUNNY',
-  PARTIALLY_SUNNY = 'PARTIALLY_SUNNY',
-  SHADED = 'SHADED',
-  NIGHT = 'NIGHT'
+  SUNNY = "SUNNY",
+  PARTIALLY_SUNNY = "PARTIALLY_SUNNY",
+  SHADED = "SHADED",
+  NIGHT = "NIGHT",
 }
 ```
 
@@ -138,7 +138,7 @@ enum SunlightStatusType {
 const result = await getSunnyVenuesUseCase.execute({
   bbox: { south: 40.4, west: -3.8, north: 40.5, east: -3.6 },
   datetime: new Date(),
-  onlySunny: true
+  onlySunny: true,
 });
 ```
 

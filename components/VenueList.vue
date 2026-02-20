@@ -93,8 +93,6 @@ function getVenueIcon(type: VenueType): string {
             </div>
           </div>
         </div>
-
-        <!-- Tag moved above for better layout -->
       </div>
     </div>
   </div>

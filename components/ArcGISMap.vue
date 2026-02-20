@@ -30,6 +30,10 @@ let view: __esri.MapView | null = null
 let venueGraphicsLayer: __esri.GraphicsLayer | null = null
 let stationaryWatchHandle: __esri.WatchHandle | null = null
 
+// Debounce timer for bounds updates
+let boundsUpdateTimeout: NodeJS.Timeout | null = null
+const BOUNDS_UPDATE_DEBOUNCE_MS = 500
+
 // Module references
 let MapView: typeof import('@arcgis/core/views/MapView').default
 let EsriMap: typeof import('@arcgis/core/Map').default
@@ -59,16 +63,26 @@ defineExpose({
 
 function emitBounds(): void {
   if (!view || !webMercatorToGeographic) return
-  const extent = view.extent
-  if (extent) {
-    const geoExtent = webMercatorToGeographic(extent) as __esri.Extent
-    emit('bounds-changed', {
-      south: geoExtent.ymin,
-      west: geoExtent.xmin,
-      north: geoExtent.ymax,
-      east: geoExtent.xmax
-    })
+  
+  // Clear any pending timeout
+  if (boundsUpdateTimeout) {
+    clearTimeout(boundsUpdateTimeout)
   }
+  
+  // Debounce bounds updates to prevent excessive API calls during pan/zoom
+  boundsUpdateTimeout = setTimeout(() => {
+    if (!view || !webMercatorToGeographic) return
+    const extent = view.extent
+    if (extent) {
+      const geoExtent = webMercatorToGeographic(extent) as __esri.Extent
+      emit('bounds-changed', {
+        south: geoExtent.ymin,
+        west: geoExtent.xmin,
+        north: geoExtent.ymax,
+        east: geoExtent.xmax
+      })
+    }
+  }, BOUNDS_UPDATE_DEBOUNCE_MS)
 }
 
 async function loadArcGISModules(): Promise<void> {
@@ -125,15 +139,41 @@ function createShadedSymbol(): __esri.SimpleMarkerSymbol | null {
 function updateVenueMarkers(): void {
   if (!venueGraphicsLayer || !Graphic || !Point) return
 
-  venueGraphicsLayer.removeAll()
+  // Create a map of existing graphics by venue ID for efficient lookups
+  const existingGraphics = new Map<string, __esri.Graphic>()
+  venueGraphicsLayer.graphics.forEach(graphic => {
+    if (graphic.attributes?.id) {
+      existingGraphics.set(graphic.attributes.id, graphic)
+    }
+  })
 
+  const currentVenueIds = new Set<string>()
+  const graphicsToAdd: __esri.Graphic[] = []
+
+  // Update or create graphics for current venues
   props.venues.forEach(venue => {
+    currentVenueIds.add(venue.id)
+    
+    const isSunny = venue.isSunny()
+    const existingGraphic = existingGraphics.get(venue.id)
+
+    // Check if graphic needs update
+    if (existingGraphic && existingGraphic.attributes.isSunny === isSunny) {
+      // No change needed, keep existing graphic
+      return
+    }
+
+    // Remove outdated graphic if it exists
+    if (existingGraphic) {
+      venueGraphicsLayer!.remove(existingGraphic)
+    }
+
+    // Create new graphic
     const point = new Point({
       longitude: venue.coordinates.longitude,
       latitude: venue.coordinates.latitude
     })
 
-    const isSunny = venue.isSunny()
     const symbol = isSunny ? createSunnySymbol() : createShadedSymbol()
     if (!symbol) return
 
@@ -150,8 +190,20 @@ function updateVenueMarkers(): void {
       }
     })
 
-    venueGraphicsLayer!.add(graphic)
+    graphicsToAdd.push(graphic)
   })
+
+  // Remove graphics for venues that no longer exist
+  existingGraphics.forEach((graphic, id) => {
+    if (!currentVenueIds.has(id)) {
+      venueGraphicsLayer!.remove(graphic)
+    }
+  })
+
+  // Add all new graphics in a single batch for better performance
+  if (graphicsToAdd.length > 0) {
+    venueGraphicsLayer!.addMany(graphicsToAdd)
+  }
 }
 
 async function initializeMap(): Promise<void> {
@@ -201,7 +253,20 @@ async function initializeMap(): Promise<void> {
       }
     })
 
-    emitBounds()
+    // Emit bounds immediately on initial load (no debounce)
+    if (view && webMercatorToGeographic) {
+      const extent = view.extent
+      if (extent) {
+        const geoExtent = webMercatorToGeographic(extent) as __esri.Extent
+        emit('bounds-changed', {
+          south: geoExtent.ymin,
+          west: geoExtent.xmin,
+          north: geoExtent.ymax,
+          east: geoExtent.xmax
+        })
+      }
+    }
+    
     if (props.venues.length > 0) updateVenueMarkers()
   })
 
@@ -215,6 +280,10 @@ async function initializeMap(): Promise<void> {
 onMounted(() => initializeMap())
 
 onUnmounted(() => {
+  if (boundsUpdateTimeout) {
+    clearTimeout(boundsUpdateTimeout)
+    boundsUpdateTimeout = null
+  }
   if (stationaryWatchHandle) {
     stationaryWatchHandle.remove()
     stationaryWatchHandle = null

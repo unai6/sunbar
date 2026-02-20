@@ -5,7 +5,7 @@ import DatePicker from 'primevue/datepicker'
 import Tag from 'primevue/tag'
 import { ref, watch } from 'vue'
 import type { GetSunInfoResult } from '~/application/use-cases/GetSunInfoUseCase'
-import type { VenueFilters } from '~/stores/venues'
+import type { VenueFilters } from '~/shared/types'
 
 interface Props {
   loading: boolean
@@ -71,14 +71,6 @@ function formatTime(date: Date): string {
 
 <template>
   <div class="p-4 md:p-3">
-    <!-- Header -->
-    <div v-if="!hideSearchSection" class="mb-4 md:mb-3 flex items-center gap-2">
-      <i class="pi pi-sun text-xl text-amber-500" />
-      <span class="text-lg font-bold bg-gradient-to-br from-amber-500 to-amber-600 bg-clip-text text-transparent">
-        SunBar
-      </span>
-    </div>
-
     <!-- Search Section -->
     <div v-if="!hideSearchSection" class="mb-6 md:mb-4">
       <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 md:mb-2 uppercase tracking-wider">
@@ -236,6 +228,11 @@ function formatTime(date: Date): string {
           <span class="text-xs text-gray-500">{{ $t('controlPanel.label.shaded') }}</span>
         </div>
       </div>
+    </div>
+
+    <!-- Version -->
+    <div class="text-center mt-2">
+      <span class="text-xs text-gray-400">v1.0.0</span>
     </div>
   </div>
 </template>

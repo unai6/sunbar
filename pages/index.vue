@@ -95,16 +95,19 @@ async function onLocateMe(): Promise<void> {
   <div class="relative h-full">
     <!-- Mobile Top Bar -->
     <div
-      class="lg:hidden fixed top-0 left-0 right-0 z-[300] bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 py-3 flex items-center justify-between"
-      style="padding-top: calc(0.75rem + env(safe-area-inset-top, 0px))"
+      class="lg:hidden fixed top-0 left-0 right-0 z-[300] bg-white/95 backdrop-blur-sm border-b border-gray-200 px-3 py-1.5"
+      style="padding-top: calc(0.375rem + env(safe-area-inset-top, 0px))"
     >
-      <div class="flex items-center gap-2">
-        <i class="pi pi-sun text-xl text-amber-500" />
-        <span class="text-lg font-bold bg-gradient-to-br from-amber-500 to-amber-600 bg-clip-text text-transparent">
-          SunBar
-        </span>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-1.5">
+          <i class="pi pi-sun text-base text-amber-500" />
+          <span class="text-sm font-bold bg-gradient-to-br from-amber-500 to-amber-600 bg-clip-text text-transparent">
+            SunBar
+          </span>
+          <span class="text-[9px] text-gray-400 ml-1">v1.0.0</span>
+        </div>
+        <LocaleSwitcher />
       </div>
-      <LocaleSwitcher />
     </div>
 
     <!-- Mobile Bottom Action Bar -->
@@ -202,7 +205,7 @@ async function onLocateMe(): Promise<void> {
       <!-- Map (always rendered, single instance) -->
       <div
         class="relative h-full"
-        :style="{ paddingTop: 'calc(3.5rem + env(safe-area-inset-top, 0px))', paddingBottom: 'calc(4rem + env(safe-area-inset-bottom, 0px))' }"
+        :style="{ paddingTop: 'calc(2.5rem + env(safe-area-inset-top, 0px))', paddingBottom: 'calc(4rem + env(safe-area-inset-bottom, 0px))' }"
         :class="{ 'lg:!p-0': true }"
       >
         <div v-if="loading" class="absolute inset-0 bg-white/80 flex items-center justify-center z-10">

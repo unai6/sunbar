@@ -1,17 +1,18 @@
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
-import type { VenueErrorCode } from '~/composables/useVenues'
 import type { Venue } from '~/domain/entities/Venue'
-import type { BoundingBox } from '~/domain/repositories/VenueRepository'
+import type {
+  BoundingBox,
+  MapRef,
+  VenueErrorCode,
+  VenueFilters
+} from '~/shared/types'
 import { useMapExplorerStore } from '~/stores/mapExplorer'
 
 const LOCATE_ME_ZOOM = 16
 const VENUE_SELECT_ZOOM = 17
 
-export interface MapRef {
-  flyTo: (lat: number, lng: number, zoom?: number) => void;
-  closePopups: () => void;
-}
+export type { MapRef }
 
 export function useMapExplorer() {
   // Composables
@@ -41,7 +42,6 @@ export function useMapExplorer() {
     showVenueDetail
   } = storeToRefs(mapStore)
 
-  // Map ref is component-specific, not in store
   const mapRef = ref<MapRef | null>(null)
 
   // Helpers

@@ -1,46 +1,19 @@
-import { storeToRefs } from "pinia";
-import { Venue, VenueType } from "~/domain/entities/Venue";
-import type { BoundingBox } from "~/domain/repositories/VenueRepository";
-import { Coordinates } from "~/domain/value-objects/Coordinates";
-import { SunlightStatus } from "~/domain/value-objects/SunlightStatus";
-import type { VenueFilters } from "~/stores/venues";
-import { useVenuesStore } from "~/stores/venues";
+import { storeToRefs } from 'pinia'
+import { Venue, VenueType } from '~/domain/entities/Venue'
+import { Coordinates } from '~/domain/value-objects/Coordinates'
+import { SunlightStatus } from '~/domain/value-objects/SunlightStatus'
+import type {
+    ApiResponse,
+    ApiVenue,
+    BoundingBox,
+    VenueFilters
+} from '~/shared/types'
+import { VenueErrorCode } from '~/shared/types'
+import { useVenuesStore } from '~/stores/venues'
 
-interface ApiVenue {
-  id: string;
-  name: string;
-  type: string;
-  latitude: number;
-  longitude: number;
-  address?: string;
-  outdoor_seating?: boolean;
-  phone?: string;
-  website?: string;
-  openingHours?: string;
-  rating?: number;
-  priceRange?: string;
-  description?: string;
-  socialMedia?: {
-    facebook?: string;
-    instagram?: string;
-    twitter?: string;
-  };
-  sunlightStatus?: "sunny" | "shaded" | "partially_sunny";
-}
+const MAX_BBOX_DEGREES = 0.05
 
-interface ApiResponse {
-  venues: ApiVenue[];
-  sunPosition: {
-    azimuth: number;
-    altitude: number;
-    isDaytime: boolean;
-  };
-  meta: {
-    timestamp: string;
-    buildingsAnalyzed: number;
-    venueCount: number;
-  };
-}
+export { VenueErrorCode }
 
 /**
  * Convert API venue response to domain Venue entity
@@ -49,30 +22,30 @@ interface ApiResponse {
 function apiVenueToDomain(apiVenue: ApiVenue): Venue {
   const coordinates = Coordinates.create({
     latitude: apiVenue.latitude,
-    longitude: apiVenue.longitude,
-  });
+    longitude: apiVenue.longitude
+  })
 
-  let sunlightStatus: SunlightStatus | undefined;
+  let sunlightStatus: SunlightStatus | undefined
   if (apiVenue.sunlightStatus) {
     switch (apiVenue.sunlightStatus) {
-      case "sunny":
+      case 'sunny':
         sunlightStatus = SunlightStatus.sunny(
           1,
-          "sunlight.description.directSunlight",
-        );
-        break;
-      case "shaded":
+          'sunlight.description.directSunlight'
+        )
+        break
+      case 'shaded':
         sunlightStatus = SunlightStatus.shaded(
           1,
-          "sunlight.description.inBuildingShadow",
-        );
-        break;
-      case "partially_sunny":
+          'sunlight.description.inBuildingShadow'
+        )
+        break
+      case 'partially_sunny':
         sunlightStatus = SunlightStatus.partiallySunny(
           0.7,
-          "sunlight.description.partialShadow",
-        );
-        break;
+          'sunlight.description.partialShadow'
+        )
+        break
     }
   }
 
@@ -90,42 +63,34 @@ function apiVenueToDomain(apiVenue: ApiVenue): Venue {
     priceRange: apiVenue.priceRange,
     description: apiVenue.description,
     socialMedia: apiVenue.socialMedia,
-    sunlightStatus,
-  });
-}
-
-const MAX_BBOX_DEGREES = 0.05;
-
-export enum VenueErrorCode {
-  BBOX_TOO_LARGE = "bbox-too-large",
-  NETWORK = "network",
-  FETCH_FAILED = "fetch-failed",
+    sunlightStatus
+  })
 }
 
 function isBboxTooLarge(bbox: BoundingBox): boolean {
   return (
     bbox.north - bbox.south > MAX_BBOX_DEGREES ||
     bbox.east - bbox.west > MAX_BBOX_DEGREES
-  );
+  )
 }
 
 function classifyFetchError(e: Error): VenueErrorCode {
   const err = e as Error & {
     statusCode?: number;
     data?: { statusMessage?: string };
-  };
-  const statusMessage = err.data?.statusMessage || "";
+  }
+  const statusMessage = err.data?.statusMessage || ''
 
-  if (statusMessage.includes("Bounding box too large"))
-    return VenueErrorCode.BBOX_TOO_LARGE;
-  if (err.statusCode === 0 || e.message === "Failed to fetch")
-    return VenueErrorCode.NETWORK;
-  return VenueErrorCode.FETCH_FAILED;
+  if (statusMessage.includes('Bounding box too large'))
+    return VenueErrorCode.BBOX_TOO_LARGE
+  if (err.statusCode === 0 || e.message === 'Failed to fetch')
+    return VenueErrorCode.NETWORK
+  return VenueErrorCode.FETCH_FAILED
 }
 
 export function useVenues() {
   // Use Pinia store for framework-agnostic state management
-  const store = useVenuesStore();
+  const store = useVenuesStore()
 
   const {
     venues,
@@ -135,21 +100,21 @@ export function useVenues() {
     filters,
     sunnyVenues,
     shadedVenues,
-    filteredVenues,
-  } = storeToRefs(store);
+    filteredVenues
+  } = storeToRefs(store)
 
   // Actions
   async function fetchVenuesByBoundingBox(
     bbox: BoundingBox,
-    datetime?: Date,
+    datetime?: Date
   ): Promise<VenueErrorCode | null> {
     if (isBboxTooLarge(bbox)) {
-      store.setError(VenueErrorCode.BBOX_TOO_LARGE);
-      return VenueErrorCode.BBOX_TOO_LARGE;
+      store.setError(VenueErrorCode.BBOX_TOO_LARGE)
+      return VenueErrorCode.BBOX_TOO_LARGE
     }
 
-    store.setLoading(true);
-    store.setError(null);
+    store.setLoading(true)
+    store.setError(null)
 
     const { data, error: fetchError } = await attempt(async () => {
       const params = new URLSearchParams({
@@ -157,28 +122,28 @@ export function useVenues() {
         west: bbox.west.toString(),
         north: bbox.north.toString(),
         east: bbox.east.toString(),
-        ...(datetime && { datetime: datetime.toISOString() }),
-      });
+        ...(datetime && { datetime: datetime.toISOString() })
+      })
 
-      return $fetch<ApiResponse>(`/api/venues?${params}`);
-    });
+      return $fetch<ApiResponse>(`/api/venues?${params}`)
+    })
 
     if (fetchError) {
-      const errorCode = classifyFetchError(fetchError);
-      store.setError(errorCode);
-      store.setVenues([]);
-      store.setLoading(false);
-      return errorCode;
+      const errorCode = classifyFetchError(fetchError)
+      store.setError(errorCode)
+      store.setVenues([])
+      store.setLoading(false)
+      return errorCode
     }
 
-    store.setVenues(data.venues.map(apiVenueToDomain));
-    store.setLastBbox(bbox);
-    store.setLoading(false);
-    return null;
+    store.setVenues(data.venues.map(apiVenueToDomain))
+    store.setLastBbox(bbox)
+    store.setLoading(false)
+    return null
   }
 
   function setFilters(newFilters: Partial<VenueFilters>): void {
-    store.setFilters(newFilters);
+    store.setFilters(newFilters)
   }
 
   return {
@@ -196,6 +161,6 @@ export function useVenues() {
 
     // Actions
     fetchVenuesByBoundingBox,
-    setFilters,
-  };
+    setFilters
+  }
 }

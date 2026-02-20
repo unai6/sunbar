@@ -105,6 +105,9 @@ export default defineCachedEventHandler(
       )
     }))
 
+    // Set compression hint for faster response
+    setResponseHeader(event, 'Content-Type', 'application/json')
+
     // Return venues with shadow analysis only (no ArcGIS enrichment)
     return {
       venues: venuesWithShadow,
@@ -135,9 +138,11 @@ export default defineCachedEventHandler(
       const timeKey = `${dt.getFullYear()}-${dt.getMonth()}-${dt.getDate()}-${dt.getHours()}`
       return `venues:${south},${west},${north},${east}:${timeKey}`
     },
-    // Cache for 15 minutes (venues don't change frequently)
-    maxAge: 60 * 15,
-    // Stale while revalidate for 5 minutes
-    staleMaxAge: 60 * 5
+    // Cache for 20 minutes (venues/buildings don't change frequently)
+    maxAge: 60 * 20,
+    // Aggressive stale-while-revalidate for better UX (serve cached while fetching new)
+    staleMaxAge: 60 * 30,
+    // Enable compression for cached responses
+    shouldBypassCache: () => false
   }
 )

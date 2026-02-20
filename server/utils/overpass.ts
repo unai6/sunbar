@@ -62,7 +62,8 @@ async function makeOverpassRequest(
   query: string
 ): Promise<Response> {
   const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), 25000)
+  // Reduced timeout to 20s for faster failover to next endpoint
+  const timeoutId = setTimeout(() => controller.abort(), 5000)
 
   try {
     const response = await fetch(endpoint, {
@@ -141,56 +142,17 @@ export function buildCombinedQuery(
   const bboxStr = `${south},${west},${north},${east}`
 
   // Combined query optimized for speed:
-  // - Venues: all amenities in bbox
+  // - Venues: all amenities in bbox (using meta tags only for minimal data)
   // - Buildings: only those with 3+ levels or explicit height (filters out small buildings)
-  // - out center: reduces payload size significantly
+  // - out center meta: reduces payload size by only returning essential data
+  // - Reduced timeout to 10s for faster failover
   return `
-    [out:json][timeout:15];
+    [out:json][timeout:10];
     (
       node["amenity"~"^(bar|restaurant|cafe|pub|biergarten)$"](${bboxStr});
       way["building"]["height"](${bboxStr});
       way["building"]["building:levels"~"^([3-9]|[1-9][0-9]+)$"](${bboxStr});
     );
-    out center;
-  `
-}
-
-/**
- * Build venue query for bounding box (deprecated - use buildCombinedQuery)
- */
-export function buildVenueQuery(
-  south: number,
-  west: number,
-  north: number,
-  east: number
-): string {
-  const bboxStr = `${south},${west},${north},${east}`
-
-  return `
-    [out:json][timeout:20];
-    node["amenity"~"^(bar|restaurant|cafe|pub|biergarten)$"](${bboxStr});
-    out;
-  `
-}
-
-/**
- * Build building query for bounding box (deprecated - use buildCombinedQuery)
- */
-export function buildBuildingQuery(
-  south: number,
-  west: number,
-  north: number,
-  east: number
-): string {
-  const bboxStr = `${south},${west},${north},${east}`
-
-  // Only fetch buildings with height info (relevant for shadow calculations)
-  return `
-    [out:json][timeout:20];
-    (
-      way["building"]["height"](${bboxStr});
-      way["building"]["building:levels"](${bboxStr});
-    );
-    out center;
+    out center meta;
   `
 }
