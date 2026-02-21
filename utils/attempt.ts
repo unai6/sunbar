@@ -20,16 +20,3 @@ export async function attempt<T>(fn: () => Promise<T>): Promise<AttemptResult<T>
     return { data: null, error }
   }
 }
-
-/**
- * Synchronous version of attempt for non-async operations.
- */
-export function attemptSync<T>(fn: () => T): AttemptResult<T> {
-  try {
-    const data = fn()
-    return { data, error: null }
-  } catch (e) {
-    const error = e instanceof Error ? e : new Error(String(e))
-    return { data: null, error }
-  }
-}
