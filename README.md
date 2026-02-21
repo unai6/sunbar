@@ -10,40 +10,50 @@ Find sunny bars and restaurants near you! SunBar uses GIS shadow analysis to det
 - 📅 **Time Travel**: Check sun conditions for any date/time
 - 🎯 **Geolocation**: Find venues near your current location
 - 🪑 **Outdoor Seating Filter**: Focus on venues with outdoor seating
-- 🌍 **Internationalization**: Available in Spanish (default) and English
+- 🌍 **Internationalization**: Available in Spanish, English, and Catalan
 
 ## Architecture
 
-This project follows **Domain-Driven Design (DDD)** principles with a **Hexagonal Architecture** (Ports & Adapters) for the backend-for-frontend layer.
+This project follows a **composables-first approach** using Vue 3 Composition API, emphasizing simplicity and maintainability.
 
 ```
 sunbar/
-├── domain/                    # Core business logic (no dependencies)
-│   ├── entities/              # Business entities (Venue, Building)
-│   ├── value-objects/         # Immutable value objects (Coordinates, SunPosition)
-│   ├── types/                 # Shared type definitions (BoundingBox)
-│   └── services/              # Domain service interfaces
-├── application/               # Use cases / Application services
-│   └── use-cases/             # Business operations
-├── infrastructure/            # External adapters
-│   └── adapters/              # Implementations (SunCalc, ShadowAnalyzer)
+├── composables/               # Vue composables (business logic)
+│   ├── useVenues.ts           # Venue fetching and management
+│   ├── useVenue.ts            # Venue utilities
+│   ├── useCoordinates.ts      # Geographic coordinate utilities
+│   ├── useSunCalculator.ts    # Sun position calculations
+│   ├── useSunPosition.ts      # Sun position data
+│   ├── useSunlightStatus.ts   # Sunlight status logic
+│   ├── useGeolocation.ts      # Browser geolocation
+│   └── useMapExplorer.ts      # Map interaction logic
+├── stores/                    # Pinia stores (state management)
+│   ├── venues.ts              # Venue state and filters
+│   ├── sunInfo.ts             # Sun calculation state
+│   └── mapExplorer.ts         # Map state
+├── shared/                    # Shared types and enums
+│   ├── types/                 # TypeScript type definitions
+│   └── enums/                 # Enumerations
 ├── server/                    # Nuxt server API (BFF layer)
-│   └── api/                   # API endpoints
-├── composables/               # Vue composables (UI integration)
+│   ├── api/                   # API endpoints
+│   └── utils/                 # Server utilities (shadow, sun)
 ├── components/                # Vue/PrimeVue components (Tailwind CSS)
 ├── pages/                     # Nuxt pages
 ├── layouts/                   # Nuxt layouts
 ├── i18n/                      # Internationalization
 │   ├── es.json                # Spanish translations
-│   └── en.json                # English translations
+│   ├── en.json                # English translations
+│   └── ca.json                # Catalan translations
 └── tests/                     # Vitest tests
 ```
 
-### Hexagonal Architecture
+### Design Principles
 
-- **Domain Layer**: Pure business logic with no external dependencies
-- **Application Layer**: Orchestrates use cases, depends only on domain interfaces
-- **Infrastructure Layer**: Adapters implementing domain ports (repositories, services)
+- **Composables-First**: All business logic lives in reusable Vue composables
+- **Pure State**: Pinia stores contain only state (refs and computed), no actions
+- **Semantic Naming**: Descriptive variable names throughout (no single letters or symbols)
+- **Type Safety**: Full TypeScript coverage with shared type definitions
+- **Separation of Concerns**: Clear boundaries between UI, logic, and data fetching
 
 ### Key Technologies
 
@@ -54,7 +64,8 @@ sunbar/
 - **ArcGIS JS SDK**: Interactive 2D maps
 - **SunCalc**: Sun position calculations
 - **Overpass API**: OpenStreetMap data queries (with BFF pattern)
-- **@nuxtjs/i18n**: Internationalization (Spanish/English)
+- **@nuxtjs/i18n**: Internationalization (Spanish/English/Catalan)
+- **Pinia**: State management
 - **Vitest**: Unit testing
 
 ## Getting Started
@@ -109,37 +120,69 @@ npm run test:coverage
 
 ## API Reference
 
-### Domain Entities
+### Core Types
 
 ```typescript
-// Venue entity
+// Venue type (union type for simple string literals)
+type VenueType = "bar" | "restaurant" | "cafe" | "pub" | "biergarten";
+
+// Venue interface
 interface Venue {
   id: string;
   name: string;
   type: VenueType;
   coordinates: Coordinates;
-  sunlightStatus?: SunlightStatus;
+  sunlightStatus?: SunlightStatusInfo;
   outdoor_seating?: boolean;
 }
 
-// Sunlight status
-enum SunlightStatusType {
+// Coordinates
+interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
+
+// Sunlight status enum
+enum SunlightStatus {
   SUNNY = "SUNNY",
   PARTIALLY_SUNNY = "PARTIALLY_SUNNY",
   SHADED = "SHADED",
   NIGHT = "NIGHT",
+  UNKNOWN = "UNKNOWN",
+}
+
+// Sunlight status information
+interface SunlightStatusInfo {
+  status: SunlightStatus;
+  confidence: number;
+  reason?: string;
 }
 ```
 
-### Use Cases
+### Composables Usage
 
 ```typescript
-// Get sunny venues
-const result = await getSunnyVenuesUseCase.execute({
-  bbox: { south: 40.4, west: -3.8, north: 40.5, east: -3.6 },
-  datetime: new Date(),
-  onlySunny: true,
+// Fetch venues for a bounding box
+const { fetchVenues } = useVenues();
+const error = await fetchVenues({
+  south: 40.4,
+  west: -3.8,
+  north: 40.5,
+  east: -3.6,
 });
+
+// Calculate sun position
+const { calculateSunPosition } = useSunCalculator();
+const sunPosition = calculateSunPosition(
+  { latitude: 40.4168, longitude: -3.7038 },
+  new Date(),
+);
+
+// Work with coordinates
+const { create, calculateDistance } = useCoordinates();
+const madrid = create(40.4168, -3.7038);
+const barcelona = create(41.3851, 2.1734);
+const distanceMeters = calculateDistance(madrid, barcelona);
 ```
 
 ## Contributing

@@ -270,7 +270,7 @@ async function initializeMap(): Promise<void> {
         })
       }
     }
-    
+
     if (props.venues.length > 0) updateVenueMarkers()
   })
 
