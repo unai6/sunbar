@@ -30,50 +30,61 @@ export function useMapView() {
       onVenueClick: (venueId: string) => void;
     }
   ): Promise<void> {
-    const { MapView, EsriMap, GraphicsLayer, reactiveUtils } = modules
+    // Ensure loading state is set
+    isLoading.value = true
+    
+    try {
+      const { MapView, EsriMap, GraphicsLayer, reactiveUtils } = modules
 
-    venueGraphicsLayer = new GraphicsLayer({ title: 'Venues' })
+      venueGraphicsLayer = new GraphicsLayer({ title: 'Venues' })
 
-    const map = new EsriMap({
-      basemap: 'streets-navigation-vector',
-      layers: [venueGraphicsLayer]
-    })
+      const map = new EsriMap({
+        basemap: 'streets-navigation-vector',
+        layers: [venueGraphicsLayer]
+      })
 
-    view = new MapView({
-      container,
-      map,
-      center: [center[1], center[0]],
-      zoom,
-      constraints: { minZoom: MIN_ZOOM, maxZoom: MAX_ZOOM },
-      popupEnabled: false
-    })
+      view = new MapView({
+        container,
+        map,
+        center: [center[1], center[0]],
+        zoom,
+        constraints: { minZoom: MIN_ZOOM, maxZoom: MAX_ZOOM },
+        popupEnabled: false
+      })
 
-    await view.when()
+      await view.when()
 
-    // Watch for stationary state (map stopped moving)
-    stationaryWatchHandle = reactiveUtils.watch(
-      () => Boolean(view?.stationary),
-      (stationary: boolean) => {
-        if (stationary && view) {
-          callbacks.onBoundsChanged(stationary)
+      // Watch for stationary state (map stopped moving)
+      stationaryWatchHandle = reactiveUtils.watch(
+        () => Boolean(view?.stationary),
+        (stationary: boolean) => {
+          if (stationary && view) {
+            callbacks.onBoundsChanged(stationary)
+          }
         }
-      }
-    )
-
-    // Handle click events
-    view.on('click', async (event) => {
-      const response = await view!.hitTest(event)
-      const graphicHit = response.results.find(
-        (result): result is __esri.GraphicHit =>
-          result.type === 'graphic' &&
-          result.graphic.layer === venueGraphicsLayer
       )
 
-      if (graphicHit) {
-        const venueId = graphicHit.graphic.attributes.id
-        callbacks.onVenueClick(venueId)
-      }
-    })
+      // Handle click events
+      view.on('click', async (event) => {
+        const response = await view!.hitTest(event)
+        const graphicHit = response.results.find(
+          (result): result is __esri.GraphicHit =>
+            result.type === 'graphic' &&
+            result.graphic.layer === venueGraphicsLayer
+        )
+
+        if (graphicHit) {
+          const venueId = graphicHit.graphic.attributes.id
+          callbacks.onVenueClick(venueId)
+        }
+      })
+    } catch (error) {
+      console.error('Error initializing map view:', error)
+      throw error
+    } finally {
+      // Always set loading to false, even if there's an error
+      isLoading.value = false
+    }
   }
 
   function flyTo(latitude: number, longitude: number, zoom?: number): void {

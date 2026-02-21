@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { attempt } from '~/utils/attempt'
 import { useMapBounds } from '~/composables/map-interaction/useMapBounds'
 import { useArcGISModules } from '~/composables/map-rendering/useArcGISModules'
 import { useMapView } from '~/composables/map-rendering/useMapView'
@@ -68,8 +69,6 @@ function handleVenueClick(venueId: string): void {
 async function initializeMap(): Promise<void> {
   if (!mapContainer.value) return
 
-  mapView.isLoading.value = true
-
   const { error } = await attempt(async () => {
     // Load ArcGIS modules
     arcGISModules = await loadModules()
@@ -118,8 +117,6 @@ async function initializeMap(): Promise<void> {
   if (error) {
     console.error('Failed to initialize ArcGIS map:', error)
   }
-
-  mapView.isLoading.value = false
 }
 
 // Lifecycle hooks

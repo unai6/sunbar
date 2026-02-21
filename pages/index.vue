@@ -3,8 +3,11 @@ import Dialog from 'primevue/dialog'
 import Drawer from 'primevue/drawer'
 import ProgressSpinner from 'primevue/progressspinner'
 import { ref } from 'vue'
-import { VenueErrorCode } from '~/composables/useVenues'
+import ArcGISMap from '~/components/Map/ArcGISMap.vue'
+import VenueDetail from '~/components/Venues/VenueDetail.vue'
+import VenueList from '~/components/Venues/VenueList.vue'
 import type { Venue } from '~/shared/types'
+import { VenueErrorCode } from '~/composables/useVenues'
 
 enum ToastSeverity {
   ERROR = 'error',
