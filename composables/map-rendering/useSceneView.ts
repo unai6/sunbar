@@ -129,17 +129,14 @@ export function useSceneView() {
       // Handle click events
       view.on('click', async (event) => {
         const response = await view!.hitTest(event)
-        console.log('3D click hitTest results:', response.results)
         const graphicHit = response.results.find(
           (result): result is __esri.GraphicHit =>
             result.type === 'graphic' &&
             result.graphic.layer === venueGraphicsLayer
         )
 
-        console.log('3D graphicHit:', graphicHit)
         if (graphicHit) {
           const venueId = graphicHit.graphic.attributes.id
-          console.log('3D venue clicked:', venueId)
           callbacks.onVenueClick(venueId)
         }
       })
