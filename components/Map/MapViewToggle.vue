@@ -12,7 +12,7 @@ function toggleView() {
 </script>
 
 <template>
-  <div class="map-view-toggle">
+  <div class="absolute top-4 right-4 z-100">
     <Button
       :icon="viewMode === '2d' ? 'pi pi-box' : 'pi pi-map'"
       :label="viewMode === '2d' ? $t('map.button.view3d') : $t('map.button.view2d')"
@@ -22,12 +22,3 @@ function toggleView() {
     />
   </div>
 </template>
-
-<style scoped>
-.map-view-toggle {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 100;
-}
-</style>
