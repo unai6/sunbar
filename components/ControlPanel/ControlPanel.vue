@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { VenueFilters } from '~/shared/types'
 import type { SunInfo } from '~/stores/sunInfo'
-import DateTimeSelector from './ControlPanel/DateTimeSelector.vue'
-import SearchSection from './ControlPanel/SearchSection.vue'
-import SunInfoDisplay from './ControlPanel/SunInfoDisplay.vue'
-import VenueFiltersComponent from './ControlPanel/VenueFilters.vue'
-import VenueStats from './ControlPanel/VenueStats.vue'
+import DateTimeSelector from './DateTimeSelector.vue'
+import SearchSection from './SearchSection.vue'
+import SunInfoDisplay from './SunInfoDisplay.vue'
+import VenueFiltersComponent from './VenueFilters.vue'
+import VenueStats from './VenueStats.vue'
 
 interface Props {
   loading: boolean
