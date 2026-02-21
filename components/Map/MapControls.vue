@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import DatePicker from 'primevue/datepicker'
-import { ref, watch } from 'vue'
+import Button from 'primevue/button'
+import { computed, ref, watch } from 'vue'
+import BaseDatePicker from '~/components/Base/BaseDatePicker.vue'
 import type { VenueFilters } from '~/shared/types'
 
 type Props = {
@@ -19,23 +20,31 @@ const emit = defineEmits<{
 
 const showDatePicker = ref(false)
 const localDateTime = ref(props.selectedDateTime)
+const tempDateTime = ref(props.selectedDateTime)
 const localFilters = ref({ ...props.filters })
 
 // Watch for prop changes
 watch(() => props.selectedDateTime, (newVal) => {
   localDateTime.value = newVal
+  tempDateTime.value = newVal
 })
 
 watch(() => props.filters, (newVal) => {
   localFilters.value = { ...newVal }
 }, { deep: true })
 
+const isDateTimeChanged = computed(() => tempDateTime.value.getTime() !== localDateTime.value.getTime())
+
 function handleDateTimeChange(value: Date | Date[] | (Date | null)[] | null | undefined): void {
   if (value instanceof Date) {
-    localDateTime.value = value
-    emit('update-datetime', value)
-    showDatePicker.value = false
+    tempDateTime.value = value
   }
+}
+
+function acceptDateTime(): void {
+  localDateTime.value = tempDateTime.value
+  emit('update-datetime', tempDateTime.value)
+  showDatePicker.value = false
 }
 
 function adjustTime(hours: number): void {
@@ -130,13 +139,28 @@ function toggleFilter(filter: 'onlySunny' | 'onlyWithOutdoorSeating'): void {
             <i class="pi pi-times text-xs text-gray-600" />
           </button>
         </div>
-        <DatePicker
-          v-model="localDateTime"
-          show-time
-          hour-format="24"
-          inline
-          @update:model-value="handleDateTimeChange"
-        />
+        <div class="p-3">
+          <BaseDatePicker
+            v-model="tempDateTime"
+            show-time
+            :show-icon="false"
+            :show-button-bar="false"
+            is-inline
+            hour-format="24"
+            class="w-full"
+            @update:model-value="handleDateTimeChange"
+          />
+          <div class="mt-3 pt-3 border-t border-gray-200">
+            <Button
+              :label="$t('common.cta.accept')"
+              icon="pi pi-check"
+              severity="warning"
+              class="w-full"
+              :disabled="!isDateTimeChanged"
+              @click="acceptDateTime"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>

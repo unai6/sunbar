@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
-import DatePicker from 'primevue/datepicker'
+import BaseDatePicker from '~/components/Base/BaseDatePicker.vue'
 import { ref, watch } from 'vue'
 
 type Props = {
@@ -46,14 +46,8 @@ function setToNow(): void {
       {{ $t('controlPanel.title.dateTime') }}
     </h3>
     <div class="flex flex-col gap-2">
-      <DatePicker
+      <BaseDatePicker
         v-model="localDateTime"
-        show-time
-        hour-format="24"
-        show-icon
-        show-button-bar
-        date-format="dd/mm/yy"
-        class="w-full"
         @update:model-value="handleDateTimeChange"
       />
       <div class="flex justify-center gap-2">

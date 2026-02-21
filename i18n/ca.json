@@ -129,6 +129,9 @@
     }
   },
   "common": {
+    "cta": {
+      "accept": "Acceptar"
+    },
     "label": {
       "loading": "Carregant...",
       "error": "Error"
