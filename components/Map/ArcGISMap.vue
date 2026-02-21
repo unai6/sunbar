@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
-import { attempt } from '~/utils/attempt'
 import { useMapBounds } from '~/composables/map-interaction/useMapBounds'
 import { useArcGISModules } from '~/composables/map-rendering/useArcGISModules'
 import { useMapView } from '~/composables/map-rendering/useMapView'
@@ -8,6 +7,7 @@ import { useVenue } from '~/composables/useVenue'
 import { useVenueMarkers } from '~/composables/venue-visualization/useVenueMarkers'
 import { useVenueSymbols } from '~/composables/venue-visualization/useVenueSymbols'
 import type { Venue } from '~/shared/types'
+import { attempt } from '~/utils/attempt'
 import MapLegend from './MapLegend.vue'
 import MapLoadingOverlay from './MapLoadingOverlay.vue'
 
