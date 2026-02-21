@@ -43,7 +43,7 @@ export default defineNuxtConfig({
     vueI18n: './i18n.config.ts'
   },
 
-  css: ['primeicons/primeicons.css', '~/assets/css/main.css'],
+  css: ['~/assets/css/main.css'],
 
   primevue: {
     options: {

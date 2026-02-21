@@ -16,6 +16,7 @@ const emit = defineEmits<{
   'update-filters': [filters: Partial<VenueFilters>]
 }>()
 
+const { locale } = useI18n()
 const showDatePicker = ref(false)
 const localDateTime = ref(props.selectedDateTime)
 const tempDateTime = ref(props.selectedDateTime)
@@ -53,7 +54,7 @@ function adjustTime(hours: number): void {
 }
 
 function formatTime(date: Date): string {
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return date.toLocaleTimeString(locale.value, { hour: '2-digit', minute: '2-digit', hour12: false })
 }
 
 function toggleFilter(filter: 'onlySunny' | 'onlyWithOutdoorSeating'): void {

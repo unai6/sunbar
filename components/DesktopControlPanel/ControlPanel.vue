@@ -39,7 +39,7 @@ defineEmits<{
 
     <SunInfoDisplay :sun-info="sunInfo" />
 
-    <VenueFiltersComponent
+    <VenueFilters
       :filters="filters"
       @update-filters="$emit('update-filters', $event)"
     />

@@ -141,15 +141,17 @@ async function onLocateMe(): Promise<void> {
           <ProgressSpinner />
         </div>
 
-        <ArcGISMap
-          ref="mapRef"
-          :venues="filteredVenues"
-          :center="mapCenter"
-          :zoom="mapZoom"
-          :selected-date-time="selectedDateTime"
-          @bounds-changed="handleBoundsChanged"
-          @venue-click="handleVenueClick"
-        />
+        <ClientOnly>
+          <ArcGISMap
+            ref="mapRef"
+            :venues="filteredVenues"
+            :center="mapCenter"
+            :zoom="mapZoom"
+            :selected-date-time="selectedDateTime"
+            @bounds-changed="handleBoundsChanged"
+            @venue-click="handleVenueClick"
+          />
+        </ClientOnly>
 
         <!-- Mobile Map Controls Overlay -->
         <div

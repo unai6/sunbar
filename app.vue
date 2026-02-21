@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import 'primeicons/primeicons.css'
+
 const { t } = useI18n()
 
 useHead({
