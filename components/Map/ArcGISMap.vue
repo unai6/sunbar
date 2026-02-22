@@ -24,6 +24,7 @@ const props = defineProps<Props>()
 const emit = defineEmits<{
   'bounds-changed': [bounds: { south: number; west: number; north: number; east: number }]
   'venue-click': [venue: Venue]
+  'locate-me': []
 }>()
 
 // Composables
@@ -220,8 +221,14 @@ watch(viewMode, async () => {
       <div class="flex-1 lg:w-full lg:max-w-xl lg:mx-auto">
         <MapSearchBar @place-selected="handlePlaceSelected" />
       </div>
-      <div class="absolute bottom-[-3rem] lg:relative lg:bottom-auto flex-shrink-0">
+      <div class="absolute bottom-[-3rem] lg:relative lg:bottom-auto flex-shrink-0 flex items-center gap-2">
+      <!-- Locate Me Button (Mobile Only) -->
         <MapViewToggle />
+        <LocateButton
+          class="lg:hidden"
+          variant="mobile"
+          @locate="emit('locate-me')"
+        />
       </div>
     </div>
 

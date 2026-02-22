@@ -177,7 +177,6 @@ function useCurrentMapCenter(): void {
   >
     <template #header>
       <div class="flex items-center gap-2">
-        <i class="pi pi-plus-circle text-amber-600" />
         <span class="font-bold">{{ t('venueForm.title.createVenue') }}</span>
       </div>
     </template>
