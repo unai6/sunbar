@@ -57,7 +57,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    arcgisApiKey: process.env.ARCGIS_API_KEY || '',
+    sunbarApiUrl: process.env.SUNBAR_API_URL || 'http://localhost:3002',
     public: {
       overpassApiUrl: 'https://overpass-api.de/api/interpreter'
     }

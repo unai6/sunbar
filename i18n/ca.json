@@ -98,6 +98,24 @@
       "visitWebsite": "Web"
     }
   },
+  "venueForm": {
+    "title": {
+      "createVenue": "Crear Nou Local"
+    },
+    "label": {
+      "name": "Nom del Local",
+      "type": "Tipus de Local",
+      "latitude": "Latitud",
+      "longitude": "Longitud",
+      "outdoorSeating": "Té Terrassa",
+      "phone": "Telèfon",
+      "website": "Lloc Web",
+      "openingHours": "Horari"
+    },
+    "action": {
+      "useMapCenter": "Usar Centre del Mapa"
+    }
+  },
   "venueType": {
     "label": {
       "bar": "Bar",
@@ -138,7 +156,9 @@
   },
   "common": {
     "cta": {
-      "accept": "Acceptar"
+      "accept": "Acceptar",
+      "cancel": "Cancel·lar",
+      "create": "Crear"
     },
     "label": {
       "loading": "Carregant...",

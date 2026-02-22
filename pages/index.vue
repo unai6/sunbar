@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import ProgressSpinner from 'primevue/progressspinner'
 import { VenueErrorCode } from '~/shared/enums'
@@ -13,6 +14,7 @@ const { t } = useI18n()
 
 // Mobile bottom drawer state
 const showVenuesDrawer = ref(false)
+const showCreateVenueDialog = ref(false)
 
 const TOAST_DURATION_MS = 5000
 
@@ -103,6 +105,12 @@ async function onLocateMe(): Promise<void> {
     })
   }
 }
+
+async function handleVenueCreated(): Promise<void> {
+  // Refresh venues after creating a new one
+  await handleSearch()
+  showCreateVenueDialog.value = false
+}
 </script>
 
 <template>
@@ -169,6 +177,18 @@ async function onLocateMe(): Promise<void> {
           />
         </ClientOnly>
 
+        <!-- Create Venue Floating Button -->
+        <div
+          class="absolute z-[200] bottom-24 lg:bottom-6 left-3 lg:left-auto lg:right-6"
+        >
+          <Button
+            icon="pi pi-plus"
+            severity="warning"
+            rounded
+            aria-label="Create Venue"
+            @click="showCreateVenueDialog = true"
+          />
+        </div>
 
         <!-- Mobile Map Controls Overlay -->
         <div
@@ -209,5 +229,12 @@ async function onLocateMe(): Promise<void> {
     >
       <VenueDetail v-if="selectedVenue" :venue="selectedVenue" />
     </Dialog>
+
+    <!-- Create Venue Dialog -->
+    <CreateVenueDialog
+      v-model:visible="showCreateVenueDialog"
+      :initial-coordinates="{ latitude: mapCenter[1], longitude: mapCenter[0] }"
+      @venue-created="handleVenueCreated"
+    />
   </div>
 </template>

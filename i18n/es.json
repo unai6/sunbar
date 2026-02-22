@@ -98,6 +98,24 @@
       "visitWebsite": "Web"
     }
   },
+  "venueForm": {
+    "title": {
+      "createVenue": "Crear Nuevo Local"
+    },
+    "label": {
+      "name": "Nombre del Local",
+      "type": "Tipo de Local",
+      "latitude": "Latitud",
+      "longitude": "Longitud",
+      "outdoorSeating": "Tiene Terraza",
+      "phone": "Teléfono",
+      "website": "Sitio Web",
+      "openingHours": "Horario"
+    },
+    "action": {
+      "useMapCenter": "Usar Centro del Mapa"
+    }
+  },
   "venueType": {
     "label": {
       "bar": "Bar",
@@ -138,7 +156,9 @@
   },
   "common": {
     "cta": {
-      "accept": "Aceptar"
+      "accept": "Aceptar",
+      "cancel": "Cancelar",
+      "create": "Crear"
     },
     "label": {
       "loading": "Cargando...",
