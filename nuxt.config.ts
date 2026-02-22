@@ -27,8 +27,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxt/eslint',
     '@nuxtjs/i18n',
-    '@pinia/nuxt',
-    'nuxt-mongoose'
+    '@pinia/nuxt'
   ],
 
   i18n: {
@@ -41,13 +40,6 @@ export default defineNuxtConfig({
     langDir: './',
     strategy: 'prefix_except_default',
     vueI18n: './i18n.config.ts'
-  },
-
-  mongoose: {
-    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/sunbar',
-    options: {},
-    modelsDir: 'server/models',
-    devtools: true
   },
 
   css: ['~/assets/css/main.css'],
@@ -66,7 +58,6 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     arcgisApiKey: process.env.ARCGIS_API_KEY || '',
-    mongodbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/sunbar',
     public: {
       overpassApiUrl: 'https://overpass-api.de/api/interpreter'
     }
