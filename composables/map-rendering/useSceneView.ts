@@ -11,8 +11,7 @@ export function useSceneView() {
   const CAMERA_ALTITUDE_MULTIPLIER = 0.5
   const ZOOM_SCALE_BASE = 591657527.591555
   const VENUE_SELECT_DISTANCE = 150 // Distance in meters for venue selection
-  const WORLD_ELEVATION_URL =
-    'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
+  const WORLD_ELEVATION_URL = 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
   const OSM_BUILDINGS_PORTAL_ID = 'ca0470dbbddb4db28bad74ed39949e25'
   const BASEMAP = 'streets-navigation-vector'
   const QUALITY_PROFILE = 'high'

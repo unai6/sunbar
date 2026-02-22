@@ -217,10 +217,10 @@ watch(viewMode, async () => {
 
     <!-- Top Bar with Search and View Toggle -->
     <div class="absolute top-4 left-4 right-4 z-[200] flex items-center gap-2">
-      <div class="flex-1 lg:flex-none lg:w-full lg:max-w-md lg:mx-auto">
+      <div class="flex-1 lg:w-full lg:max-w-xl lg:mx-auto">
         <MapSearchBar @place-selected="handlePlaceSelected" />
       </div>
-      <div class="flex-shrink-0">
+      <div class="absolute bottom-[-3rem] lg:relative lg:bottom-auto flex-shrink-0">
         <MapViewToggle />
       </div>
     </div>
