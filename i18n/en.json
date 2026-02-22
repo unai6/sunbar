@@ -32,6 +32,7 @@
     "mobile": {
       "search": "Search",
       "locate": "Locate",
+      "create": "Create",
       "venues": "Venues",
       "settings": "Settings"
     },

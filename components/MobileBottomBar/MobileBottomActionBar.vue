@@ -8,7 +8,7 @@ defineProps<Props>()
 
 const emit = defineEmits<{
   search: []
-  locate: []
+  'show-create-dialog': []
   'show-venues': []
 }>()
 </script>
@@ -24,9 +24,9 @@ const emit = defineEmits<{
         variant="mobile"
         @search="emit('search')"
       />
-      <LocateButton
+      <CreateVenueButton
         variant="mobile"
-        @locate="emit('locate')"
+        @show-create-dialog="emit('show-create-dialog')"
       />
       <VenuesButton
         :venues-count="venuesCount"

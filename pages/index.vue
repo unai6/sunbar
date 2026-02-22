@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import ProgressSpinner from 'primevue/progressspinner'
 import { VenueErrorCode } from '~/shared/enums'
@@ -118,12 +117,22 @@ async function handleVenueCreated(): Promise<void> {
     <!-- Mobile Top Bar -->
     <MobileTopBar />
 
+    <!-- Mobile Locate Button (Top Right) -->
+    <div class="lg:hidden fixed top-3 right-3 z-[250]" style="padding-top: env(safe-area-inset-top, 0px)">
+      <button
+        class="flex items-center justify-center w-11 h-11 rounded-full bg-white shadow-lg border border-gray-200 text-gray-700 transition-all duration-200 active:scale-95 active:bg-gray-100"
+        @click="onLocateMe"
+      >
+        <i class="pi pi-map-marker text-lg" />
+      </button>
+    </div>
+
     <!-- Mobile Bottom Action Bar -->
     <MobileBottomActionBar
       :loading="loading"
       :venues-count="filteredVenues.length"
       @search="handleSearch"
-      @locate="onLocateMe"
+      @show-create-dialog="showCreateVenueDialog = true"
       @show-venues="showVenuesDrawer = true"
     />
 
@@ -177,16 +186,11 @@ async function handleVenueCreated(): Promise<void> {
           />
         </ClientOnly>
 
-        <!-- Create Venue Floating Button -->
-        <div
-          class="absolute z-[200] bottom-24 lg:bottom-6 left-3 lg:left-auto lg:right-6"
-        >
-          <Button
-            icon="pi pi-plus"
-            severity="warning"
-            rounded
-            aria-label="Create Venue"
-            @click="showCreateVenueDialog = true"
+        <!-- Create Venue Floating Button (Desktop Only) -->
+        <div class="hidden lg:block absolute z-[200] bottom-6 right-6">
+          <CreateVenueButton
+            variant="desktop"
+            @show-create-dialog="showCreateVenueDialog = true"
           />
         </div>
 

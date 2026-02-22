@@ -32,6 +32,7 @@
     "mobile": {
       "search": "Cercar",
       "locate": "Ubicar",
+      "create": "Crear",
       "venues": "Llocs",
       "settings": "Ajustos"
     },
