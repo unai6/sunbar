@@ -86,8 +86,8 @@ function handleVenueClick(venueId: string): void {
 }
 
 function handlePlaceSelected(searchResult: SearchResult): void {
-  // Create a venue from the search result
-  const venue = createVenueFromSearchResult(searchResult)
+  // Create a venue from the search result with sunlight status calculated for current datetime
+  const venue = createVenueFromSearchResult(searchResult, props.selectedDateTime)
   
   // Add the venue to the store (this will trigger the map to render it)
   addVenue(venue)

@@ -1,12 +1,12 @@
 import { storeToRefs } from "pinia";
 import { VenueErrorCode } from "~/shared/enums/venue-error-code";
 import type {
-  ApiResponse,
-  ApiVenue,
-  BoundingBox,
-  Venue,
-  VenueFilters,
-  VenueType,
+    ApiResponse,
+    ApiVenue,
+    BoundingBox,
+    Venue,
+    VenueFilters,
+    VenueType,
 } from "~/shared/types";
 import { useVenuesStore } from "~/stores/venues";
 import { useCoordinates } from "./useCoordinates";
@@ -160,7 +160,8 @@ export function useVenues() {
   const store = useVenuesStore();
   const coordinates = useCoordinates();
   const sunlightStatus = useSunlightStatus();
-  const venue = useVenue();
+  const { useSunCalculator } = await import("./useSunCalculator");
+  const sunCalculator = useSunCalculator();
 
   const {
     venues,
@@ -358,7 +359,10 @@ export function useVenues() {
   /**
    * Create a venue from a search result (Nominatim)
    */
-  function createVenueFromSearchResult(searchResult: SearchResult): Venue {
+  function createVenueFromSearchResult(
+    searchResult: SearchResult,
+    datetime?: Date,
+  ): Venue {
     const coords = coordinates.create(
       searchResult.latitude,
       searchResult.longitude,
@@ -370,12 +374,30 @@ export function useVenues() {
     );
     const address = buildAddressFromSearchResult(searchResult);
 
+    // Calculate sunlight status for the location if datetime is provided
+    let sunlightStatusInfo = undefined;
+    if (datetime) {
+      const isDaytime = sunCalculator.isDaytime(coords, datetime);
+
+      if (isDaytime) {
+        // If sun is above horizon, the location is sunny
+        sunlightStatusInfo = sunlightStatus.createSunny(
+          1,
+          "sunlight.description.directSunlight",
+        );
+      } else {
+        // If sun is below horizon, it's night
+        sunlightStatusInfo = sunlightStatus.createNight();
+      }
+    }
+
     return venue.create({
       id: `search_${searchResult.id}`,
       name: venueName,
       type: venueType,
       coordinates: coords,
       address: address,
+      sunlightStatus: sunlightStatusInfo,
     });
   }
 
