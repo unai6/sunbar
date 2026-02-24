@@ -96,7 +96,10 @@ export default defineNuxtConfig({
           sizes: '180x180',
           href: '/apple-touch-icon.png'
         },
-        { rel: 'manifest', href: '/site.webmanifest' }
+        { rel: 'manifest', href: '/site.webmanifest' },
+        { rel: 'preconnect', href: 'https://cdn.arcgis.com' },
+        { rel: 'preconnect', href: 'https://basemaps.arcgis.com' },
+        { rel: 'dns-prefetch', href: 'https://services.arcgisonline.com' }
       ]
     }
   },
@@ -117,11 +120,35 @@ export default defineNuxtConfig({
       alias: {
         '@arcgis/core': '@arcgis/core'
       }
-    }
+    },
+    build: {
+      target: 'esnext'
+    },
+    plugins: [
+      {
+        name: 'font-display-swap',
+        transform(code: string, id: string) {
+          if (!id.endsWith('.css')) return
+          if (!id.includes('primeicons') && !id.includes('arcgis')) return
+          return code
+            .replaceAll(/font-display:\s*auto/g, 'font-display: swap')
+            .replaceAll(/font-display:\s*block/g, 'font-display: swap')
+        }
+      }
+    ]
   },
 
   nitro: {
-    preset: 'netlify'
+    preset: 'netlify',
+    prerender: {
+      routes: ['/', '/en', '/ca']
+    }
+  },
+
+  routeRules: {
+    '/': { prerender: true },
+    '/en': { prerender: true },
+    '/ca': { prerender: true }
   },
 
   ssr: true,
