@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
 
   // Parse optional parameters
   const limit = query.limit ? Number.parseInt(query.limit as string, 10) : 5
-  const acceptLanguage = (query.lang as string) || 'es,en'
+  const acceptLanguage = (query.lang as string) || 'es,en,ca'
 
   // Validate limit
   if (Number.isNaN(limit) || limit < 1 || limit > 20) {

@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find /Users/unaigonzalezescalante/Documents/sunbar-api -not -path \"*/node_modules/*\" -type f -name \"*.ts\" -exec grep -l \"interface\" {} ;)"
+      "Bash(find /Users/unaigonzalezescalante/Documents/sunbar-api -not -path \"*/node_modules/*\" -type f -name \"*.ts\" -exec grep -l \"interface\" {} ;)",
+      "Bash(npm test)"
     ]
   }
 }

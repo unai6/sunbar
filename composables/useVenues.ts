@@ -16,7 +16,7 @@ import type {
 } from '~/shared/types'
 import { useVenuesStore } from '~/stores/venues'
 import { useCoordinates } from './useCoordinates'
-import { useSunCalculator } from './useSunCalculator'
+import { useSunInfo } from './useSunInfo'
 import { useSunlightStatus } from './useSunlightStatus'
 import { useVenue } from './useVenue'
 
@@ -178,7 +178,7 @@ export function useVenues() {
   const store = useVenuesStore()
   const coordinates = useCoordinates()
   const sunlightStatus = useSunlightStatus()
-  const sunCalculator = useSunCalculator()
+  const sunInfo = useSunInfo()
   const venue = useVenue()
 
   const {
@@ -395,7 +395,7 @@ export function useVenues() {
     // Calculate sunlight status for the location if datetime is provided
     let sunlightStatusInfo = undefined
     if (datetime) {
-      const isDaytime = sunCalculator.isDaytime(coords, datetime)
+      const isDaytime = sunInfo.isDaytime(coords, datetime)
 
       if (isDaytime) {
         // If sun is above horizon, the location is sunny

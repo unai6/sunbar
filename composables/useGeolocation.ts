@@ -3,10 +3,7 @@ import { GeolocationErrorType } from '~/shared/enums'
 import type { GeolocationState } from '~/shared/types'
 
 const GEOLOCATION_TIMEOUT_MS = 10000
-const GEOLOCATION_MAX_AGE_MS = 0 // Always request fresh position to trigger permission prompt
-
-export { GeolocationErrorType }
-export type { GeolocationState }
+const GEOLOCATION_MAX_AGE_MS = 0 // Always request fresh position to trigger permission prompt.
 
 export function useGeolocation() {
   const state = ref<GeolocationState>({
