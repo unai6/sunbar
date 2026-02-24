@@ -11,6 +11,7 @@ import type {
 import { useVenuesStore } from "~/stores/venues";
 import { useCoordinates } from "./useCoordinates";
 import type { SearchResult } from "./useNominatimSearch";
+import { useSunCalculator } from "./useSunCalculator";
 import { useSunlightStatus } from "./useSunlightStatus";
 import { useVenue } from "./useVenue";
 
@@ -160,8 +161,8 @@ export function useVenues() {
   const store = useVenuesStore();
   const coordinates = useCoordinates();
   const sunlightStatus = useSunlightStatus();
-  const { useSunCalculator } = await import("./useSunCalculator");
   const sunCalculator = useSunCalculator();
+  const venue = useVenue();
 
   const {
     venues,
