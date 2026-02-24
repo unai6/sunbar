@@ -8,4 +8,5 @@ export type * from './sun-position'
 export type * from './sunlight-status'
 export type * from './venue'
 export type * from './venue-type'
+export type * from './search'
 

@@ -1,33 +1,33 @@
 const DEFAULT_FLOOR_HEIGHT = 3 // meters per floor
 const DEFAULT_HEIGHT = 10 // meters if nothing known
 
-export interface Building {
-  id: string;
-  latitude: number;
-  longitude: number;
-  height: number;
+export type Building = {
+  id: string
+  latitude: number
+  longitude: number
+  height: number
 }
 
-export interface Venue {
-  id: string;
-  name: string;
-  type: string;
-  latitude: number;
-  longitude: number;
-  address?: string;
-  outdoor_seating?: boolean;
-  phone?: string;
-  website?: string;
-  openingHours?: string;
-  rating?: number;
-  priceRange?: string;
-  description?: string;
+export type Venue = {
+  id: string
+  name: string
+  type: string
+  latitude: number
+  longitude: number
+  address?: string
+  outdoor_seating?: boolean
+  phone?: string
+  website?: string
+  openingHours?: string
+  rating?: number
+  priceRange?: string
+  description?: string
   socialMedia?: {
-    facebook?: string;
-    instagram?: string;
-    twitter?: string;
-  };
-  sunlightStatus?: 'sunny' | 'shaded' | 'partially_sunny';
+    facebook?: string
+    instagram?: string
+    twitter?: string
+  }
+  sunlightStatus?: 'sunny' | 'shaded' | 'partially_sunny'
 }
 
 /**

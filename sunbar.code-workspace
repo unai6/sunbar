@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../sunbar-api"
+		}
+	],
+	"settings": {}
+}

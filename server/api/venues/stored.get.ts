@@ -23,7 +23,7 @@ import {
 } from '~/server/utils/overpass'
 import { analyzeVenueShadow, parseBuildings } from '~/server/utils/shadow'
 import { calculateSunPosition } from '~/server/utils/sun'
-import type { ApiVenue } from '~/shared/types'
+import type { VenueResponse } from '~/shared/types'
 
 /**
  * Transform backend venue to API venue format
@@ -31,7 +31,7 @@ import type { ApiVenue } from '~/shared/types'
 function transformToApiVenue(
   backendVenue: BackendVenue,
   sunlightStatus?: 'sunny' | 'shaded' | 'partially_sunny'
-): ApiVenue {
+): VenueResponse {
   return {
     id: backendVenue.venueId,
     name: backendVenue.name,

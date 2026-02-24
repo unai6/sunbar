@@ -1,19 +1,19 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-export interface SunInfo {
+export type SunInfo = {
   position: {
-    azimuthDegrees: number;
-    altitudeDegrees: number;
-    isAboveHorizon: boolean;
-  };
+    azimuthDegrees: number
+    altitudeDegrees: number
+    isAboveHorizon: boolean
+  }
   times: {
-    sunrise: Date;
-    sunset: Date;
-    solarNoon: Date;
-    goldenHour: Date;
-  };
-  isDaytime: boolean;
+    sunrise: Date
+    sunset: Date
+    solarNoon: Date
+    goldenHour: Date
+  }
+  isDaytime: boolean
 }
 
 /**

@@ -1,10 +1,10 @@
 import SunCalc from 'suncalc'
 
-export interface SunPosition {
-  azimuthDegrees: number;
-  altitudeDegrees: number;
-  azimuthRadians: number;
-  altitudeRadians: number;
+export type SunPosition = {
+  azimuthDegrees: number
+  altitudeDegrees: number
+  azimuthRadians: number
+  altitudeRadians: number
 }
 
 /**

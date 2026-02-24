@@ -5,8 +5,6 @@ const {
   create,
   getAltitudeDegrees,
   getAzimuthDegrees,
-  getShadowDirectionDegrees,
-  getShadowLengthMultiplier,
   isAboveHorizon
 } = useSunPosition()
 
@@ -57,24 +55,4 @@ describe('useSunPosition Composable', () => {
     })
   })
 
-  describe('getShadowLengthMultiplier', () => {
-    it('should return Infinity when sun is below horizon', () => {
-      const position = create(0, -0.1, new Date())
-      expect(getShadowLengthMultiplier(position)).toBe(Infinity)
-    })
-
-    it('should calculate shadow multiplier for above horizon', () => {
-      const position = create(0, Math.PI / 4, new Date())
-      const multiplier = getShadowLengthMultiplier(position)
-      expect(multiplier).toBeCloseTo(1, 1)
-    })
-  })
-
-  describe('getShadowDirectionDegrees', () => {
-    it('should return opposite direction to azimuth', () => {
-      const position = create(Math.PI, 0.5, new Date())
-      const shadowDir = getShadowDirectionDegrees(position)
-      expect(shadowDir).toBeCloseTo(180, 1)
-    })
-  })
 })

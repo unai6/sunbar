@@ -40,30 +40,10 @@ export function useSunPosition() {
     return (position.altitude * 180) / Math.PI
   }
 
-  /**
-   * Calculate shadow length multiplier based on sun altitude
-   * Returns how many times taller the shadow is compared to object height
-   */
-  function getShadowLengthMultiplier(position: SunPosition): number {
-    if (position.altitude <= 0) return Infinity
-    return 1 / Math.tan(position.altitude)
-  }
-
-  /**
-   * Get shadow direction (opposite to sun azimuth)
-   */
-  function getShadowDirectionDegrees(position: SunPosition): number {
-    let shadowDirection = getAzimuthDegrees(position) + 180
-    if (shadowDirection >= 360) shadowDirection -= 360
-    return shadowDirection
-  }
-
   return {
     create,
     isAboveHorizon,
     getAzimuthDegrees,
-    getAltitudeDegrees,
-    getShadowLengthMultiplier,
-    getShadowDirectionDegrees
+    getAltitudeDegrees
   }
 }

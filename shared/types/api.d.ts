@@ -3,9 +3,9 @@
  */
 
 /**
- * Venue data from API
+ * Venue shape returned by the Nuxt API to the client
  */
-export type ApiVenue = {
+export type VenueResponse = {
   id: string;
   name: string;
   type: string;
@@ -31,7 +31,7 @@ export type ApiVenue = {
  * API response for venues endpoint
  */
 export type ApiResponse = {
-  venues: ApiVenue[];
+  venues: VenueResponse[];
   sunPosition: {
     azimuth: number;
     altitude: number;

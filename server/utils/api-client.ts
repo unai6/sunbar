@@ -7,73 +7,82 @@
 
 import type { H3Event } from 'h3'
 
-interface ApiClientConfig {
-  baseURL: string;
-  timeout?: number;
+type ApiClientConfig = {
+  baseURL: string
+  timeout?: number
 }
 
-interface VenueQueryParams {
-  south?: number;
-  west?: number;
-  north?: number;
-  east?: number;
-  onlyOutdoorSeating?: boolean;
-  maxAgeDays?: number;
-  limit?: number;
-  skip?: number;
+type VenueQueryParams = {
+  south?: number
+  west?: number
+  north?: number
+  east?: number
+  onlyOutdoorSeating?: boolean
+  maxAgeDays?: number
+  limit?: number
+  skip?: number
 }
 
-interface BackendVenue {
-  venueId: string;
-  osmId: string;
-  osmType: 'node' | 'way' | 'relation';
-  name: string;
-  venueType: string;
-  latitude: number;
-  longitude: number;
+type BackendVenue = {
+  venueId: string
+  osmId: string
+  osmType: 'node' | 'way' | 'relation'
+  name: string
+  venueType: string
+  latitude: number
+  longitude: number
   location: {
-    type: 'Point';
-    coordinates: [number, number];
-  };
-  outdoorSeating?: boolean;
+    type: 'Point'
+    coordinates: [number, number]
+  }
+  outdoorSeating?: boolean
   address?: {
-    street?: string;
-    city?: string;
-    postalCode?: string;
-    country?: string;
-    formatted?: string;
-  };
-  phone?: string;
-  website?: string;
-  openingHours?: string;
-  lastSyncedOverpass?: string;
-  createdAt: string;
-  updatedAt: string;
+    street?: string
+    city?: string
+    postalCode?: string
+    country?: string
+    formatted?: string
+  }
+  phone?: string
+  website?: string
+  openingHours?: string
+  lastSyncedOverpass?: string
+  createdAt: string
+  updatedAt: string
 }
 
-interface BackendVenuesResponse {
-  success: boolean;
-  data: BackendVenue[];
+type BackendVenuesResponse = {
+  success: boolean
+  data: BackendVenue[]
   meta: {
-    total: number;
-    limit: number;
-    skip: number;
-    count: number;
-  };
+    total: number
+    limit: number
+    skip: number
+    count: number
+  }
 }
 
-interface BackendVenueResponse {
-  success: boolean;
-  data: BackendVenue;
+type BackendVenueResponse = {
+  success: boolean
+  data: BackendVenue
 }
 
-interface BulkUpsertResponse {
-  success: boolean;
+type BulkUpsertResponse = {
+  success: boolean
   data: {
-    inserted: number;
-    updated: number;
-    total: number;
-  };
+    inserted: number
+    updated: number
+    total: number
+  }
+}
+
+function throwBackendError(error: unknown, logMessage: string, statusPrefix = 'Backend API error'): never {
+  const err = error as { statusCode?: number; message?: string }
+  console.error(logMessage, err.message)
+  throw createError({
+    statusCode: err.statusCode || 500,
+    statusMessage: `${statusPrefix}: ${err.message}`
+  })
 }
 
 /**
@@ -106,12 +115,7 @@ function createApiClient(config: ApiClientConfig) {
         timeout
       })
     } catch (error: unknown) {
-      const err = error as { statusCode?: number; message?: string }
-      console.error('[API Client] Failed to fetch venues:', err.message)
-      throw createError({
-        statusCode: err.statusCode || 500,
-        statusMessage: `Backend API error: ${err.message}`
-      })
+      throwBackendError(error, '[API Client] Failed to fetch venues:')
     }
   }
 
@@ -127,12 +131,7 @@ function createApiClient(config: ApiClientConfig) {
         timeout
       })
     } catch (error: unknown) {
-      const err = error as { statusCode?: number; message?: string }
-      console.error('[API Client] Failed to fetch venue:', err.message)
-      throw createError({
-        statusCode: err.statusCode || 500,
-        statusMessage: `Backend API error: ${err.message}`
-      })
+      throwBackendError(error, '[API Client] Failed to fetch venue:')
     }
   }
 
@@ -151,12 +150,7 @@ function createApiClient(config: ApiClientConfig) {
         timeout
       })
     } catch (error: unknown) {
-      const err = error as { statusCode?: number; message?: string }
-      console.error('[API Client] Failed to create venue:', err.message)
-      throw createError({
-        statusCode: err.statusCode || 500,
-        statusMessage: `Backend API error: ${err.message}`
-      })
+      throwBackendError(error, '[API Client] Failed to create venue:')
     }
   }
 
@@ -176,12 +170,7 @@ function createApiClient(config: ApiClientConfig) {
         timeout
       })
     } catch (error: unknown) {
-      const err = error as { statusCode?: number; message?: string }
-      console.error('[API Client] Failed to update venue:', err.message)
-      throw createError({
-        statusCode: err.statusCode || 500,
-        statusMessage: `Backend API error: ${err.message}`
-      })
+      throwBackendError(error, '[API Client] Failed to update venue:')
     }
   }
 
@@ -199,12 +188,7 @@ function createApiClient(config: ApiClientConfig) {
         timeout
       })
     } catch (error: unknown) {
-      const err = error as { statusCode?: number; message?: string }
-      console.error('[API Client] Failed to delete venue:', err.message)
-      throw createError({
-        statusCode: err.statusCode || 500,
-        statusMessage: `Backend API error: ${err.message}`
-      })
+      throwBackendError(error, '[API Client] Failed to delete venue:')
     }
   }
 
@@ -223,12 +207,7 @@ function createApiClient(config: ApiClientConfig) {
         timeout: timeout * 3 // Longer timeout for bulk operations
       })
     } catch (error: unknown) {
-      const err = error as { statusCode?: number; message?: string }
-      console.error('[API Client] Failed to bulk upsert venues:', err.message)
-      throw createError({
-        statusCode: err.statusCode || 500,
-        statusMessage: `Backend API error: ${err.message}`
-      })
+      throwBackendError(error, '[API Client] Failed to bulk upsert venues:')
     }
   }
 
@@ -244,12 +223,7 @@ function createApiClient(config: ApiClientConfig) {
         timeout: 5000
       })
     } catch (error: unknown) {
-      const err = error as { statusCode?: number; message?: string }
-      console.error('[API Client] Backend health check failed:', err.message)
-      throw createError({
-        statusCode: err.statusCode || 500,
-        statusMessage: `Backend unreachable: ${err.message}`
-      })
+      throwBackendError(error, '[API Client] Backend health check failed:', 'Backend unreachable')
     }
   }
 
