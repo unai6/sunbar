@@ -1,19 +1,6 @@
 <script setup lang="ts">
-import AutoComplete from 'primevue/autocomplete'
-
-interface SearchResult {
-  id: number
-  name: string
-  latitude: number
-  longitude: number
-  bounds: {
-    south: number
-    north: number
-    west: number
-    east: number
-  }
-  type: string
-}
+import AutoComplete from 'primevue/autocomplete';
+import type { SearchResult } from '~/composables/useNominatimSearch';
 
 const emit = defineEmits<{
   'place-selected': [result: SearchResult]

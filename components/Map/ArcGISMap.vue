@@ -5,7 +5,9 @@ import { useArcGISModules } from '~/composables/map-rendering/useArcGISModules'
 import { useMapView } from '~/composables/map-rendering/useMapView'
 import { useSceneView } from '~/composables/map-rendering/useSceneView'
 import { useUserLocationMarker } from '~/composables/map-rendering/useUserLocationMarker'
+import type { SearchResult } from '~/composables/useNominatimSearch'
 import { useVenue } from '~/composables/useVenue'
+import { useVenues } from '~/composables/useVenues'
 import { useVenueMarkers } from '~/composables/venue-visualization/useVenueMarkers'
 import { useVenueSymbols } from '~/composables/venue-visualization/useVenueSymbols'
 import type { Venue } from '~/shared/types'
@@ -29,6 +31,7 @@ const emit = defineEmits<{
 
 // Composables
 const { isSunny } = useVenue()
+const { createVenueFromSearchResult, addVenue } = useVenues()
 const { loadModules } = useArcGISModules()
 const mapView = useMapView()
 const sceneView = useSceneView()
@@ -82,9 +85,15 @@ function handleVenueClick(venueId: string): void {
   }
 }
 
-function handlePlaceSelected(event: { latitude: number; longitude: number; name: string }): void {
+function handlePlaceSelected(searchResult: SearchResult): void {
+  // Create a venue from the search result
+  const venue = createVenueFromSearchResult(searchResult)
+  
+  // Add the venue to the store (this will trigger the map to render it)
+  addVenue(venue)
+  
   // Fly to the selected place with a comfortable zoom level
-  currentView.value.flyTo(event.latitude, event.longitude, 16)
+  currentView.value.flyTo(searchResult.latitude, searchResult.longitude, 16)
 }
 
 // Initialize map

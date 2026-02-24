@@ -1,6 +1,6 @@
-import { ref } from 'vue'
+import { ref } from "vue";
 
-interface SearchResult {
+export interface SearchResult {
   id: number;
   name: string;
   latitude: number;
@@ -12,6 +12,18 @@ interface SearchResult {
     east: number;
   };
   type: string;
+  address?: {
+    road?: string;
+    house_number?: string;
+    city?: string;
+    town?: string;
+    village?: string;
+    postcode?: string;
+    country?: string;
+    amenity?: string;
+    tourism?: string;
+    leisure?: string;
+  };
 }
 
 /**
@@ -19,9 +31,9 @@ interface SearchResult {
  * Search for places using server-side Nominatim geocoding API
  */
 export function useNominatimSearch() {
-  const searchResults = ref<SearchResult[]>([])
-  const isSearching = ref(false)
-  const searchError = ref<string | null>(null)
+  const searchResults = ref<SearchResult[]>([]);
+  const isSearching = ref(false);
+  const searchError = ref<string | null>(null);
 
   /**
    * Search for a place by name
@@ -30,34 +42,34 @@ export function useNominatimSearch() {
    */
   async function searchPlace(query: string): Promise<SearchResult[]> {
     if (!query || query.trim().length < 3) {
-      searchResults.value = []
-      return []
+      searchResults.value = [];
+      return [];
     }
 
-    isSearching.value = true
-    searchError.value = null
+    isSearching.value = true;
+    searchError.value = null;
 
     try {
       // Call server API endpoint
       const response = await $fetch<{ results: SearchResult[]; count: number }>(
-        '/api/search',
+        "/api/search",
         {
           query: {
             q: query,
-            limit: 5
-          }
-        }
-      )
+            limit: 5,
+          },
+        },
+      );
 
-      searchResults.value = response.results
-      return response.results
+      searchResults.value = response.results;
+      return response.results;
     } catch (error) {
-      console.error('Search error:', error)
-      searchError.value = 'search.error.failed'
-      searchResults.value = []
-      return []
+      console.error("Search error:", error);
+      searchError.value = "search.error.failed";
+      searchResults.value = [];
+      return [];
     } finally {
-      isSearching.value = false
+      isSearching.value = false;
     }
   }
 
@@ -69,24 +81,24 @@ export function useNominatimSearch() {
    */
   async function reverseGeocode(
     latitude: number,
-    longitude: number
+    longitude: number,
   ): Promise<string | null> {
     try {
       // Call server API endpoint
       const response = await $fetch<{ address: string | null; found: boolean }>(
-        '/api/reverse-geocode',
+        "/api/reverse-geocode",
         {
           query: {
             lat: latitude,
-            lon: longitude
-          }
-        }
-      )
+            lon: longitude,
+          },
+        },
+      );
 
-      return response.address
+      return response.address;
     } catch (error) {
-      console.error('Reverse geocode error:', error)
-      return null
+      console.error("Reverse geocode error:", error);
+      return null;
     }
   }
 
@@ -94,8 +106,8 @@ export function useNominatimSearch() {
    * Clear search results
    */
   function clearResults(): void {
-    searchResults.value = []
-    searchError.value = null
+    searchResults.value = [];
+    searchError.value = null;
   }
 
   return {
@@ -104,6 +116,6 @@ export function useNominatimSearch() {
     searchError,
     searchPlace,
     reverseGeocode,
-    clearResults
-  }
+    clearResults,
+  };
 }
