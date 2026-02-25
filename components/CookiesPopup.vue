@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from 'primevue/button'
 import { storeToRefs } from 'pinia'
 import { useCookieConsentStore } from '~/stores/cookieConsent'
 
@@ -94,34 +95,38 @@ watch(isVisible, (visible) => {
           <!-- Actions -->
           <div class="flex items-center gap-4 lg:shrink-0">
             <div class="flex items-center gap-4">
-              <button
+              <Button
                 v-if="!isCustomizing"
+                unstyled
                 class="text-xs text-gray-400 hover:text-gray-700 underline underline-offset-2 transition-colors"
                 @click="store.rejectNonEssential()"
               >
                 {{ t('cookies.button.rejectNonEssential') }}
-              </button>
-              <button
+              </Button>
+              <Button
                 v-if="!isCustomizing"
+                unstyled
                 class="text-xs text-gray-500 hover:text-gray-800 underline underline-offset-2 transition-colors"
                 @click="openCustomize"
               >
                 {{ t('cookies.button.customize') }}
-              </button>
-              <button
+              </Button>
+              <Button
                 v-if="isCustomizing"
-                class="px-4 py-2 text-sm rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 transition-colors"
+                outlined
+                severity="secondary"
+                size="small"
+                :label="t('cookies.button.savePreferences')"
                 @click="savePreferences"
-              >
-                {{ t('cookies.button.savePreferences') }}
-              </button>
+              />
             </div>
-            <button
-              class="px-5 py-2 text-sm font-medium bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white rounded-lg shadow-sm transition-colors shrink-0"
+            <Button
+              severity="warning"
+              size="small"
+              :label="t('cookies.button.acceptAll')"
+              class="shrink-0"
               @click="store.acceptAll()"
-            >
-              {{ t('cookies.button.acceptAll') }}
-            </button>
+            />
           </div>
         </div>
 
@@ -161,9 +166,10 @@ watch(isVisible, (visible) => {
                 {{ t('cookies.category.mapping.description') }}
               </p>
             </div>
-            <button
+            <Button
+              unstyled
               role="switch"
-              :aria-checked="mappingEnabled ? 'true' : 'false'"
+              :aria-checked="mappingEnabled"
               :aria-label="t('cookies.category.mapping.title')"
               class="relative w-9 h-5 rounded-full transition-colors duration-200 shrink-0 mt-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
               :class="mappingEnabled ? 'bg-amber-500' : 'bg-gray-200'"
@@ -173,7 +179,7 @@ watch(isVisible, (visible) => {
                 class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-[left] duration-200"
                 :class="mappingEnabled ? 'left-[calc(100%-1.125rem)]' : 'left-0.5'"
               />
-            </button>
+            </Button>
           </div>
         </div>
 

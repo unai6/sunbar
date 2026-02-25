@@ -178,33 +178,33 @@ function openDirections(): void {
         {{ $t('venueDetail.label.socialMedia') }}
       </div>
       <div class="flex gap-3">
-        <button
+        <Button
           v-if="venue.socialMedia.facebook"
-          type="button"
+          unstyled
           aria-label="Facebook"
           class="w-9 h-9 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 cursor-pointer border-none transition-colors"
           @click="openUrl(venue.socialMedia!.facebook)"
         >
           <i class="pi pi-facebook" aria-hidden="true" />
-        </button>
-        <button
+        </Button>
+        <Button
           v-if="venue.socialMedia.instagram"
-          type="button"
+          unstyled
           aria-label="Instagram"
           class="w-9 h-9 flex items-center justify-center rounded-lg bg-pink-50 text-pink-600 hover:bg-pink-100 cursor-pointer border-none transition-colors"
           @click="openUrl(venue.socialMedia!.instagram)"
         >
           <i class="pi pi-instagram" aria-hidden="true" />
-        </button>
-        <button
+        </Button>
+        <Button
           v-if="venue.socialMedia.twitter"
-          type="button"
+          unstyled
           aria-label="Twitter"
           class="w-9 h-9 flex items-center justify-center rounded-lg bg-sky-50 text-sky-600 hover:bg-sky-100 cursor-pointer border-none transition-colors"
           @click="openUrl(venue.socialMedia!.twitter)"
         >
           <i class="pi pi-twitter" aria-hidden="true" />
-        </button>
+        </Button>
       </div>
     </div>
 

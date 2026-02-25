@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from 'primevue/button'
 import Popover from 'primevue/popover'
 
 const legendPanel = ref<InstanceType<typeof Popover> | null>(null)
@@ -10,14 +11,14 @@ function toggleLegend(event: Event): void {
 
 <template>
   <div class="absolute bottom-20 left-3 z-[100] lg:bottom-6">
-    <button
-      type="button"
+    <Button
+      unstyled
       :aria-label="$t('map.title.legend')"
       class="bg-white rounded-full w-9 h-9 shadow-lg flex items-center justify-center text-slate-600 hover:text-slate-900 hover:shadow-xl transition-shadow"
       @click="toggleLegend"
     >
       <i class="pi pi-question-circle text-lg" aria-hidden="true" />
-    </button>
+    </Button>
 
     <Popover ref="legendPanel" class="w-64">
       <div class="space-y-3">

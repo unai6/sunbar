@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from 'primevue/button'
 import ProgressSpinner from 'primevue/progressspinner'
 import Tag from 'primevue/tag'
 import { useVenue } from '~/composables/useVenue'
@@ -58,8 +59,8 @@ function getVenueIcon(type: VenueType): string {
         class="border-b border-gray-100"
         :class="isSunny(venue) ? 'border-l-[3px] border-l-amber-400' : ''"
       >
-        <button
-          type="button"
+        <Button
+          unstyled
           :aria-label="venue.name"
           :aria-pressed="venue.id === selectedVenueId"
           class="w-full flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors duration-150 text-left"
@@ -101,7 +102,7 @@ function getVenueIcon(type: VenueType): string {
               </div>
             </div>
           </div>
-        </button>
+        </Button>
       </li>
     </ul>
   </div>

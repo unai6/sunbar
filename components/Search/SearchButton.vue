@@ -28,9 +28,9 @@ const emit = defineEmits<{
   />
 
   <!-- Mobile variant -->
-  <button
+  <Button
     v-else
-    type="button"
+    unstyled
     :disabled="loading"
     :aria-label="$t('controlPanel.button.searchThisArea')"
     :aria-busy="loading"
@@ -40,5 +40,5 @@ const emit = defineEmits<{
   >
     <i :class="loading ? 'pi pi-spin pi-spinner text-base' : 'pi pi-refresh text-base'" aria-hidden="true" />
     <span class="text-[10px] mt-0.5 font-medium">{{ $t('controlPanel.mobile.search') }}</span>
-  </button>
+  </Button>
 </template>

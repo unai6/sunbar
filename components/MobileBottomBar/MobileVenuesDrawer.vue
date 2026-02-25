@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from 'primevue/button'
 import Drawer from 'primevue/drawer'
 import type { Venue } from '~/shared/types'
 
@@ -37,14 +38,14 @@ function handleVenueSelect(venue: Venue): void {
           {{ $t('venueList.title.nearbyVenues') }}
           <span class="text-sm text-gray-500">({{ venues.length }})</span>
         </h2>
-        <button
-          type="button"
+        <Button
+          unstyled
           :aria-label="$t('common.cta.close')"
           class="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
           @click="emit('update:visible', false)"
         >
           <i class="pi pi-times" aria-hidden="true" />
-        </button>
+        </Button>
       </div>
     </template>
     <VenueList

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from 'primevue/button'
 import { storeToRefs } from 'pinia'
 import { useMapBounds } from '~/composables/map-interaction/useMapBounds'
 import { useArcGISModules } from '~/composables/map-rendering/useArcGISModules'
@@ -250,12 +251,13 @@ watch(viewMode, async () => {
         <p class="font-semibold text-gray-700">{{ $t('cookies.map.placeholder.title') }}</p>
         <p class="text-sm text-gray-500 mt-1">{{ $t('cookies.map.placeholder.description') }}</p>
       </div>
-      <button
+      <Button
+        unstyled
         class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors"
         @click="cookieConsentStore.openPopup()"
       >
         {{ $t('cookies.map.placeholder.button') }}
-      </button>
+      </Button>
     </div>
 
     <div v-else ref="mapContainer" class="w-full h-full arcgis-map-container" />

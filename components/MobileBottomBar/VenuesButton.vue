@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Button from 'primevue/button'
+
 type Props = {
   venuesCount: number
 }
@@ -11,8 +13,8 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <button
-    type="button"
+  <Button
+    unstyled
     class="flex flex-col items-center justify-center py-1.5 px-1 rounded-lg text-gray-700 transition-all duration-200 hover:bg-gray-100 active:scale-95 active:bg-gray-200 relative"
     @click="emit('show-venues')"
   >
@@ -25,5 +27,5 @@ const emit = defineEmits<{
     >
       {{ venuesCount > 99 ? '99+' : venuesCount }}
     </span>
-  </button>
+  </Button>
 </template>

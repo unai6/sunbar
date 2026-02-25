@@ -131,9 +131,6 @@ export default defineNuxtConfig({
     optimizeDeps: {
       exclude: ['@arcgis/core']
     },
-    server: {
-      allowedHosts: ['uncollusive-juelz-finished.ngrok-free.dev']
-    },
     resolve: {
       alias: {
         '@arcgis/core': '@arcgis/core'
