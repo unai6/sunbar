@@ -116,6 +116,19 @@
     },
     "action": {
       "useMapCenter": "Usar Centre del Mapa"
+    },
+    "placeholder": {
+      "openingHours": "Dl–Dv: 9:00–22:00, Ds–Dg: 10:00–23:00"
+    },
+    "validation": {
+      "nameMin": "El nom ha de tenir almenys 2 caràcters.",
+      "nameMax": "El nom ha de tenir menys de 100 caràcters.",
+      "venueTypeRequired": "Selecciona un tipus de local vàlid.",
+      "latitudeRange": "La latitud ha d'estar entre -90 i 90.",
+      "longitudeRange": "La longitud ha d'estar entre -180 i 180.",
+      "phoneFormat": "Format de telèfon no vàlid.",
+      "websiteFormat": "Format d'URL no vàlid.",
+      "openingHoursMax": "L'horari ha de tenir menys de 200 caràcters."
     }
   },
   "venueType": {
@@ -124,6 +137,7 @@
       "restaurant": "Restaurant",
       "cafe": "Cafeteria",
       "pub": "Pub",
+      "nightclub": "Discoteca",
       "biergarten": "Jardí de Cervesa"
     }
   },
@@ -213,7 +227,13 @@
       "geolocationDenied": "Accés a la ubicació denegat. Si us plau, habilita els permisos d'ubicació a la configuració del teu navegador per utilitzar aquesta funció.",
       "geolocationUnavailable": "La informació d'ubicació no està disponible. Si us plau, torna-ho a intentar.",
       "geolocationTimeout": "La sol·licitud d'ubicació ha caducat. Si us plau, torna-ho a intentar.",
-      "network": "Error de xarxa. Comprova la teva connexió i torna-ho a provar."
+      "network": "Error de xarxa. Comprova la teva connexió i torna-ho a provar.",
+      "validationDetail": "Si us plau, corregeix els errors del formulari.",
+      "createVenue": "No s'ha pogut crear el local. Si us plau, torna-ho a intentar."
+    },
+    "success": {
+      "title": "Èxit",
+      "venueCreated": "Local creat correctament."
     }
   }
 }

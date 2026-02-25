@@ -2,7 +2,7 @@
 import Button from 'primevue/button'
 import Checkbox from 'primevue/checkbox'
 import Dialog from 'primevue/dialog'
-import Dropdown from 'primevue/dropdown'
+import Select from 'primevue/select'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import { ZodError, type ZodIssue } from 'zod'
@@ -27,13 +27,13 @@ const longitudeInput = ref('')
 const errors = ref<Partial<Record<keyof CreateVenueInput, string>>>({})
 const isSubmitting = ref(false)
 
-const venueTypes = [
-  { label: 'Bar', value: 'bar' },
-  { label: 'Cafe', value: 'cafe' },
-  { label: 'Restaurant', value: 'restaurant' },
-  { label: 'Pub', value: 'pub' },
-  { label: 'Nightclub', value: 'nightclub' }
-]
+const venueTypes = computed(() => [
+  { label: t('venueType.label.bar'), value: 'bar' },
+  { label: t('venueType.label.cafe'), value: 'cafe' },
+  { label: t('venueType.label.restaurant'), value: 'restaurant' },
+  { label: t('venueType.label.pub'), value: 'pub' },
+  { label: t('venueType.label.nightclub'), value: 'nightclub' }
+])
 
 // Initialize coordinates if provided
 watch(() => props.initialCoordinates, (coords) => {
@@ -47,11 +47,11 @@ watch(() => props.initialCoordinates, (coords) => {
 
 // Sync number inputs with formData
 watch(latitudeInput, (val) => {
-  formData.value.latitude = parseFloat(val) || 0
+  formData.value.latitude = Number.parseFloat(val) || 0
 })
 
 watch(longitudeInput, (val) => {
-  formData.value.longitude = parseFloat(val) || 0
+  formData.value.longitude = Number.parseFloat(val) || 0
 })
 
 function validateField(field: keyof CreateVenueInput): boolean {
@@ -95,8 +95,8 @@ async function handleSubmit(): Promise<void> {
   if (!validateForm()) {
     toast.add({
       severity: 'error',
-      summary: 'Validation Error',
-      detail: 'Please fix the errors in the form',
+      summary: t('toast.error.title'),
+      detail: t('toast.error.validationDetail'),
       life: 3000
     })
     return
@@ -128,8 +128,8 @@ async function handleSubmit(): Promise<void> {
 
     toast.add({
       severity: 'success',
-      summary: 'Success',
-      detail: 'Venue created successfully',
+      summary: t('toast.success.title'),
+      detail: t('toast.success.venueCreated'),
       life: 3000
     })
 
@@ -139,8 +139,8 @@ async function handleSubmit(): Promise<void> {
     console.error('Failed to create venue:', error)
     toast.add({
       severity: 'error',
-      summary: 'Error',
-      detail: 'Failed to create venue. Please try again.',
+      summary: t('toast.error.title'),
+      detail: t('toast.error.createVenue'),
       life: 3000
     })
   } finally {
@@ -194,7 +194,7 @@ function useCurrentMapCenter(): void {
           :class="{ 'p-invalid': errors.name }"
           @blur="validateField('name')"
         />
-        <small v-if="errors.name" class="text-red-500">{{ errors.name }}</small>
+        <small v-if="errors.name" class="text-red-500">{{ t(errors.name) }}</small>
       </div>
 
       <!-- Venue Type -->
@@ -202,7 +202,7 @@ function useCurrentMapCenter(): void {
         <label for="venue-type" class="block text-sm font-medium text-gray-700 mb-1">
           {{ t('venueForm.label.type') }} <span class="text-red-500">*</span>
         </label>
-        <Dropdown
+        <Select
           id="venue-type"
           v-model="formData.venueType"
           class="w-full"
@@ -211,7 +211,7 @@ function useCurrentMapCenter(): void {
           option-label="label"
           option-value="value"
         />
-        <small v-if="errors.venueType" class="text-red-500">{{ errors.venueType }}</small>
+        <small v-if="errors.venueType" class="text-red-500">{{ t(errors.venueType) }}</small>
       </div>
 
       <!-- Coordinates -->
@@ -229,7 +229,7 @@ function useCurrentMapCenter(): void {
             :class="{ 'p-invalid': errors.latitude }"
             @blur="validateField('latitude')"
           />
-          <small v-if="errors.latitude" class="text-red-500">{{ errors.latitude }}</small>
+          <small v-if="errors.latitude" class="text-red-500">{{ t(errors.latitude) }}</small>
         </div>
 
         <div>
@@ -245,7 +245,7 @@ function useCurrentMapCenter(): void {
             :class="{ 'p-invalid': errors.longitude }"
             @blur="validateField('longitude')"
           />
-          <small v-if="errors.longitude" class="text-red-500">{{ errors.longitude }}</small>
+          <small v-if="errors.longitude" class="text-red-500">{{ t(errors.longitude) }}</small>
         </div>
       </div>
 
@@ -286,7 +286,7 @@ function useCurrentMapCenter(): void {
           :class="{ 'p-invalid': errors.phone }"
           @blur="validateField('phone')"
         />
-        <small v-if="errors.phone" class="text-red-500">{{ errors.phone }}</small>
+        <small v-if="errors.phone" class="text-red-500">{{ t(errors.phone) }}</small>
       </div>
 
       <!-- Website -->
@@ -303,7 +303,7 @@ function useCurrentMapCenter(): void {
           :class="{ 'p-invalid': errors.website }"
           @blur="validateField('website')"
         />
-        <small v-if="errors.website" class="text-red-500">{{ errors.website }}</small>
+        <small v-if="errors.website" class="text-red-500">{{ t(errors.website) }}</small>
       </div>
 
       <!-- Opening Hours -->
@@ -316,10 +316,10 @@ function useCurrentMapCenter(): void {
           v-model="formData.openingHours"
           class="w-full"
           rows="3"
-          placeholder="Mon-Fri: 9:00-22:00, Sat-Sun: 10:00-23:00"
+          :placeholder="t('venueForm.placeholder.openingHours')"
           :class="{ 'p-invalid': errors.openingHours }"
         />
-        <small v-if="errors.openingHours" class="text-red-500">{{ errors.openingHours }}</small>
+        <small v-if="errors.openingHours" class="text-red-500">{{ t(errors.openingHours) }}</small>
       </div>
     </form>
 

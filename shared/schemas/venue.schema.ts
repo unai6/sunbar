@@ -6,22 +6,22 @@ import { z } from 'zod'
 export const createVenueSchema = z.object({
   name: z
     .string()
-    .min(2, 'Venue name must be at least 2 characters')
-    .max(100, 'Venue name must be less than 100 characters'),
+    .min(2, 'venueForm.validation.nameMin')
+    .max(100, 'venueForm.validation.nameMax'),
 
   venueType: z.enum(['bar', 'cafe', 'restaurant', 'pub', 'nightclub'], {
-    message: 'Please select a valid venue type'
+    message: 'venueForm.validation.venueTypeRequired'
   }),
 
   latitude: z
     .number()
-    .min(-90, 'Latitude must be between -90 and 90')
-    .max(90, 'Latitude must be between -90 and 90'),
+    .min(-90, 'venueForm.validation.latitudeRange')
+    .max(90, 'venueForm.validation.latitudeRange'),
 
   longitude: z
     .number()
-    .min(-180, 'Longitude must be between -180 and 180')
-    .max(180, 'Longitude must be between -180 and 180'),
+    .min(-180, 'venueForm.validation.longitudeRange')
+    .max(180, 'venueForm.validation.longitudeRange'),
 
   outdoorSeating: z.boolean().default(false),
 
@@ -37,17 +37,20 @@ export const createVenueSchema = z.object({
   phone: z
     .string()
     .regex(
-      /^[+]?[(]?[0-9]{1,3}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,4}[-\s.]?[0-9]{1,9}$/,
-      'Invalid phone number format'
+      /^\+?\d{1,3}?[-.\s()]?\d{1,4}?[-.\s()]?\d{1,4}[-.\s()]?\d{1,9}$/,
+      'venueForm.validation.phoneFormat'
     )
     .optional()
     .or(z.literal('')),
 
-  website: z.string().url('Invalid website URL').optional().or(z.literal('')),
+  website: z.string().regex(
+    /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w-]*)*\/?$/,
+    'venueForm.validation.websiteFormat'
+  ).optional().or(z.literal('')),
 
   openingHours: z
     .string()
-    .max(200, 'Opening hours must be less than 200 characters')
+    .max(200, 'venueForm.validation.openingHoursMax')
     .optional()
 })
 

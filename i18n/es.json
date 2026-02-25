@@ -116,6 +116,19 @@
     },
     "action": {
       "useMapCenter": "Usar Centro del Mapa"
+    },
+    "placeholder": {
+      "openingHours": "Lun–Vie: 9:00–22:00, Sáb–Dom: 10:00–23:00"
+    },
+    "validation": {
+      "nameMin": "El nombre debe tener al menos 2 caracteres.",
+      "nameMax": "El nombre debe tener menos de 100 caracteres.",
+      "venueTypeRequired": "Selecciona un tipo de local válido.",
+      "latitudeRange": "La latitud debe estar entre -90 y 90.",
+      "longitudeRange": "La longitud debe estar entre -180 y 180.",
+      "phoneFormat": "Formato de teléfono no válido.",
+      "websiteFormat": "Formato de URL no válido.",
+      "openingHoursMax": "El horario debe tener menos de 200 caracteres."
     }
   },
   "venueType": {
@@ -124,6 +137,7 @@
       "restaurant": "Restaurante",
       "cafe": "Cafetería",
       "pub": "Pub",
+      "nightclub": "Discoteca",
       "biergarten": "Jardín de Cerveza"
     }
   },
@@ -213,7 +227,13 @@
       "geolocationDenied": "Acceso a la ubicación denegado. Por favor, habilita los permisos de ubicación en la configuración de tu navegador para usar esta función.",
       "geolocationUnavailable": "La información de ubicación no está disponible. Por favor, inténtalo de nuevo.",
       "geolocationTimeout": "La solicitud de ubicación ha caducado. Por favor, inténtalo de nuevo.",
-      "network": "Error de red. Comprueba tu conexión e inténtalo de nuevo."
+      "network": "Error de red. Comprueba tu conexión e inténtalo de nuevo.",
+      "validationDetail": "Por favor, corrige los errores del formulario.",
+      "createVenue": "No se pudo crear el local. Por favor, inténtalo de nuevo."
+    },
+    "success": {
+      "title": "Éxito",
+      "venueCreated": "Local creado correctamente."
     }
   }
 }

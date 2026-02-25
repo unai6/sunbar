@@ -128,6 +128,13 @@ export function useMapView() {
     return venueGraphicsLayer
   }
 
+  function getCenter(): [number, number] | null {
+    if (view?.center?.latitude != null && view.center.longitude != null) {
+      return [view.center.latitude, view.center.longitude]
+    }
+    return null
+  }
+
   function setCenter(center: [number, number]): void {
     if (view) {
       view.center = { longitude: center[1], latitude: center[0] }
@@ -159,6 +166,7 @@ export function useMapView() {
     closePopups,
     getView,
     getVenueGraphicsLayer,
+    getCenter,
     setCenter,
     setZoom,
     cleanup

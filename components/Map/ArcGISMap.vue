@@ -141,15 +141,22 @@ async function initializeMap(): Promise<void> {
 async function initializeView(): Promise<void> {
   if (!mapContainerRef.value || !arcGISModules) return
 
-  // Cleanup existing view
-  currentView.value.cleanup()
+  // viewMode has already toggled, so the outgoing view is the opposite one.
+  const outgoingView = viewMode.value === '2d' ? sceneView : mapView
+
+  // Preserve current map position before switching views
+  const center = outgoingView.getCenter() ?? props.center
+  const zoom = props.zoom
+
+  // Cleanup outgoing view
+  outgoingView.cleanup()
 
   if (viewMode.value === '2d') {
     // Initialize 2D map view
     await mapView.initialize(
       mapContainerRef.value,
-      props.center,
-      props.zoom,
+      center,
+      zoom,
       {
         MapView: arcGISModules.MapView,
         EsriMap: arcGISModules.EsriMap,
@@ -165,8 +172,8 @@ async function initializeView(): Promise<void> {
     // Initialize 3D scene view
     await sceneView.initialize(
       mapContainerRef.value,
-      props.center,
-      props.zoom,
+      center,
+      zoom,
       {
         SceneView: arcGISModules.SceneView,
         EsriMap: arcGISModules.EsriMap,

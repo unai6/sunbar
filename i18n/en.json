@@ -116,6 +116,19 @@
     },
     "action": {
       "useMapCenter": "Use Map Center"
+    },
+    "placeholder": {
+      "openingHours": "Mon–Fri: 9:00–22:00, Sat–Sun: 10:00–23:00"
+    },
+    "validation": {
+      "nameMin": "Venue name must be at least 2 characters.",
+      "nameMax": "Venue name must be less than 100 characters.",
+      "venueTypeRequired": "Please select a valid venue type.",
+      "latitudeRange": "Latitude must be between -90 and 90.",
+      "longitudeRange": "Longitude must be between -180 and 180.",
+      "phoneFormat": "Invalid phone number format.",
+      "websiteFormat": "Invalid website URL format.",
+      "openingHoursMax": "Opening hours must be less than 200 characters."
     }
   },
   "venueType": {
@@ -124,6 +137,7 @@
       "restaurant": "Restaurant",
       "cafe": "Café",
       "pub": "Pub",
+      "nightclub": "Nightclub",
       "biergarten": "Beer Garden"
     }
   },
@@ -213,7 +227,13 @@
       "geolocationDenied": "Location access denied. Please enable location permissions in your browser settings to use this feature.",
       "geolocationUnavailable": "Location information is unavailable. Please try again.",
       "geolocationTimeout": "Location request timed out. Please try again.",
-      "network": "Network error. Check your connection and try again."
+      "network": "Network error. Check your connection and try again.",
+      "validationDetail": "Please fix the errors in the form.",
+      "createVenue": "Failed to create venue. Please try again."
+    },
+    "success": {
+      "title": "Success",
+      "venueCreated": "Venue created successfully."
     }
   }
 }
