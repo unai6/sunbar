@@ -27,7 +27,8 @@
     "button": {
       "searchThisArea": "Cercar en aquesta Àrea",
       "useMyLocation": "La Meva Ubicació",
-      "now": "Ara"
+      "now": "Ara",
+      "selectDateTime": "Seleccionar data i hora"
     },
     "mobile": {
       "search": "Cercar",
@@ -159,11 +160,13 @@
     "cta": {
       "accept": "Acceptar",
       "cancel": "Cancel·lar",
-      "create": "Crear"
+      "create": "Crear",
+      "close": "Tancar"
     },
     "label": {
       "loading": "Carregant...",
-      "error": "Error"
+      "error": "Error",
+      "skipToContent": "Anar al contingut principal"
     },
     "message": {
       "errorOccurred": "S'ha produït un error"

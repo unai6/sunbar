@@ -70,43 +70,54 @@ function toggleFilter(filter: 'onlySunny' | 'onlyWithOutdoorSeating'): void {
       <div class="flex items-center gap-1.5">
         <!-- Time Adjust -1h -->
         <button
+          type="button"
+          :aria-label="$t('controlPanel.label.minusOneHour')"
           class="flex items-center justify-center w-7 h-7 rounded-lg bg-gray-100 hover:bg-gray-200 active:bg-gray-300 transition-colors flex-shrink-0"
           @click="adjustTime(-1)"
         >
-          <i class="pi pi-minus text-gray-600 text-xs" />
+          <i class="pi pi-minus text-gray-600 text-xs" aria-hidden="true" />
         </button>
-        
+
         <!-- Time Display -->
         <button
+          type="button"
+          :aria-label="$t('controlPanel.button.selectDateTime')"
+          :aria-expanded="showDatePicker"
           class="flex items-center justify-center gap-1.5 px-2 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 active:bg-amber-200 transition-colors flex-shrink-0"
           @click="showDatePicker = !showDatePicker"
         >
-          <i class="pi pi-clock text-amber-600 text-xs" />
+          <i class="pi pi-clock text-amber-600 text-xs" aria-hidden="true" />
           <span class="text-xs font-semibold text-gray-800 whitespace-nowrap">{{ formatTime(localDateTime) }}</span>
         </button>
-        
+
         <!-- Time Adjust +1h -->
         <button
+          type="button"
+          :aria-label="$t('controlPanel.label.plusOneHour')"
           class="flex items-center justify-center w-7 h-7 rounded-lg bg-gray-100 hover:bg-gray-200 active:bg-gray-300 transition-colors flex-shrink-0"
           @click="adjustTime(1)"
         >
-          <i class="pi pi-plus text-gray-600 text-xs" />
+          <i class="pi pi-plus text-gray-600 text-xs" aria-hidden="true" />
         </button>
 
         <!-- Divider -->
-        <div class="w-px h-6 bg-gray-300 flex-shrink-0" />
+        <div class="w-px h-6 bg-gray-300 flex-shrink-0" aria-hidden="true" />
 
         <!-- Sunny Filter -->
         <button
+          type="button"
+          :aria-label="$t('controlPanel.filter.onlySunnyVenues')"
+          :aria-pressed="localFilters.onlySunny"
           class="relative flex items-center justify-center px-2 py-1.5 rounded-lg transition-all flex-1"
-          :class="localFilters.onlySunny 
-            ? 'bg-amber-100 text-amber-700 border border-amber-300' 
+          :class="localFilters.onlySunny
+            ? 'bg-amber-100 text-amber-700 border border-amber-300'
             : 'bg-gray-50 text-gray-600 border border-gray-200'"
           @click="toggleFilter('onlySunny')"
         >
-          <i class="pi pi-sun text-base" />
+          <i class="pi pi-sun text-base" aria-hidden="true" />
           <span
             class="absolute -top-1.5 -right-1.5 bg-amber-500 text-white text-[9px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 shadow-sm"
+            aria-hidden="true"
           >
             {{ sunnyCount }}
           </span>
@@ -114,13 +125,16 @@ function toggleFilter(filter: 'onlySunny' | 'onlyWithOutdoorSeating'): void {
 
         <!-- Outdoor Filter -->
         <button
+          type="button"
+          :aria-label="$t('controlPanel.filter.onlyOutdoorSeating')"
+          :aria-pressed="localFilters.onlyWithOutdoorSeating"
           class="flex items-center justify-center px-2 py-1.5 rounded-lg transition-all flex-1"
-          :class="localFilters.onlyWithOutdoorSeating 
-            ? 'bg-emerald-100 text-emerald-700 border border-emerald-300' 
+          :class="localFilters.onlyWithOutdoorSeating
+            ? 'bg-emerald-100 text-emerald-700 border border-emerald-300'
             : 'bg-gray-50 text-gray-600 border border-gray-200'"
           @click="toggleFilter('onlyWithOutdoorSeating')"
         >
-          <i class="pi pi-table text-base" />
+          <i class="pi pi-table text-base" aria-hidden="true" />
         </button>
       </div>
 
@@ -132,10 +146,12 @@ function toggleFilter(filter: 'onlySunny' | 'onlyWithOutdoorSeating'): void {
         <div class="flex items-center justify-between px-3 py-2 border-b border-gray-200 bg-gray-50">
           <span class="text-sm font-semibold text-gray-700">{{ $t('controlPanel.title.dateTime') }}</span>
           <button
+            type="button"
+            :aria-label="$t('common.cta.close')"
             class="flex items-center justify-center w-6 h-6 rounded-lg hover:bg-gray-200 transition-colors"
             @click="showDatePicker = false"
           >
-            <i class="pi pi-times text-xs text-gray-600" />
+            <i class="pi pi-times text-xs text-gray-600" aria-hidden="true" />
           </button>
         </div>
         <div class="p-3">

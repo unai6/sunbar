@@ -27,7 +27,8 @@
     "button": {
       "searchThisArea": "Search This Area",
       "useMyLocation": "Use My Location",
-      "now": "Now"
+      "now": "Now",
+      "selectDateTime": "Select date and time"
     },
     "mobile": {
       "search": "Search",
@@ -159,11 +160,13 @@
     "cta": {
       "accept": "Accept",
       "cancel": "Cancel",
-      "create": "Create"
+      "create": "Create",
+      "close": "Close"
     },
     "label": {
       "loading": "Loading...",
-      "error": "Error"
+      "error": "Error",
+      "skipToContent": "Skip to main content"
     },
     "message": {
       "errorOccurred": "An error occurred"

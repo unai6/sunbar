@@ -23,12 +23,22 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   modules: [
+    '@nuxtjs/seo',
     '@primevue/nuxt-module',
     '@nuxtjs/tailwindcss',
     '@nuxt/eslint',
     '@nuxtjs/i18n',
     '@pinia/nuxt'
   ],
+
+  site: {
+    url: 'https://sunbar.app',
+    name: 'SunBar'
+  },
+
+  sitemap: {
+    autoLastmod: true
+  },
 
   i18n: {
     locales: [
@@ -74,7 +84,14 @@ export default defineNuxtConfig({
         { name: 'msapplication-TileColor', content: '#D97706' },
         { name: 'msapplication-config', content: '/browserconfig.xml' },
         { property: 'og:type', content: 'website' },
-        { property: 'og:image', content: '/icon-512x512.png' }
+        { property: 'og:site_name', content: 'SunBar' },
+        { property: 'og:image', content: '/icon-512x512.png' },
+        { property: 'og:image:alt', content: 'SunBar - Find Sunny Terraces' },
+        { property: 'og:image:width', content: '512' },
+        { property: 'og:image:height', content: '512' },
+        { name: 'twitter:card', content: 'summary' },
+        { name: 'twitter:image', content: '/icon-512x512.png' },
+        { name: 'twitter:image:alt', content: 'SunBar - Find Sunny Terraces' }
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/icon.svg' },
@@ -99,7 +116,8 @@ export default defineNuxtConfig({
         { rel: 'manifest', href: '/site.webmanifest' },
         { rel: 'preconnect', href: 'https://cdn.arcgis.com' },
         { rel: 'preconnect', href: 'https://basemaps.arcgis.com' },
-        { rel: 'dns-prefetch', href: 'https://services.arcgisonline.com' }
+        { rel: 'preconnect', href: 'https://services.arcgisonline.com' },
+        { rel: 'dns-prefetch', href: 'https://nominatim.openstreetmap.org' }
       ]
     }
   },
@@ -141,7 +159,7 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'netlify',
     prerender: {
-      routes: ['/', '/en', '/ca']
+      routes: ['/', '/en', '/ca', '/sitemap.xml', '/robots.txt']
     }
   },
 

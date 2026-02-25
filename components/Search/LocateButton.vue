@@ -29,10 +29,12 @@ const emit = defineEmits<{
   <!-- Mobile variant (circular button for map) -->
   <button
     v-else-if="props.variant === 'mobile'"
+    type="button"
+    :aria-label="$t('controlPanel.button.useMyLocation')"
     class="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 text-gray-700 transition-all duration-200 active:scale-95 active:bg-gray-100"
     @click="emit('locate')"
   >
-    <i class="pi pi-map-marker text-base" />
+    <i class="pi pi-map-marker text-base" aria-hidden="true" />
   </button>
 </template>
 

@@ -51,52 +51,58 @@ function getVenueIcon(type: VenueType): string {
       <p class="text-sm text-gray-400">{{ $t('venueList.message.tryDifferentArea') }}</p>
     </div>
 
-    <div v-else class="flex-1 overflow-y-auto">
-      <div
+    <ul v-else class="flex-1 overflow-y-auto list-none m-0 p-0">
+      <li
         v-for="venue in venues"
         :key="venue.id"
-        :class="[
-          'flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-100 transition-colors duration-150',
-          venue.id === selectedVenueId ? 'bg-amber-100' : 'hover:bg-gray-50',
-          isSunny(venue) ? 'border-l-[3px] border-l-amber-400' : ''
-        ]"
-        @click="$emit('venue-select', venue)"
+        class="border-b border-gray-100"
+        :class="isSunny(venue) ? 'border-l-[3px] border-l-amber-400' : ''"
       >
-        <div
-          :class="[
-            'w-9 h-9 rounded-full flex items-center justify-center shrink-0',
-            isSunny(venue) ? 'bg-amber-100 text-amber-600' : 'bg-gray-100 text-gray-500'
-          ]"
+        <button
+          type="button"
+          :aria-label="venue.name"
+          :aria-pressed="venue.id === selectedVenueId"
+          class="w-full flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors duration-150 text-left"
+          :class="venue.id === selectedVenueId ? 'bg-amber-100' : 'hover:bg-gray-50'"
+          @click="$emit('venue-select', venue)"
         >
-          <i :class="getVenueIcon(venue.type)" />
-        </div>
+          <div
+            :class="[
+              'w-9 h-9 rounded-full flex items-center justify-center shrink-0',
+              isSunny(venue) ? 'bg-amber-100 text-amber-600' : 'bg-gray-100 text-gray-500'
+            ]"
+            aria-hidden="true"
+          >
+            <i :class="getVenueIcon(venue.type)" />
+          </div>
 
-        <div class="flex-1 min-w-0 flex flex-col gap-1">
-          <h4 class="text-sm font-medium text-gray-800 m-0 truncate">
-            {{ venue.name }}
-          </h4>
-          <span class="text-xs text-gray-500">
-            {{ $t(`venueType.label.${venue.type}`) }}
-          </span>
-          <div class="flex flex-wrap gap-2 mt-1">
-            <span
-              v-if="venue.outdoor_seating"
-              class="inline-flex items-center gap-1 text-[10px] text-emerald-600 bg-emerald-100 px-1.5 py-0.5 rounded"
-            >
-              <i class="pi pi-external-link" />
-              {{ $t('venueList.label.outdoor') }}
+          <div class="flex-1 min-w-0 flex flex-col gap-1">
+            <span class="text-sm font-medium text-gray-800 truncate">
+              {{ venue.name }}
             </span>
-            <div class="shrink-0">
-              <Tag :severity="isSunny(venue) ? 'info' : 'secondary'">
-                <template #default>
-                  <i :class="[isSunny(venue) ? 'pi pi-sun' : 'pi pi-cloud', 'mr-1']" />
-                  {{ isSunny(venue) ? $t('venueList.status.sunny') : $t('venueList.status.shaded') }}
-                </template>
-              </Tag>
+            <span class="text-xs text-gray-500">
+              {{ $t(`venueType.label.${venue.type}`) }}
+            </span>
+            <div class="flex flex-wrap gap-2 mt-1" aria-hidden="true">
+              <span
+                v-if="venue.outdoor_seating"
+                class="inline-flex items-center gap-1 text-[10px] text-emerald-600 bg-emerald-100 px-1.5 py-0.5 rounded"
+              >
+                <i class="pi pi-external-link" />
+                {{ $t('venueList.label.outdoor') }}
+              </span>
+              <div class="shrink-0">
+                <Tag :severity="isSunny(venue) ? 'info' : 'secondary'">
+                  <template #default>
+                    <i :class="[isSunny(venue) ? 'pi pi-sun' : 'pi pi-cloud', 'mr-1']" />
+                    {{ isSunny(venue) ? $t('venueList.status.sunny') : $t('venueList.status.shaded') }}
+                  </template>
+                </Tag>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </button>
+      </li>
+    </ul>
   </div>
 </template>

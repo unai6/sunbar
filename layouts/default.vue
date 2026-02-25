@@ -4,6 +4,12 @@ import Toast from 'primevue/toast'
 
 <template>
   <div class="flex flex-col h-dvh overflow-hidden">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-white focus:text-gray-900 focus:rounded-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+    >
+      {{ $t('common.label.skipToContent') }}
+    </a>
     <Toast position="top-center" />
     <header class="hidden md:block bg-white border-b border-gray-200 px-6 py-3 shrink-0">
       <div class="flex items-center justify-between max-w-[1800px] mx-auto">
@@ -22,7 +28,7 @@ import Toast from 'primevue/toast'
       </div>
     </header>
 
-    <main class="flex-1 overflow-hidden">
+    <main id="main-content" class="flex-1 overflow-hidden">
       <slot />
     </main>
   </div>

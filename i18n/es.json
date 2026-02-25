@@ -27,7 +27,8 @@
     "button": {
       "searchThisArea": "Buscar en esta Área",
       "useMyLocation": "Usar Mi Ubicación",
-      "now": "Ahora"
+      "now": "Ahora",
+      "selectDateTime": "Seleccionar fecha y hora"
     },
     "mobile": {
       "search": "Buscar",
@@ -159,11 +160,13 @@
     "cta": {
       "accept": "Aceptar",
       "cancel": "Cancelar",
-      "create": "Crear"
+      "create": "Crear",
+      "close": "Cerrar"
     },
     "label": {
       "loading": "Cargando...",
-      "error": "Error"
+      "error": "Error",
+      "skipToContent": "Saltar al contenido principal"
     },
     "message": {
       "errorOccurred": "Ha ocurrido un error"

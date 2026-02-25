@@ -161,7 +161,8 @@ async function handleVenueCreated(): Promise<void> {
         :class="{ 'lg:!p-0': true }"
       >
         <div v-if="loading" class="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
-          <ProgressSpinner />
+          <ProgressSpinner aria-hidden="true" />
+          <output class="sr-only">{{ $t('common.label.loading') }}</output>
         </div>
 
         <ClientOnly>

@@ -38,10 +38,12 @@ function handleVenueSelect(venue: Venue): void {
           <span class="text-sm text-gray-500">({{ venues.length }})</span>
         </h2>
         <button
+          type="button"
+          :aria-label="$t('common.cta.close')"
           class="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
           @click="emit('update:visible', false)"
         >
-          <i class="pi pi-times" />
+          <i class="pi pi-times" aria-hidden="true" />
         </button>
       </div>
     </template>

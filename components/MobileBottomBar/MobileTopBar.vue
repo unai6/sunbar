@@ -8,7 +8,7 @@
   >
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-1.5">
-        <i class="pi pi-sun text-base text-amber-500" />
+        <i class="pi pi-sun text-base text-amber-500" aria-hidden="true" />
         <span class="text-sm font-bold bg-gradient-to-br from-amber-500 to-amber-600 bg-clip-text text-transparent">
           SunBar
         </span>

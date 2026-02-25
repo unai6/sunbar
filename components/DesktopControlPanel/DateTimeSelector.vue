@@ -51,6 +51,7 @@ function setToNow(): void {
       <div class="flex justify-center gap-2">
         <Button
           v-tooltip="$t('controlPanel.label.minusOneHour')"
+          :aria-label="$t('controlPanel.label.minusOneHour')"
           icon="pi pi-minus"
           severity="secondary"
           text
@@ -66,6 +67,7 @@ function setToNow(): void {
         />
         <Button
           v-tooltip="$t('controlPanel.label.plusOneHour')"
+          :aria-label="$t('controlPanel.label.plusOneHour')"
           icon="pi pi-plus"
           severity="secondary"
           text

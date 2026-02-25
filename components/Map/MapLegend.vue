@@ -12,11 +12,13 @@ function toggleLegend(event: Event): void {
   <!-- Mobile: Compact version with info icon -->
   <div class="lg:hidden absolute bottom-20 left-3 z-[100]">
     <button
+      type="button"
+      :aria-label="$t('map.title.legend')"
       class="bg-white rounded-xl px-4 py-3 shadow-lg text-sm font-bold text-slate-800 flex items-center gap-2"
       @click="toggleLegend"
     >
-      <span>☀️ {{ $t('map.title.legend') }}</span>
-      <i class="pi pi-info-circle text-blue-500" />
+      <span aria-hidden="true">☀️ {{ $t('map.title.legend') }}</span>
+      <i class="pi pi-info-circle text-blue-500" aria-hidden="true" />
     </button>
 
     <Popover ref="legendPanel" class="w-64">
