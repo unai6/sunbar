@@ -87,10 +87,10 @@ function handleVenueClick(venueId: string): void {
 function handlePlaceSelected(searchResult: SearchResult): void {
   // Create a venue from the search result with sunlight status calculated for current datetime
   const venue = createVenueFromSearchResult(searchResult, props.selectedDateTime)
-  
+
   // Add the venue to the store (this will trigger the map to render it)
   addVenue(venue)
-  
+
   // Fly to the selected place with a comfortable zoom level
   currentView.value.flyTo(searchResult.latitude, searchResult.longitude, 16)
 }
@@ -246,6 +246,12 @@ watch(viewMode, async () => {
 </template>
 
 <style scoped>
+.arcgis-map-container :deep(.esri-view-surface),
+.arcgis-map-container :deep(.esri-view-surface::after) {
+  outline: none !important;
+  background: none !important;
+}
+
 /* Hide zoom controls on mobile */
 @media (max-width: 1023px) {
   .arcgis-map-container :deep(.esri-ui-top-left .esri-zoom) {

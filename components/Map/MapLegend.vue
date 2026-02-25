@@ -9,16 +9,14 @@ function toggleLegend(event: Event): void {
 </script>
 
 <template>
-  <!-- Mobile: Compact version with info icon -->
-  <div class="lg:hidden absolute bottom-20 left-3 z-[100]">
+  <div class="absolute bottom-20 left-3 z-[100] lg:bottom-6">
     <button
       type="button"
       :aria-label="$t('map.title.legend')"
-      class="bg-white rounded-xl px-4 py-3 shadow-lg text-sm font-bold text-slate-800 flex items-center gap-2"
+      class="bg-white rounded-full w-9 h-9 shadow-lg flex items-center justify-center text-slate-600 hover:text-slate-900 hover:shadow-xl transition-shadow"
       @click="toggleLegend"
     >
-      <span aria-hidden="true">☀️ {{ $t('map.title.legend') }}</span>
-      <i class="pi pi-info-circle text-blue-500" aria-hidden="true" />
+      <i class="pi pi-question-circle text-lg" aria-hidden="true" />
     </button>
 
     <Popover ref="legendPanel" class="w-64">
@@ -47,20 +45,5 @@ function toggleLegend(event: Event): void {
         </div>
       </div>
     </Popover>
-  </div>
-
-  <!-- Desktop: Full legend always visible -->
-  <div class="hidden lg:block absolute bottom-6 left-3 z-[100] bg-white rounded-xl px-4 py-3.5 shadow-lg text-sm">
-    <div class="font-bold text-slate-800 mb-3 text-sm">☀️ {{ $t('map.title.legend') }}</div>
-    
-    <div class="flex items-center gap-2.5 mb-2">
-      <span class="w-4 h-4 rounded-full bg-amber-400 border-[2.5px] border-white shadow-[0_0_0_1px_#d97706,0_2px_6px_rgba(255,193,7,0.4)]" />
-      <span class="text-gray-700 font-medium text-xs">{{ $t('map.label.sunny') }}</span>
-    </div>
-    
-    <div class="flex items-center gap-2.5">
-      <span class="w-4 h-4 rounded-full bg-gray-500 border-2 border-white shadow-[0_0_0_1px_#4b5563]" />
-      <span class="text-gray-700 font-medium text-xs">{{ $t('map.label.shaded') }}</span>
-    </div>
   </div>
 </template>

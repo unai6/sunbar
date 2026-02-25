@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   ],
 
   site: {
-    url: 'https://sunbar.app',
+    url: process.env.BASE_URL ||'https://sunbar.app',
     name: 'SunBar'
   },
 

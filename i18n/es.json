@@ -102,7 +102,7 @@
   },
   "venueForm": {
     "title": {
-      "createVenue": "Crear Nuevo Local"
+      "createVenue": "Contribuir"
     },
     "label": {
       "name": "Nombre del Local",
