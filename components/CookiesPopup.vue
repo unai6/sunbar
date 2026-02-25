@@ -53,14 +53,14 @@ watch(isVisible, (visible) => {
 </script>
 
 <template>
-  <!-- Blocking backdrop — prevents any interaction with the app behind -->
+  <!-- Blocking backdrop -->
   <div
     v-if="isVisible"
-    class="fixed inset-0 z-[8999] bg-black/40"
+    class="fixed inset-0 z-[8999] bg-black/40 backdrop-blur-[2px]"
     aria-hidden="true"
   />
 
-  <!-- Cookie Banner -->
+  <!-- Cookie banner -->
   <Transition name="cookie-banner">
     <div
       v-if="isVisible"
@@ -68,94 +68,115 @@ watch(isVisible, (visible) => {
       role="dialog"
       aria-modal="true"
       aria-labelledby="cookie-banner-title"
-      class="fixed bottom-0 left-0 right-0 z-[9000] bg-white border-t border-gray-200 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]"
+      class="fixed bottom-0 left-0 right-0 z-[9000] bg-white border-t-2 border-amber-500 shadow-[0_-8px_32px_rgba(0,0,0,0.12)]"
       @keydown.tab="handleTab"
     >
-      <div class="max-w-5xl mx-auto px-4 py-4">
-        <!-- Header -->
-        <div class="flex items-start gap-3 mb-3">
-          <i class="pi pi-shield text-amber-500 text-lg mt-0.5 shrink-0" aria-hidden="true" />
-          <div>
-            <p id="cookie-banner-title" class="font-semibold text-gray-900 text-sm">{{ t('cookies.popup.title') }}</p>
-            <p class="text-gray-600 text-sm mt-0.5">{{ t('cookies.popup.description') }}</p>
+      <div class="max-w-5xl mx-auto px-5 py-4">
+
+        <!-- Main row: icon+text | actions -->
+        <div class="flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-6">
+
+          <!-- Icon + text -->
+          <div class="flex items-start gap-3 flex-1 min-w-0">
+            <div class="w-8 h-8 rounded-lg bg-amber-50 border border-amber-100 flex items-center justify-center shrink-0 mt-0.5">
+              <i class="pi pi-shield text-amber-500 text-sm" aria-hidden="true" />
+            </div>
+            <div class="min-w-0">
+              <p id="cookie-banner-title" class="font-semibold text-gray-900 text-sm">
+                {{ t('cookies.popup.title') }}
+              </p>
+              <p class="text-gray-500 text-xs mt-0.5 leading-relaxed">
+                {{ t('cookies.popup.description') }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex items-center gap-4 lg:shrink-0">
+            <div class="flex items-center gap-4">
+              <button
+                v-if="!isCustomizing"
+                class="text-xs text-gray-400 hover:text-gray-700 underline underline-offset-2 transition-colors"
+                @click="store.rejectNonEssential()"
+              >
+                {{ t('cookies.button.rejectNonEssential') }}
+              </button>
+              <button
+                v-if="!isCustomizing"
+                class="text-xs text-gray-500 hover:text-gray-800 underline underline-offset-2 transition-colors"
+                @click="openCustomize"
+              >
+                {{ t('cookies.button.customize') }}
+              </button>
+              <button
+                v-if="isCustomizing"
+                class="px-4 py-2 text-sm rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 transition-colors"
+                @click="savePreferences"
+              >
+                {{ t('cookies.button.savePreferences') }}
+              </button>
+            </div>
+            <button
+              class="px-5 py-2 text-sm font-medium bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white rounded-lg shadow-sm transition-colors shrink-0"
+              @click="store.acceptAll()"
+            >
+              {{ t('cookies.button.acceptAll') }}
+            </button>
           </div>
         </div>
 
         <!-- Customize panel -->
         <div
           v-if="isCustomizing"
-          class="mb-4 border border-gray-200 rounded-lg bg-gray-50 divide-y divide-gray-200 overflow-hidden"
+          class="mt-3 rounded-xl border border-gray-100 bg-gray-50 divide-y divide-gray-100 overflow-hidden"
         >
-          <!-- Necessary cookies (always on) -->
-          <div class="flex items-start justify-between gap-4 px-4 py-3">
-            <div>
-              <p class="text-sm font-medium text-gray-900">{{ t('cookies.category.necessary.title') }}</p>
-              <p class="text-xs text-gray-500 mt-0.5">{{ t('cookies.category.necessary.description') }}</p>
+          <!-- Necessary (always on) -->
+          <div class="flex items-start justify-between gap-6 px-4 py-3">
+            <div class="min-w-0">
+              <p class="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                {{ t('cookies.category.necessary.title') }}
+              </p>
+              <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">
+                {{ t('cookies.category.necessary.description') }}
+              </p>
             </div>
-            <div class="flex items-center gap-2 shrink-0 mt-0.5">
+            <div class="flex items-center gap-2 shrink-0 pt-0.5">
               <span class="text-xs text-gray-400">{{ t('cookies.label.alwaysActive') }}</span>
-              <!-- Non-interactive toggle (always on) -->
               <div
-                class="relative w-10 h-5 bg-amber-400/60 rounded-full cursor-not-allowed shrink-0"
+                class="relative w-9 h-5 bg-amber-200 rounded-full cursor-not-allowed shrink-0"
                 aria-hidden="true"
               >
-                <span class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow" />
+                <span class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm" />
               </div>
             </div>
           </div>
 
-          <!-- Mapping / ArcGIS cookies -->
-          <div class="flex items-start justify-between gap-4 px-4 py-3">
-            <div>
-              <p class="text-sm font-medium text-gray-900">{{ t('cookies.category.mapping.title') }}</p>
-              <p class="text-xs text-gray-500 mt-0.5">{{ t('cookies.category.mapping.description') }}</p>
+          <!-- Mapping / ArcGIS -->
+          <div class="flex items-start justify-between gap-6 px-4 py-3">
+            <div class="min-w-0">
+              <p class="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                {{ t('cookies.category.mapping.title') }}
+              </p>
+              <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">
+                {{ t('cookies.category.mapping.description') }}
+              </p>
             </div>
             <button
               role="switch"
-              :aria-checked="mappingEnabled"
+              :aria-checked="mappingEnabled ? 'true' : 'false'"
               :aria-label="t('cookies.category.mapping.title')"
-              class="relative w-10 h-5 rounded-full transition-colors shrink-0 mt-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-1"
-              :class="mappingEnabled ? 'bg-amber-500' : 'bg-gray-300'"
+              class="relative w-9 h-5 rounded-full transition-colors duration-200 shrink-0 mt-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
+              :class="mappingEnabled ? 'bg-amber-500' : 'bg-gray-200'"
               @click="mappingEnabled = !mappingEnabled"
             >
               <span
-                class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform"
+                class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-[left] duration-200"
                 :class="mappingEnabled ? 'left-[calc(100%-1.125rem)]' : 'left-0.5'"
               />
             </button>
           </div>
         </div>
 
-        <!-- Actions -->
-        <div class="flex flex-wrap items-center gap-2 justify-end">
-          <button
-            v-if="!isCustomizing"
-            class="text-sm text-gray-500 underline underline-offset-2 hover:text-gray-900 transition-colors"
-            @click="openCustomize"
-          >
-            {{ t('cookies.button.customize') }}
-          </button>
-          <button
-            v-if="!isCustomizing"
-            class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors"
-            @click="store.rejectNonEssential()"
-          >
-            {{ t('cookies.button.rejectNonEssential') }}
-          </button>
-          <button
-            v-if="isCustomizing"
-            class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 transition-colors"
-            @click="savePreferences"
-          >
-            {{ t('cookies.button.savePreferences') }}
-          </button>
-          <button
-            class="px-4 py-2 text-sm bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors"
-            @click="store.acceptAll()"
-          >
-            {{ t('cookies.button.acceptAll') }}
-          </button>
-        </div>
       </div>
     </div>
   </Transition>
@@ -164,7 +185,7 @@ watch(isVisible, (visible) => {
 <style scoped>
 .cookie-banner-enter-active,
 .cookie-banner-leave-active {
-  transition: transform 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .cookie-banner-enter-from,
