@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Dialog from 'primevue/dialog'
-import ProgressSpinner from 'primevue/progressspinner'
 import { VenueErrorCode } from '~/shared/enums'
 
 enum ToastSeverity {
@@ -164,7 +163,7 @@ async function handleVenueCreated(): Promise<void> {
         :class="{ 'lg:!p-0': true }"
       >
         <div v-if="loading" class="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
-          <ProgressSpinner aria-hidden="true" />
+          <SunSpinner class="w-10 h-10" />
           <output class="sr-only">{{ $t('common.label.loading') }}</output>
         </div>
 

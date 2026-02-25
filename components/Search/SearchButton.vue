@@ -39,7 +39,8 @@ const emit = defineEmits<{
     @click="emit('search')"
   >
     <span class="contents">
-      <i :class="loading ? 'pi pi-spin pi-spinner text-base' : 'pi pi-refresh text-base'" aria-hidden="true" />
+      <SunSpinner v-if="loading" class="w-4 h-4" />
+      <i v-else class="pi pi-refresh text-base" aria-hidden="true" />
       <span class="text-[10px] mt-0.5 font-medium">{{ $t('controlPanel.mobile.search') }}</span>
     </span>
   </Button>

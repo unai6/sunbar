@@ -17,10 +17,6 @@ const emit = defineEmits<{
   locate: []
 }>()
 
-const mobileSeverity = computed<'warning' | 'info'>(() =>
-  props.isLocated ? 'info' : 'warning'
-)
-
 const mobileIcon = computed<string>(() =>
   props.isAtLocation ? 'pi pi-compass' : 'pi pi-map-marker'
 )
@@ -40,12 +36,12 @@ const mobileIcon = computed<string>(() =>
 
   <Button
     v-else-if="props.variant === 'mobile'"
+    unstyled
     :aria-label="$t('controlPanel.button.useMyLocation')"
-    :icon="mobileIcon"
-    :severity="mobileSeverity"
-    :outlined="isAtLocation"
-    :class="{ 'bg-white': !!props.isAtLocation && !!props.isLocated}"
-    rounded
+    class="bg-white rounded-full w-9 h-9 shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow"
+    :class="isAtLocation ? 'text-amber-500' : 'text-slate-600 hover:text-slate-900'"
     @click="emit('locate')"
-  />
+  >
+    <i :class="[mobileIcon, 'text-lg']" aria-hidden="true" />
+  </Button>
 </template>

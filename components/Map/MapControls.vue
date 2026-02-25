@@ -108,19 +108,13 @@ function toggleFilter(filter: 'onlySunny' | 'onlyWithOutdoorSeating'): void {
           unstyled
           :aria-label="$t('controlPanel.filter.onlySunnyVenues')"
           :aria-pressed="localFilters.onlySunny"
-          class="relative flex items-center justify-center px-2 py-1.5 rounded-lg transition-all flex-1"
+          class="flex items-center justify-center px-2 py-1.5 rounded-lg transition-all flex-1"
           :class="localFilters.onlySunny
             ? 'bg-amber-100 text-amber-700 border border-amber-300'
             : 'bg-gray-50 text-gray-600 border border-gray-200'"
           @click="toggleFilter('onlySunny')"
         >
           <i class="pi pi-sun text-base" aria-hidden="true" />
-          <span
-            class="absolute -top-1.5 -right-1.5 bg-amber-500 text-white text-[9px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 shadow-sm"
-            aria-hidden="true"
-          >
-            {{ sunnyCount }}
-          </span>
         </Button>
 
         <!-- Outdoor Filter -->

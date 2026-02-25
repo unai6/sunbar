@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
-import ProgressSpinner from 'primevue/progressspinner'
 import Tag from 'primevue/tag'
 import { useVenue } from '~/composables/useVenue'
 import type { Venue, VenueType } from '~/shared/types'
@@ -43,7 +42,7 @@ function getVenueIcon(type: VenueType): string {
     </div>
 
     <div v-if="loading" class="flex flex-col items-center justify-center p-8 gap-2 flex-1">
-      <ProgressSpinner style="width: 40px; height: 40px" />
+      <SunSpinner class="w-10 h-10" />
     </div>
 
     <div v-else-if="venues.length === 0" class="flex flex-col items-center justify-center p-8 gap-2 flex-1">
