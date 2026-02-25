@@ -33,7 +33,9 @@ const emit = defineEmits<{
     class="flex flex-col items-center justify-center py-1.5 px-1 rounded-lg transition-all duration-200 active:scale-95 active:bg-amber-600"
     @click="emit('show-create-dialog')"
   >
-    <i class="pi pi-plus text-base" />
-    <span class="text-[10px] mt-0.5 font-medium">{{ $t('controlPanel.mobile.create') }}</span>
-</Button>
+    <span class="contents">
+      <i class="pi pi-plus text-base" />
+      <span class="text-[10px] mt-0.5 font-medium">{{ $t('controlPanel.mobile.create') }}</span>
+    </span>
+  </Button>
 </template>
