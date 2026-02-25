@@ -49,6 +49,8 @@ const {
   isAtUserLocation
 } = useMapExplorer()
 
+const isNight = computed(() => sunInfo.value !== null && !sunInfo.value.isDaytime)
+
 onMounted(async () => {
   await initialize()
 })
@@ -162,7 +164,11 @@ async function handleVenueCreated(): Promise<void> {
         :style="{ paddingTop: 'calc(2.5rem + env(safe-area-inset-top, 0px))', paddingBottom: 'calc(4rem + env(safe-area-inset-bottom, 0px))' }"
         :class="{ 'lg:!p-0': true }"
       >
-        <div v-if="loading" class="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
+        <div
+          v-if="loading"
+          class="absolute inset-0 flex items-center justify-center z-10 transition-colors"
+          :class="isNight ? 'bg-slate-900/80' : 'bg-white/80'"
+        >
           <SunSpinner class="w-10 h-10" />
           <output class="sr-only">{{ $t('common.label.loading') }}</output>
         </div>
