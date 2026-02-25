@@ -17,7 +17,6 @@ const emit = defineEmits<{
   locate: []
 }>()
 
-// primary (amber) when located, secondary (gray) when not
 const mobileSeverity = computed<'warning' | 'info'>(() =>
   props.isLocated ? 'info' : 'warning'
 )
@@ -45,7 +44,7 @@ const mobileIcon = computed<string>(() =>
     :icon="mobileIcon"
     :severity="mobileSeverity"
     :outlined="isAtLocation"
-    :class="{'bg-white': isAtLocation}"
+    :class="{ 'bg-white': isAtLocation }"
     rounded
     @click="emit('locate')"
   />
