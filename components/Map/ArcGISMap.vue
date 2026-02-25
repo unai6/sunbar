@@ -19,6 +19,8 @@ type Props = {
   center: [number, number]
   zoom: number
   selectedDateTime: Date
+  isUserLocated?: boolean
+  isAtUserLocation?: boolean
 }
 
 const props = defineProps<Props>()
@@ -27,6 +29,7 @@ const emit = defineEmits<{
   'bounds-changed': [bounds: { south: number; west: number; north: number; east: number }]
   'venue-click': [venue: Venue]
   'locate-me': []
+  'map-ready': []
 }>()
 
 // Composables
@@ -128,7 +131,10 @@ async function initializeMap(): Promise<void> {
 
   if (error) {
     console.error('Failed to initialize ArcGIS map:', error)
+    return
   }
+
+  emit('map-ready')
 }
 
 async function initializeView(): Promise<void> {
@@ -265,6 +271,8 @@ watch(viewMode, async () => {
         <LocateButton
           class="lg:hidden"
           variant="mobile"
+          :is-located="isUserLocated"
+          :is-at-location="isAtUserLocation"
           @locate="emit('locate-me')"
         />
       </div>

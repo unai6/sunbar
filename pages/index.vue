@@ -44,7 +44,10 @@ const {
   handleVenueClick,
   handleVenueSelect,
   handleLocateMe,
-  initialize
+  handleMapReady,
+  initialize,
+  userLocation,
+  isAtUserLocation
 } = useMapExplorer()
 
 onMounted(async () => {
@@ -172,9 +175,12 @@ async function handleVenueCreated(): Promise<void> {
             :center="mapCenter"
             :zoom="mapZoom"
             :selected-date-time="selectedDateTime"
+            :is-user-located="!!userLocation"
+            :is-at-user-location="isAtUserLocation"
             @bounds-changed="handleBoundsChanged"
             @venue-click="handleVenueClick"
             @locate-me="onLocateMe"
+            @map-ready="handleMapReady"
           />
         </ClientOnly>
 

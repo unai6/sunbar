@@ -40,6 +40,17 @@ export function useMapExplorer() {
   } = storeToRefs(mapStore)
 
   const mapRef = ref<MapRef | null>(null)
+  const userLocation = ref<[number, number] | null>(null)
+
+  const isAtUserLocation = computed(() => {
+    if (!userLocation.value || !currentBounds.value) return false
+    const centerLat = (currentBounds.value.north + currentBounds.value.south) / 2
+    const centerLng = (currentBounds.value.east + currentBounds.value.west) / 2
+    return (
+      Math.abs(centerLat - userLocation.value[0]) < 0.005 &&
+      Math.abs(centerLng - userLocation.value[1]) < 0.005
+    )
+  })
 
   // Helpers
   function getBoundsCenter(bounds: BoundingBox): { lat: number; lng: number } {
@@ -130,6 +141,7 @@ export function useMapExplorer() {
   async function handleLocateMe(): Promise<void> {
     await getCurrentPosition()
     if (geoState.value.latitude && geoState.value.longitude) {
+      userLocation.value = [geoState.value.latitude, geoState.value.longitude]
       mapStore.mapCenter = [geoState.value.latitude, geoState.value.longitude]
       mapStore.mapZoom = LOCATE_ME_ZOOM
       mapRef.value?.flyTo(
@@ -141,6 +153,17 @@ export function useMapExplorer() {
         geoState.value.latitude,
         geoState.value.longitude
       )
+    }
+  }
+
+  /**
+   * Called when the map finishes loading — fly to and mark user location if already known
+   */
+  function handleMapReady(): void {
+    if (geoState.value.latitude && geoState.value.longitude) {
+      userLocation.value = [geoState.value.latitude, geoState.value.longitude]
+      mapRef.value?.flyTo(geoState.value.latitude, geoState.value.longitude, LOCATE_ME_ZOOM)
+      mapRef.value?.setUserLocation(geoState.value.latitude, geoState.value.longitude)
     }
   }
 
@@ -189,6 +212,11 @@ export function useMapExplorer() {
     handleVenueClick,
     handleVenueSelect,
     handleLocateMe,
-    initialize
+    handleMapReady,
+    initialize,
+
+    // Location state
+    userLocation,
+    isAtUserLocation
   }
 }
