@@ -5,7 +5,7 @@ import Dialog from 'primevue/dialog'
 import Select from 'primevue/select'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
-import { ZodError, type ZodIssue } from 'zod'
+import { ZodError } from 'zod'
 import { createVenueDefaults, createVenueSchema, type CreateVenueInput } from '~/shared/schemas/venue.schema'
 
 const props = defineProps<{
@@ -79,7 +79,7 @@ function validateForm(): boolean {
   } catch (error) {
     if (error instanceof ZodError) {
       const newErrors: Partial<Record<keyof CreateVenueInput, string>> = {}
-      error.issues.forEach((issue: ZodIssue) => {
+      error.issues.forEach((issue) => {
         const field = issue.path[0] as keyof CreateVenueInput
         if (!newErrors[field]) {
           newErrors[field] = issue.message
