@@ -44,7 +44,7 @@ const mobileIcon = computed<string>(() =>
     :icon="mobileIcon"
     :severity="mobileSeverity"
     :outlined="isAtLocation"
-    :class="{ 'bg-white': !!isAtLocation }"
+    :class="{ 'bg-white': !!props.isAtLocation && !!props.isLocated}"
     rounded
     @click="emit('locate')"
   />
