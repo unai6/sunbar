@@ -10,6 +10,7 @@ import { useVenues } from '~/composables/useVenues'
 import { useVenueMarkers } from '~/composables/venue-visualization/useVenueMarkers'
 import { useVenueSymbols } from '~/composables/venue-visualization/useVenueSymbols'
 import type { SearchResult, Venue } from '~/shared/types'
+import { useCookieConsentStore } from '~/stores/cookieConsent'
 import { useMapViewStore } from '~/stores/mapView'
 import { attempt } from '~/utils/attempt'
 
@@ -36,6 +37,8 @@ const mapView = useMapView()
 const sceneView = useSceneView()
 const mapViewStore = useMapViewStore()
 const { viewMode } = storeToRefs(mapViewStore)
+const cookieConsentStore = useCookieConsentStore()
+const { isMappingConsented } = storeToRefs(cookieConsentStore)
 
 // Refs
 const mapContainerRef = useTemplateRef<HTMLDivElement | null>('mapContainer')
@@ -187,7 +190,16 @@ async function initializeView(): Promise<void> {
 }
 
 // Lifecycle hooks
-onMounted(() => initializeMap())
+onMounted(() => {
+  if (isMappingConsented.value) initializeMap()
+})
+
+watch(isMappingConsented, async (consented) => {
+  if (consented && !arcGISModules) {
+    await nextTick()
+    initializeMap()
+  }
+})
 
 onUnmounted(() => {
   if (mapBounds) {
@@ -222,10 +234,28 @@ watch(viewMode, async () => {
 
 <template>
   <div class="w-full h-full min-h-[400px] relative">
-    <div ref="mapContainer" class="w-full h-full arcgis-map-container" />
+    <!-- Map consent placeholder -->
+    <div
+      v-if="!isMappingConsented"
+      class="w-full h-full flex flex-col items-center justify-center gap-4 bg-gray-50 text-center px-6"
+    >
+      <i class="pi pi-map text-5xl text-gray-300" aria-hidden="true" />
+      <div>
+        <p class="font-semibold text-gray-700">{{ $t('cookies.map.placeholder.title') }}</p>
+        <p class="text-sm text-gray-500 mt-1">{{ $t('cookies.map.placeholder.description') }}</p>
+      </div>
+      <button
+        class="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-100 text-gray-700 transition-colors"
+        @click="cookieConsentStore.openPopup()"
+      >
+        {{ $t('cookies.map.placeholder.button') }}
+      </button>
+    </div>
+
+    <div v-else ref="mapContainer" class="w-full h-full arcgis-map-container" />
 
     <!-- Top Bar with Search and View Toggle -->
-    <div class="absolute top-4 left-4 right-4 z-[200] flex items-center gap-2">
+    <div v-if="isMappingConsented" class="absolute top-4 left-4 right-4 z-[200] flex items-center gap-2">
       <div class="flex-1 lg:w-full lg:max-w-xl lg:mx-auto">
         <MapSearchBar @place-selected="handlePlaceSelected" />
       </div>
@@ -240,8 +270,8 @@ watch(viewMode, async () => {
       </div>
     </div>
 
-    <MapLegend />
-    <MapLoadingOverlay :is-loading="isLoading" />
+    <MapLegend v-if="isMappingConsented" />
+    <MapLoadingOverlay v-if="isMappingConsented" :is-loading="isLoading" />
   </div>
 </template>
 

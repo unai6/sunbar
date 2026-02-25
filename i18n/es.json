@@ -172,6 +172,38 @@
       "errorOccurred": "Ha ocurrido un error"
     }
   },
+  "cookies": {
+    "popup": {
+      "title": "Cookies",
+      "description": "Usamos cookies de terceros (Esri/ArcGIS) para mostrar el mapa interactivo. Puedes aceptarlas, rechazarlas o personalizar tu elección."
+    },
+    "button": {
+      "acceptAll": "Aceptar todas",
+      "rejectNonEssential": "Rechazar no esenciales",
+      "customize": "Personalizar",
+      "savePreferences": "Guardar preferencias"
+    },
+    "label": {
+      "alwaysActive": "Siempre activo"
+    },
+    "category": {
+      "necessary": {
+        "title": "Esenciales",
+        "description": "Necesarias para el funcionamiento básico de la aplicación. No se pueden desactivar."
+      },
+      "mapping": {
+        "title": "Mapa (ArcGIS / Esri)",
+        "description": "Necesarias para renderizar el mapa interactivo. Servicios de terceros de Esri pueden establecer cookies desde cdn.arcgis.com, basemaps.arcgis.com y services.arcgisonline.com."
+      }
+    },
+    "map": {
+      "placeholder": {
+        "title": "Mapa no disponible",
+        "description": "Activa las cookies de ArcGIS para ver el mapa interactivo.",
+        "button": "Configurar cookies"
+      }
+    }
+  },
   "toast": {
     "error": {
       "title": "Error",

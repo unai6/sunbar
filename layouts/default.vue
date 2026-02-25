@@ -31,5 +31,9 @@ import Toast from 'primevue/toast'
     <main id="main-content" class="flex-1 overflow-hidden">
       <slot />
     </main>
+
+    <ClientOnly>
+      <CookiesPopup />
+    </ClientOnly>
   </div>
 </template>

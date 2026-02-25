@@ -172,6 +172,38 @@
       "errorOccurred": "S'ha produït un error"
     }
   },
+  "cookies": {
+    "popup": {
+      "title": "Galetes",
+      "description": "Fem servir galetes de tercers (Esri/ArcGIS) per mostrar el mapa interactiu. Pots acceptar-les, rebutjar-les o personalitzar la teva elecció."
+    },
+    "button": {
+      "acceptAll": "Acceptar totes",
+      "rejectNonEssential": "Rebutjar no essencials",
+      "customize": "Personalitzar",
+      "savePreferences": "Desar preferències"
+    },
+    "label": {
+      "alwaysActive": "Sempre actiu"
+    },
+    "category": {
+      "necessary": {
+        "title": "Essencials",
+        "description": "Necessàries per al funcionament bàsic de l'aplicació. No es poden desactivar."
+      },
+      "mapping": {
+        "title": "Mapa (ArcGIS / Esri)",
+        "description": "Necessàries per renderitzar el mapa interactiu. Els serveis de tercers d'Esri poden establir galetes des de cdn.arcgis.com, basemaps.arcgis.com i services.arcgisonline.com."
+      }
+    },
+    "map": {
+      "placeholder": {
+        "title": "Mapa no disponible",
+        "description": "Activa les galetes d'ArcGIS per veure el mapa interactiu.",
+        "button": "Configurar galetes"
+      }
+    }
+  },
   "toast": {
     "error": {
       "title": "Error",
