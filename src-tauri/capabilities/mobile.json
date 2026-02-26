@@ -1,0 +1,9 @@
+{
+  "identifier": "mobile",
+  "description": "Capabilities for iOS and Android",
+  "platforms": ["iOS", "android"],
+  "windows": ["main"],
+  "permissions": [
+    "core:default"
+  ]
+}

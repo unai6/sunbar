@@ -69,7 +69,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     sunbarApiUrl: process.env.SUNBAR_API_URL || 'http://localhost:3002',
     public: {
-      overpassApiUrl: 'https://overpass-api.de/api/interpreter'
+      overpassApiUrl: 'https://overpass-api.de/api/interpreter',
+      // Set NUXT_PUBLIC_API_BASE_URL=https://sunbar.app when building for Tauri mobile
+      // (Tauri mobile has no local Nitro server, so API calls must target the live deployment)
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || ''
     }
   },
 
@@ -166,7 +169,7 @@ export default defineNuxtConfig({
     '/ca': { prerender: true }
   },
 
-  ssr: true,
+  ssr: false,
 
   compatibilityDate: '2024-09-01',
 

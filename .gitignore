@@ -35,3 +35,7 @@ coverage/
 
 # Misc
 *.local
+
+# Android signing
+src-tauri/gen/android/*.jks
+src-tauri/gen/android/keystore.properties
