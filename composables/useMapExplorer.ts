@@ -171,6 +171,9 @@ export function useMapExplorer() {
    * Initialize the map explorer
    */
   async function initialize(): Promise<void> {
+    // Always reset to current time on mount
+    setDateTime(new Date())
+
     // Prevent re-initialization on locale change
     if (mapStore.initialized) {
       return
