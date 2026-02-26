@@ -131,6 +131,10 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    clearScreen: false,
+    server: {
+      strictPort: true
+    },
     optimizeDeps: {
       exclude: ['@arcgis/core']
     },
