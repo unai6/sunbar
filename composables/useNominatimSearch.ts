@@ -19,7 +19,6 @@ export function useNominatimSearch() {
    * @returns Array of search results
    */
   async function searchPlace(query: string): Promise<SearchResult[]> {
-    console.info('Starting search for:', query)
     if (!query || query.trim().length < 2) {
       searchResults.value = []
       return []
@@ -39,8 +38,6 @@ export function useNominatimSearch() {
           }
         }
       )
-
-      console.info('Search results:', response)
 
       searchResults.value = response.results
       return response.results
