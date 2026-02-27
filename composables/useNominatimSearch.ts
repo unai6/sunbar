@@ -10,13 +10,17 @@ export function useNominatimSearch() {
   const isSearching = ref(false)
   const searchError = ref<string | null>(null)
 
+  const { public: { apiBaseUrl } } = useRuntimeConfig()
+  const apiUrl = (path: string) => `${apiBaseUrl}${path}`
+
   /**
    * Search for a place by name
    * @param query Search query (e.g., "La Rambla Barcelona", "Plaza Mayor Madrid")
    * @returns Array of search results
    */
   async function searchPlace(query: string): Promise<SearchResult[]> {
-    if (!query || query.trim().length < 3) {
+    console.info('Starting search for:', query)
+    if (!query || query.trim().length < 2) {
       searchResults.value = []
       return []
     }
@@ -27,7 +31,7 @@ export function useNominatimSearch() {
     try {
       // Call server API endpoint
       const response = await $fetch<{ results: SearchResult[]; count: number }>(
-        '/api/search',
+        apiUrl('/api/search'),
         {
           query: {
             q: query,
@@ -35,6 +39,8 @@ export function useNominatimSearch() {
           }
         }
       )
+
+      console.info('Search results:', response)
 
       searchResults.value = response.results
       return response.results
@@ -61,7 +67,7 @@ export function useNominatimSearch() {
     try {
       // Call server API endpoint
       const response = await $fetch<{ address: string | null; found: boolean }>(
-        '/api/reverse-geocode',
+        apiUrl('/api/reverse-geocode'),
         {
           query: {
             lat: latitude,
