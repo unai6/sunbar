@@ -11,7 +11,7 @@ dist/
 *.code-workspace
 
 # Environment files
-.env
+.env*
 .env.local
 .env.*.local
 

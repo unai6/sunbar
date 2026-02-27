@@ -162,10 +162,22 @@ function classifyFetchError(e: Error): VenueErrorCode {
   }
   const statusMessage = err.data?.statusMessage || ''
 
+  console.error('[useVenues] fetch error', { name: e.name, message: e.message, statusCode: err.statusCode, statusMessage })
+
   if (statusMessage.includes('Bounding box too large'))
     return VenueErrorCode.BBOX_TOO_LARGE
-  if (err.statusCode === 0 || e.message === 'Failed to fetch')
-    return VenueErrorCode.NETWORK
+
+  // Network/connection errors vary by WebView:
+  // Chromium: "Failed to fetch", WKWebView (iOS/macOS Tauri): "Load failed"
+  // Firefox: "NetworkError when attempting to fetch resource"
+  // ofetch wraps HTTP errors as FetchError (with statusCode); pure network errors are TypeErrors
+  const isNetworkError =
+    err.statusCode === 0 ||
+    e.name === 'TypeError' ||
+    e.message === 'Failed to fetch' ||
+    e.message === 'Load failed'
+
+  if (isNetworkError) return VenueErrorCode.NETWORK
   return VenueErrorCode.FETCH_FAILED
 }
 
