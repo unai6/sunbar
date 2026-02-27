@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { VenueFilters } from '~/shared/types'
 import type { SunInfo } from '~/stores/sunInfo'
+import { version } from '../../package.json'
 
 type Props = {
   loading: boolean
@@ -52,7 +53,7 @@ defineEmits<{
 
     <!-- Version -->
     <div class="text-center mt-2">
-      <span class="text-xs text-gray-400">v1.0.0</span>
+      <span class="text-xs text-gray-400">v{{ version }}</span>
     </div>
   </div>
 </template>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { version } from '../../package.json'
 </script>
 
 <template>
@@ -12,7 +13,7 @@
         <span class="text-sm font-bold bg-gradient-to-br from-amber-500 to-amber-600 bg-clip-text text-transparent">
           SunBar
         </span>
-        <span class="text-[9px] text-gray-400 ml-1">v1.0.0</span>
+        <span class="text-[9px] text-gray-400 ml-1">v{{ version }}</span>
       </div>
       <LocaleSwitcher />
     </div>
