@@ -14,7 +14,7 @@ export function useSceneView() {
   const WORLD_ELEVATION_URL = 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
   const OSM_BUILDINGS_PORTAL_ID = 'ca0470dbbddb4db28bad74ed39949e25'
   const BASEMAP = 'streets-navigation-vector'
-  const QUALITY_PROFILE = 'high'
+  const QUALITY_PROFILE = 'medium'
 
   let view: __esri.SceneView | null = null
   let venueGraphicsLayer: __esri.GraphicsLayer | null = null
@@ -100,10 +100,11 @@ export function useSceneView() {
           heading: CAMERA_HEADING
         },
         popupEnabled: false,
+        viewingMode: 'local',
         environment: {
           lighting: {
             type: 'sun',
-            directShadowsEnabled: true
+            directShadowsEnabled: false
           }
         },
         qualityProfile: QUALITY_PROFILE
