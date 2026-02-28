@@ -17,6 +17,12 @@ export function useArcGISModules() {
   let SceneLayer: typeof import('@arcgis/core/layers/SceneLayer').default
 
   async function loadModules() {
+    // Set assetsPath before any ArcGIS module loads.
+    // This prevents the CDN fallback (js.arcgis.com) and ensures workers
+    // are loaded from the ArcGIS CDN at a known, stable path.
+    const esriConfig = (await import('@arcgis/core/config')).default
+    esriConfig.assetsPath = 'https://js.arcgis.com/4.34/@arcgis/core/assets'
+
     await import('@arcgis/core/assets/esri/themes/light/main.css')
 
     const [
