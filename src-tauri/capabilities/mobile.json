@@ -4,6 +4,9 @@
   "platforms": ["iOS", "android"],
   "windows": ["main"],
   "permissions": [
-    "core:default"
+    "core:default",
+    "geolocation:allow-check-permissions",
+    "geolocation:allow-request-permissions",
+    "geolocation:allow-get-current-position"
   ]
 }
