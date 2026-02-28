@@ -4,17 +4,29 @@ import { ref } from 'vue'
 export type MapViewMode = '2d' | '3d';
 
 /**
- * ArcGIS SceneView requires WebGL2 + EXT_color_buffer_float for its deferred
- * rendering pipeline. Android System WebView (used by Tauri Android) doesn't
- * expose this extension even when the device GPU supports it, so 3D rendering
- * is silently broken. Check at runtime rather than UA-sniffing.
+ * ArcGIS SceneView needs WebGL2 + working RGBA16F texture allocation for its
+ * HDR deferred rendering pipeline. Android emulators (gfxstream virtual GPU)
+ * report WebGL2 as available but reject glTexImage2D with RGBA16F, producing
+ * GL_INVALID_ENUM (0x500) and leaving SceneView in a blank broken state.
+ * Real devices with actual GPUs handle RGBA16F natively. We probe the texture
+ * allocation directly so the emulator is caught and 3D is suppressed there,
+ * while real devices and browsers pass the check and show the toggle.
  */
 function checkWebGL2Support(): boolean {
   try {
     const canvas = document.createElement('canvas')
     const gl = canvas.getContext('webgl2')
     if (!gl) return false
-    return gl.getExtension('EXT_color_buffer_float') !== null
+
+    // Probe RGBA16F texture creation — the exact format ArcGIS SceneView
+    // allocates for its HDR framebuffer. Emulator gfxstream rejects this with
+    // GL_INVALID_ENUM; real device GPUs accept it without error.
+    const texture = gl.createTexture()
+    gl.bindTexture(gl.TEXTURE_2D, texture)
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, 1, 1, 0, gl.RGBA, gl.FLOAT, null)
+    const supported = gl.getError() === gl.NO_ERROR
+    gl.deleteTexture(texture)
+    return supported
   } catch {
     return false
   }

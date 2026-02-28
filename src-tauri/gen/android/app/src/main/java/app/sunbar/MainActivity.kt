@@ -2,7 +2,6 @@ package app.sunbar
 
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.webkit.WebView
 import androidx.activity.enableEdgeToEdge
 
@@ -13,10 +12,6 @@ class MainActivity : TauriActivity() {
   }
 
   override fun onWebViewCreate(webView: WebView) {
-    // Explicit hardware layer ensures WebGL2 uses the GPU rendering pipeline,
-    // matching what Android Chrome does internally.
-    webView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
-
     // Android defaults to RENDERER_PRIORITY_BOUND, allowing the OS to starve
     // the WebView renderer process under memory pressure. For ArcGIS SceneView
     // this causes the I3S tile LOD system to constantly evict and re-request
