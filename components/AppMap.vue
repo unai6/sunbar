@@ -1,0 +1,247 @@
+<script setup lang="ts">
+import Dialog from 'primevue/dialog'
+import { useMapGateway } from '~/composables/map-adapter/useMapGateway'
+import { VenueErrorCode } from '~/shared/enums'
+
+enum ToastSeverity {
+  ERROR = 'error',
+  WARN = 'warn'
+}
+
+const toast = useToast()
+const { t } = useI18n()
+
+const showVenuesDrawer = ref(false)
+const showCreateVenueDialog = ref(false)
+
+const TOAST_DURATION_MS = 5000
+
+const ERROR_TOAST_MAP: Record<VenueErrorCode, { severity: ToastSeverity; key: string }> = {
+  [VenueErrorCode.BBOX_TOO_LARGE]: { severity: ToastSeverity.WARN, key: 'toast.error.bboxTooLarge' },
+  [VenueErrorCode.NETWORK]: { severity: ToastSeverity.ERROR, key: 'toast.error.network' },
+  [VenueErrorCode.FETCH_FAILED]: { severity: ToastSeverity.ERROR, key: 'toast.error.fetchVenues' }
+}
+
+const {
+  loading,
+  filters,
+  sunnyVenues,
+  shadedVenues,
+  filteredVenues,
+  sunInfo,
+  selectedDateTime,
+  mapRef,
+  mapCenter,
+  mapZoom,
+  selectedVenueId,
+  selectedVenue,
+  showVenueDetail,
+  handleSearch: search,
+  handleBoundsChanged,
+  handleDateTimeUpdate: updateDateTime,
+  handleFilterUpdate: updateFilters,
+  handleVenueClick,
+  handleVenueSelect,
+  handleLocateMe,
+  handleMapReady,
+  initialize,
+  userLocation,
+  isAtUserLocation
+} = useMapExplorer()
+
+const gateway = useMapGateway()
+
+const isNight = computed(() => sunInfo.value !== null && !sunInfo.value.isDaytime)
+
+onMounted(async () => {
+  await initialize()
+})
+
+function showVenueError(errorCode: VenueErrorCode): void {
+  const { severity, key } = ERROR_TOAST_MAP[errorCode]
+  toast.add({
+    severity,
+    summary: t('toast.error.title'),
+    detail: t(key),
+    life: TOAST_DURATION_MS
+  })
+}
+
+async function handleSearch(): Promise<void> {
+  const errorCode = await search()
+  if (errorCode) showVenueError(errorCode)
+}
+
+async function handleDateTimeUpdate(datetime: Date): Promise<void> {
+  const errorCode = await updateDateTime(datetime)
+  if (errorCode) showVenueError(errorCode)
+}
+
+async function handleFilterUpdate(newFilters: Parameters<typeof updateFilters>[0]): Promise<void> {
+  const errorCode = await updateFilters(newFilters)
+  if (errorCode) showVenueError(errorCode)
+}
+
+async function onLocateMe(): Promise<void> {
+  const { error } = await attempt(() => handleLocateMe())
+  if (error) {
+    console.error('Geolocation error:', error)
+
+    let errorKey = 'toast.error.geolocation'
+
+    if ('code' in error && typeof error.code === 'number') {
+      const errorCode = error.code
+      if (errorCode === 1) {
+        errorKey = 'toast.error.geolocationDenied'
+      } else if (errorCode === 2) {
+        errorKey = 'toast.error.geolocationUnavailable'
+      } else if (errorCode === 3) {
+        errorKey = 'toast.error.geolocationTimeout'
+      }
+    }
+
+    toast.add({
+      severity: ToastSeverity.ERROR,
+      summary: t('toast.error.title'),
+      detail: t(errorKey),
+      life: TOAST_DURATION_MS
+    })
+  }
+}
+
+async function handleVenueCreated(): Promise<void> {
+  await handleSearch()
+  showCreateVenueDialog.value = false
+}
+</script>
+
+<template>
+  <div class="relative h-full">
+    <!-- Mobile Top Bar -->
+    <MobileTopBar />
+
+    <!-- Mobile Bottom Action Bar -->
+    <MobileBottomActionBar
+      :loading="loading"
+      :venues-count="filteredVenues.length"
+      @search="handleSearch"
+      @show-create-dialog="showCreateVenueDialog = true"
+      @show-venues="showVenuesDrawer = true"
+    />
+
+    <!-- Mobile Venues Bottom Drawer -->
+    <MobileVenuesDrawer
+      v-model:visible="showVenuesDrawer"
+      :venues="filteredVenues"
+      :selected-venue-id="selectedVenueId"
+      :loading="loading"
+      @venue-select="handleVenueSelect"
+    />
+
+    <!-- Desktop Layout -->
+    <div class="h-full lg:grid lg:grid-cols-[260px_1fr_300px] gap-0">
+      <!-- Control Panel (desktop only) -->
+      <aside class="hidden lg:block border-r border-gray-200 overflow-y-auto" aria-label="Search controls">
+        <ControlPanel
+          :loading="loading"
+          :venues-count="filteredVenues.length"
+          :sunny-count="sunnyVenues.length"
+          :shaded-count="shadedVenues.length"
+          :sun-info="sunInfo"
+          :selected-date-time="selectedDateTime"
+          :filters="filters"
+          @search="handleSearch"
+          @update-datetime="handleDateTimeUpdate"
+          @update-filters="handleFilterUpdate"
+          @locate-me="onLocateMe"
+        />
+      </aside>
+
+      <!-- Map -->
+      <div
+        class="relative h-full"
+        :style="{ paddingTop: 'calc(2.5rem + env(safe-area-inset-top, 0px))', paddingBottom: 'calc(4rem + env(safe-area-inset-bottom, 0px))' }"
+        :class="{ 'lg:!p-0': true }"
+      >
+        <div
+          v-if="loading"
+          class="absolute inset-0 flex items-center justify-center z-10 transition-colors"
+          :class="isNight ? 'bg-slate-900/80' : 'bg-white/80'"
+        >
+          <SunSpinner class="w-10 h-10" />
+          <output class="sr-only">{{ $t('common.label.loading') }}</output>
+        </div>
+
+        <ClientOnly>
+          <MapExplorer
+            ref="mapRef"
+            :gateway="gateway"
+            :venues="filteredVenues"
+            :center="mapCenter"
+            :zoom="mapZoom"
+            :selected-date-time="selectedDateTime"
+            :is-user-located="!!userLocation"
+            :is-at-user-location="isAtUserLocation"
+            @bounds-changed="handleBoundsChanged"
+            @venue-click="handleVenueClick"
+            @locate-me="onLocateMe"
+            @map-ready="handleMapReady"
+          />
+        </ClientOnly>
+
+        <!-- Create Venue Floating Button (Desktop Only) -->
+        <div class="hidden lg:block absolute z-[200] bottom-6 right-6">
+          <CreateVenueButton
+            variant="desktop"
+            @show-create-dialog="showCreateVenueDialog = true"
+          />
+        </div>
+
+        <!-- Mobile Map Controls Overlay -->
+        <div
+          class="lg:hidden absolute bottom-0 left-2 right-2 z-[200] pointer-events-auto"
+          style="padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px))"
+        >
+          <MapControls
+            :selected-date-time="selectedDateTime"
+            :filters="filters"
+            :sunny-count="sunnyVenues.length"
+            :shaded-count="shadedVenues.length"
+            @update-datetime="handleDateTimeUpdate"
+            @update-filters="handleFilterUpdate"
+          />
+        </div>
+      </div>
+
+      <!-- Venue List Sidebar (desktop only) -->
+      <aside class="hidden lg:block border-l border-gray-200 overflow-y-auto" aria-label="Venue results">
+        <VenueList
+          :venues="filteredVenues"
+          :selected-venue-id="selectedVenueId"
+          :loading="loading"
+          @venue-select="handleVenueSelect"
+        />
+      </aside>
+    </div>
+
+    <!-- Venue Detail Dialog -->
+    <Dialog
+      v-model:visible="showVenueDetail"
+      :header="selectedVenue?.name || $t('venueDetail.title.venueDetails')"
+      :modal="true"
+      :dismissable-mask="true"
+      :closable="true"
+      :draggable="false"
+      class="venue-dialog"
+    >
+      <VenueDetail v-if="selectedVenue" :venue="selectedVenue" />
+    </Dialog>
+
+    <!-- Create Venue Dialog -->
+    <CreateVenueDialog
+      v-model:visible="showCreateVenueDialog"
+      :initial-coordinates="{ latitude: mapCenter[1], longitude: mapCenter[0] }"
+      @venue-created="handleVenueCreated"
+    />
+  </div>
+</template>

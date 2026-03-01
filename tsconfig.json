@@ -6,9 +6,14 @@
     "paths": {
       "~/*": ["./*"],
       "@/*": ["./*"],
-      "@domain/*": ["./domain/*"],
-      "@application/*": ["./application/*"],
-      "@infrastructure/*": ["./infrastructure/*"]
     }
-  }
+  },
+  "exclude": [
+    "node_modules",
+    ".output",
+    "dist",
+    ".data",
+    ".netlify",
+    "src-tauri"
+  ]
 }
