@@ -12,6 +12,7 @@ pub fn run() {
       Ok(())
     })
     .plugin(tauri_plugin_geolocation::init())
+    .plugin(tauri_plugin_os::init())
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
