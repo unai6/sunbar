@@ -15,7 +15,7 @@ import { version } from '../../package.json'
         </span>
         <span class="text-[9px] text-gray-400 ml-1">v{{ version }}</span>
       </div>
-      <LocaleSwitcher />
+      <MobileMenuButton />
     </div>
   </div>
 </template>

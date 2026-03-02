@@ -4,12 +4,8 @@ const year = new Date().getFullYear()
 </script>
 
 <template>
-  <footer
-    class="shrink-0 bg-white border-t border-gray-100 px-4 py-2 lg:px-6"
-    :style="{ paddingBottom: 'calc(3.75rem + env(safe-area-inset-bottom, 0px))' }"
-    :class="{ 'lg:!pb-2': true }"
-  >
-    <div class="flex items-center justify-between max-w-[1800px] mx-auto gap-2 text-xs text-gray-400">
+  <footer class="hidden lg:flex shrink-0 items-center bg-white border-t border-gray-100 px-6 py-2">
+    <div class="flex items-center justify-between max-w-[1800px] mx-auto w-full gap-2 text-xs text-gray-400">
       <span class="truncate">
         © {{ year }} SunBar · {{ $t('footer.label.attribution') }}
       </span>
