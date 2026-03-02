@@ -218,6 +218,25 @@
       }
     }
   },
+  "footer": {
+    "label": {
+      "attribution": "Datos de locales © OpenStreetMap contributors"
+    },
+    "link": {
+      "privacy": "Política de Privacidad"
+    }
+  },
+  "privacy": {
+    "title": "Política de Privacidad",
+    "meta": {
+      "description": "Cómo SunBar gestiona tu ubicación y datos para ayudarte a encontrar terrazas soleadas"
+    },
+    "label": {
+      "lastUpdated": "Última actualización",
+      "lastUpdatedDate": "Marzo 2026",
+      "backToApp": "Volver a SunBar"
+    }
+  },
   "toast": {
     "error": {
       "title": "Error",

@@ -1,5 +1,6 @@
 import { definePreset } from '@primeuix/themes'
 import Aura from '@primeuix/themes/aura'
+import i18nPages from './i18n/i18n.pages'
 
 const SunBarPreset = definePreset(Aura, {
   semantic: {
@@ -28,7 +29,8 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxt/eslint',
     '@nuxtjs/i18n',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    '@nuxt/content'
   ],
 
   site: {
@@ -49,7 +51,9 @@ export default defineNuxtConfig({
     defaultLocale: 'es',
     langDir: './',
     strategy: 'prefix_except_default',
-    vueI18n: './i18n.config.ts'
+    vueI18n: './i18n.config.ts',
+    customRoutes: 'config',
+    pages: i18nPages
   },
 
   css: ['~/assets/css/main.css'],
@@ -160,14 +164,8 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'netlify',
     prerender: {
-      routes: ['/', '/en', '/ca', '/sitemap.xml', '/robots.txt']
+      routes: ['/', '/en', '/ca', '/privacidad', '/en/privacy', '/ca/privacitat', '/sitemap.xml', '/robots.txt']
     }
-  },
-
-  routeRules: {
-    '/': { prerender: true },
-    '/en': { prerender: true },
-    '/ca': { prerender: true }
   },
 
   ssr: false,

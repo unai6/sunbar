@@ -218,6 +218,25 @@
       }
     }
   },
+  "footer": {
+    "label": {
+      "attribution": "Venue data © OpenStreetMap contributors"
+    },
+    "link": {
+      "privacy": "Privacy Policy"
+    }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "meta": {
+      "description": "How SunBar handles your location and data to help you find sunny terraces"
+    },
+    "label": {
+      "lastUpdated": "Last updated",
+      "lastUpdatedDate": "March 2026",
+      "backToApp": "Back to SunBar"
+    }
+  },
   "toast": {
     "error": {
       "title": "Error",

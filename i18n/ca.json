@@ -218,6 +218,25 @@
       }
     }
   },
+  "footer": {
+    "label": {
+      "attribution": "Dades de locals © OpenStreetMap contributors"
+    },
+    "link": {
+      "privacy": "Política de Privacitat"
+    }
+  },
+  "privacy": {
+    "title": "Política de Privacitat",
+    "meta": {
+      "description": "Com SunBar gestiona la teva ubicació i dades per ajudar-te a trobar terrasses assolellades"
+    },
+    "label": {
+      "lastUpdated": "Darrera actualització",
+      "lastUpdatedDate": "Març 2026",
+      "backToApp": "Tornar a SunBar"
+    }
+  },
   "toast": {
     "error": {
       "title": "Error",

@@ -32,6 +32,8 @@ import Toast from 'primevue/toast'
       <slot />
     </main>
 
+    <AppFooter />
+
     <ClientOnly>
       <CookiesPopup />
     </ClientOnly>
