@@ -14,7 +14,7 @@ import type {
     VenueFilters,
     VenueType
 } from '~/shared/types'
-import { useVenuesStore } from '~/stores/venues'
+import { BBOX_CACHE_TTL_MS, useVenuesStore } from '~/stores/venues'
 import { useCoordinates } from './useCoordinates'
 import { useSunInfo } from './useSunInfo'
 import { useSunlightStatus } from './useSunlightStatus'
@@ -207,8 +207,27 @@ export function useVenues() {
     filteredVenues
   } = storeToRefs(store)
 
+  function buildCacheKey(bbox: BoundingBox, datetime?: Date): string {
+    const slot = Math.floor((datetime?.getTime() ?? Date.now()) / (15 * 60 * 1000))
+    return `${bbox.south.toFixed(3)},${bbox.west.toFixed(3)},${bbox.north.toFixed(3)},${bbox.east.toFixed(3)}_${slot}`
+  }
+
+  function persistCacheToStorage(): void {
+    if (!import.meta.client) return
+    import('@tauri-apps/api/core').then(({ isTauri }) => {
+      if (!isTauri()) return
+      try {
+        const entries = Object.entries(store.bboxCache)
+        const cache = entries.length > 20
+          ? Object.fromEntries(entries.toSorted(([, a], [, b]) => b.fetchedAt - a.fetchedAt).slice(0, 20))
+          : store.bboxCache
+        localStorage.setItem('sunbar_bbox_cache', JSON.stringify(cache))
+      } catch {}
+    }).catch(() => {})
+  }
+
   /**
-   * Fetch venues within a bounding box from Overpass API (real-time)
+   * Fetch venues within a bounding box, serving from client cache when fresh
    */
   async function fetchVenuesByBoundingBox(
     bbox: BoundingBox,
@@ -217,6 +236,14 @@ export function useVenues() {
     if (isBboxTooLarge(bbox)) {
       store.error = VenueErrorCode.BBOX_TOO_LARGE
       return VenueErrorCode.BBOX_TOO_LARGE
+    }
+
+    const cacheKey = buildCacheKey(bbox, datetime)
+    const cached = store.bboxCache[cacheKey]
+    if (cached && Date.now() - cached.fetchedAt < BBOX_CACHE_TTL_MS) {
+      store.venues = cached.venues
+      store.lastBbox = bbox
+      return null
     }
 
     store.loading = true
@@ -243,11 +270,16 @@ export function useVenues() {
       return errorCode
     }
 
-    store.venues = data.venues.map((apiVenue) =>
+    const mappedVenues = data.venues.map((apiVenue) =>
       apiVenueToDomain(apiVenue, coordinates, sunlightStatus, venue)
     )
+
+    store.venues = mappedVenues
     store.lastBbox = bbox
+    store.bboxCache[cacheKey] = { venues: mappedVenues, sunPosition: data.sunPosition, fetchedAt: Date.now() }
     store.loading = false
+
+    persistCacheToStorage()
 
     return null
   }

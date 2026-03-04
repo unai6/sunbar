@@ -117,9 +117,6 @@ async function handleVenueCreated(): Promise<void> {
 
 <template>
   <div class="relative h-full">
-    <!-- Mobile Top Bar -->
-    <MobileTopBar />
-
     <!-- Mobile Bottom Action Bar -->
     <MobileBottomActionBar
       :loading="loading"
@@ -159,9 +156,7 @@ async function handleVenueCreated(): Promise<void> {
 
       <!-- Map -->
       <div
-        class="relative h-full"
-        :style="{ paddingTop: 'calc(2.5rem + env(safe-area-inset-top, 0px))', paddingBottom: 'calc(4rem + env(safe-area-inset-bottom, 0px))' }"
-        :class="{ 'lg:!p-0': true }"
+        class="relative h-full pb-[calc(4rem_+_env(safe-area-inset-bottom,0px))] lg:pb-0"
       >
         <div
           v-if="loading"
@@ -199,8 +194,7 @@ async function handleVenueCreated(): Promise<void> {
 
         <!-- Mobile Map Controls Overlay -->
         <div
-          class="lg:hidden absolute bottom-0 left-2 right-2 z-[200] pointer-events-auto"
-          style="padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px))"
+          class="lg:hidden absolute bottom-0 left-2 right-2 z-[200] pointer-events-auto pb-[calc(5rem_+_env(safe-area-inset-bottom,0px))]"
         >
           <MapControls
             :selected-date-time="selectedDateTime"

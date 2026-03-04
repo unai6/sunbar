@@ -1,0 +1,1 @@
+export type SceneBaseMap = 'streets' | 'satellite' | 'hybrid' | 'topo' | 'gray' | 'dark-gray' | 'oceans' | 'terrain' | 'osm' | 'dark-gray-vector' | 'gray-vector' | 'streets-vector' | 'topo-vector' | 'streets-night-vector' | 'streets-relief-vector' | 'streets-navigation-vector'

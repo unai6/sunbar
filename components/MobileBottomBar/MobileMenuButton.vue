@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { version } from '../../package.json'
+
 const { locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
 const router = useRouter()
@@ -22,33 +24,31 @@ router.afterEach(closeOnNav)
 </script>
 
 <template>
-  <!-- Burger button (stays in top bar) -->
-  <button
-    class="flex items-center justify-center w-8 h-8 rounded-lg transition-colors"
-    :class="open ? 'bg-gray-200' : 'hover:bg-gray-100'"
-    :aria-label="$t('header.button.menu')"
-    :aria-expanded="open"
-    @click="open = !open"
-  >
-    <i
-      class="text-gray-600 text-sm transition-all"
-      :class="open ? 'pi pi-times' : 'pi pi-bars'"
-      aria-hidden="true"
-    />
-  </button>
-
-  <!-- Overlay (teleported to body to escape stacking context) -->
-  <Teleport to="body">
+  <div class="relative">
+    <!-- Overlay to close on outside tap -->
     <div
       v-if="open"
       class="fixed inset-0 z-[399]"
       aria-hidden="true"
       @click="open = false"
     />
-  </Teleport>
 
-  <!-- Dropdown (teleported to body, positioned below safe-area-inset-top) -->
-  <Teleport to="body">
+    <!-- Burger button -->
+    <button
+      class="flex items-center justify-center w-8 h-8 rounded-lg transition-colors"
+      :class="open ? 'bg-gray-200' : 'hover:bg-gray-100'"
+      :aria-label="$t('header.button.menu')"
+      :aria-expanded="open"
+      @click="open = !open"
+    >
+      <i
+        class="text-gray-600 text-sm transition-all"
+        :class="open ? 'pi pi-times' : 'pi pi-bars'"
+        aria-hidden="true"
+      />
+    </button>
+
+    <!-- Dropdown -->
     <Transition
       enter-active-class="transition duration-150 ease-out"
       enter-from-class="opacity-0 scale-95"
@@ -59,8 +59,7 @@ router.afterEach(closeOnNav)
     >
       <div
         v-if="open"
-        class="fixed right-3 w-48 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-[400] origin-top-right"
-        style="top: calc(2.75rem + 0.5rem + env(safe-area-inset-top, 0px))"
+        class="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-[400] origin-top-right"
       >
         <!-- Language -->
         <div class="px-3 pt-3 pb-2.5 border-b border-gray-100">
@@ -93,7 +92,12 @@ router.afterEach(closeOnNav)
             {{ $t('footer.link.privacy') }}
           </NuxtLink>
         </div>
+
+        <!-- Version -->
+        <div class="px-4 pb-2.5 text-[10px] text-gray-400 text-right">
+          v{{ version }}
+        </div>
       </div>
     </Transition>
-  </Teleport>
+  </div>
 </template>

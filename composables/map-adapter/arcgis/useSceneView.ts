@@ -1,9 +1,11 @@
 import { ref } from 'vue'
+import type { SceneBaseMap } from '@/shared/types'
 
 /**
  * useSceneView Composable
  * Manages SceneView (3D) initialization, lifecycle, and interactions
  */
+
 export function useSceneView() {
   const FLY_TO_DURATION_MS = 1000
   const CAMERA_TILT = 65
@@ -13,7 +15,7 @@ export function useSceneView() {
   const VENUE_SELECT_DISTANCE = 150 // Distance in meters for venue selection
   const WORLD_ELEVATION_URL = 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
   const OSM_BUILDINGS_PORTAL_ID = 'ca0470dbbddb4db28bad74ed39949e25'
-  const BASEMAP = 'streets-navigation-vector'
+  const BASEMAP: SceneBaseMap = 'osm'
 
   const QUALITY_PROFILE = 'high'
   const DIRECT_SHADOWS = true

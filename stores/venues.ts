@@ -1,7 +1,15 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useVenue } from '~/composables/useVenue'
-import type { BoundingBox, Venue, VenueFilters } from '~/shared/types'
+import type { ApiResponse, BoundingBox, Venue, VenueFilters } from '~/shared/types'
+
+export type BboxCacheEntry = {
+  venues: Venue[]
+  sunPosition: ApiResponse['sunPosition']
+  fetchedAt: number
+}
+
+export const BBOX_CACHE_TTL_MS = 5 * 60 * 1000
 
 /**
  * Venues Store
@@ -15,6 +23,7 @@ export const useVenuesStore = defineStore('venues', () => {
   const loading = ref(false)
   const error = ref<string | null>(null)
   const lastBbox = ref<BoundingBox | null>(null)
+  const bboxCache = ref<Record<string, BboxCacheEntry>>({})
   const filters = ref<VenueFilters>({
     onlySunny: false,
     onlyWithOutdoorSeating: false
@@ -68,6 +77,7 @@ export const useVenuesStore = defineStore('venues', () => {
     loading,
     error,
     lastBbox,
+    bboxCache,
     filters,
     sunnyVenues,
     shadedVenues,

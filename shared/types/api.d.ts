@@ -41,5 +41,6 @@ export type ApiResponse = {
     timestamp: string;
     buildingsAnalyzed: number;
     venueCount: number;
+    fromCache?: boolean;
   };
 };

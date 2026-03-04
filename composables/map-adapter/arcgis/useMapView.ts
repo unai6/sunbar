@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import type { SceneBaseMap } from '@/shared/types'
 
 /**
  * useMapView Composable
@@ -8,7 +9,7 @@ export function useMapView() {
   const MIN_ZOOM = 100
   const MAX_ZOOM = 1
   const FLY_TO_DURATION_MS = 1000
-  const BASEMAP = 'streets-navigation-vector'
+  const BASEMAP: SceneBaseMap = 'osm'
 
   let view: __esri.MapView | null = null
   let venueGraphicsLayer: __esri.GraphicsLayer | null = null
