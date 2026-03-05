@@ -15,8 +15,9 @@ import { platform } from '@tauri-apps/plugin-os'
  * Must be called inside onMounted (client-only) since isTauri() requires window.
  */
 export function useMapGateway(): IMapGateway {
-  if (isTauri() && platform() === 'android') {
-    return useMapLibreMapGateway()
-  }
-  return useArcGISMapGateway()
+  // TODO: Decide best smap rendering strategy
+  return useMapLibreMapGateway()
+  // if (isTauri() && platform() === 'android') {
+  // }
+  // return useArcGISMapGateway()
 }
