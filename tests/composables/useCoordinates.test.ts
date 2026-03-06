@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { useCoordinates } from '~/composables/useCoordinates'
+import { useCoordinates } from '@/composables/useCoordinates'
 
 const { create, toArray, toLatLng, areEqual, calculateDistance } =
   useCoordinates()

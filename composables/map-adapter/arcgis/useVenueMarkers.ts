@@ -1,9 +1,7 @@
-import type { Venue } from '~/shared/types'
+import type { Venue } from '@/shared/types'
 
-/**
- * useVenueMarkers Composable
- * Manages venue markers on the map (create, update, remove)
- */
+// useVenueMarkers composable
+// Manages venue markers on the map: creates, updates, and removes them as needed.
 export function useVenueMarkers(
   Graphic: typeof import('@arcgis/core/Graphic').default,
   Point: typeof import('@arcgis/core/geometry/Point').default,

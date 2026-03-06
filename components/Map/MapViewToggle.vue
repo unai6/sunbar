@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import Button from 'primevue/button'
-import { useMapViewStore } from '~/stores/mapView'
+import { useMapViewStore } from '@/stores/mapView'
 
 const mapViewStore = useMapViewStore()
 const { viewMode, is3dSupported } = storeToRefs(mapViewStore)

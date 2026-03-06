@@ -1,6 +1,6 @@
 import { computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { Venue } from '~/shared/types'
+import type { Venue } from '@/shared/types'
 import type { IMapGateway, MapCallbacks } from '../IMapGateway'
 import { useArcGISModules } from './useArcGISModules'
 import { useMapView } from './useMapView'
@@ -9,15 +9,13 @@ import { useVenueMarkers } from './useVenueMarkers'
 import { useVenueSymbols } from './useVenueSymbols'
 import { useUserLocationMarker } from './useUserLocationMarker'
 import { useMapBounds } from './useMapBounds'
-import { useVenue } from '~/composables/useVenue'
-import { useMapViewStore } from '~/stores/mapView'
+import { useVenue } from '@/composables/useVenue'
+import { useMapViewStore } from '@/stores/mapView'
 
-/**
- * useArcGISMapGateway
- * IMapGateway implementation backed by ArcGIS Maps SDK.
- * Manages both the 2D MapView and the 3D SceneView, switching between
- * them reactively when the mapView store's viewMode changes.
- */
+// useArcGISMapGateway
+// IMapGateway implementation backed by the ArcGIS Maps SDK.
+// Manages both the 2D MapView and the 3D SceneView, switching between
+// them reactively when the viewMode in the mapView store changes.
 export function useArcGISMapGateway(): IMapGateway {
   const { isSunny } = useVenue()
   const { loadModules } = useArcGISModules()

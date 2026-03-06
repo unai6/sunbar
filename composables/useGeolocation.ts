@@ -1,6 +1,6 @@
 import { ref } from 'vue'
-import { GeolocationErrorType } from '~/shared/enums'
-import type { GeolocationState } from '~/shared/types'
+import { GeolocationErrorType } from '@/shared/enums'
+import type { GeolocationState } from '@/shared/types'
 
 const GEOLOCATION_TIMEOUT_MS = 10000
 const GEOLOCATION_MAX_AGE_MS = 0 // Always request fresh position to trigger permission prompt.
@@ -18,9 +18,7 @@ export function useGeolocation() {
     loading: false
   })
 
-  /**
-   * Maps GeolocationPositionError code to our error type
-   */
+  // Maps a GeolocationPositionError numeric code to our GeolocationErrorType enum value.
   function getErrorType(code: number): GeolocationErrorType {
     switch (code) {
       case 1: // PERMISSION_DENIED
@@ -34,10 +32,8 @@ export function useGeolocation() {
     }
   }
 
-  /**
-   * Check permission state using Permissions API (when available).
-   * In Tauri, delegates to the native geolocation plugin.
-   */
+  // Check the current permission state using the Permissions API when available.
+  // In Tauri, this delegates to the native geolocation plugin.
   async function checkPermission(): Promise<PermissionState | null> {
     if (isTauri) {
       const { checkPermissions } = await import('@tauri-apps/plugin-geolocation')
@@ -68,11 +64,9 @@ export function useGeolocation() {
     }
   }
 
-  /**
-   * Get current position with proper error handling for all browsers and Tauri.
-   * In Tauri (iOS/Android), uses the native geolocation plugin which handles
-   * OS-level permission dialogs. In browser, falls back to navigator.geolocation.
-   */
+  // Get the current position with proper error handling for all browsers and Tauri.
+  // In Tauri (iOS/Android) this uses the native geolocation plugin, which handles
+  // OS-level permission dialogs. In a regular browser it falls back to navigator.geolocation.
   function getCurrentPosition(): Promise<GeolocationPosition> {
     state.value.loading = true
     state.value.error = null

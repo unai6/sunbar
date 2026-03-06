@@ -6,7 +6,7 @@ import Select from 'primevue/select'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import { ZodError } from 'zod'
-import { createVenueDefaults, createVenueSchema, type CreateVenueInput } from '~/shared/schemas/venue.schema'
+import { createVenueDefaults, createVenueSchema, type CreateVenueInput } from '@/shared/schemas/venue.schema'
 
 const props = defineProps<{
   visible: boolean

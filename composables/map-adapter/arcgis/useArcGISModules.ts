@@ -1,7 +1,5 @@
-/**
- * useArcGISModules Composable
- * Handles dynamic loading of ArcGIS modules
- */
+// useArcGISModules composable
+// Handles dynamic loading of all required ArcGIS modules.
 export function useArcGISModules() {
   let MapView: typeof import('@arcgis/core/views/MapView').default
   let SceneView: typeof import('@arcgis/core/views/SceneView').default

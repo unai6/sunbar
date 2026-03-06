@@ -1,8 +1,6 @@
 import type { GeolocationErrorType } from '../enums/geolocation-error-type'
 
-/**
- * Geolocation state
- */
+// Geolocation state — tracks the current position, accuracy, and any error.
 export type GeolocationState = {
   latitude: number | null;
   longitude: number | null;

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { useGeolocation } from '~/composables/useGeolocation'
+import { useGeolocation } from '@/composables/useGeolocation'
 
 type GetCurrentPositionCallback = (position: GeolocationPosition) => void;
 type GetCurrentPositionErrorCallback = (

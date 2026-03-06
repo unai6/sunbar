@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Tag from 'primevue/tag'
-import type { SunInfo } from '~/stores/sunInfo'
+import type { SunInfo } from '@/stores/sunInfo'
 
 type Props = {
   sunInfo: SunInfo | null

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Checkbox from 'primevue/checkbox'
 import { ref, watch } from 'vue'
-import type { VenueFilters } from '~/shared/types'
+import type { VenueFilters } from '@/shared/types'
 
 type Props = {
   filters: VenueFilters

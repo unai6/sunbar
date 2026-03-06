@@ -4,7 +4,7 @@ import {
   NominatimLeisure,
   NominatimTourism,
   VenueErrorCode
-} from '~/shared/enums'
+} from '@/shared/enums'
 import type {
     ApiResponse,
     VenueResponse,
@@ -13,8 +13,8 @@ import type {
     Venue,
     VenueFilters,
     VenueType
-} from '~/shared/types'
-import { BBOX_CACHE_TTL_MS, useVenuesStore } from '~/stores/venues'
+} from '@/shared/types'
+import { BBOX_CACHE_TTL_MS, useVenuesStore } from '@/stores/venues'
 import { useCoordinates } from './useCoordinates'
 import { useSunInfo } from './useSunInfo'
 import { useSunlightStatus } from './useSunlightStatus'
@@ -44,9 +44,7 @@ const TYPE_SUBSTRING_TO_VENUE_TYPE: Array<[string, VenueType]> = [
   [NominatimAmenity.Biergarten, 'biergarten']
 ]
 
-/**
- * Map Nominatim type to VenueType
- */
+// Map a Nominatim type string to our VenueType.
 function mapNominatimTypeToVenueType(
   type: string,
   address?: SearchResult['address']
@@ -68,9 +66,7 @@ function mapNominatimTypeToVenueType(
   return match?.[1] ?? 'cafe'
 }
 
-/**
- * Build address string from SearchResult
- */
+// Build a human-readable address string from a Nominatim SearchResult.
 function buildAddressFromSearchResult(result: SearchResult): string {
   if (!result.address) return result.name
 
@@ -94,10 +90,8 @@ function buildAddressFromSearchResult(result: SearchResult): string {
   return parts.length > 0 ? parts.join(', ') : result.name
 }
 
-/**
- * Convert API venue response to Venue model
- * Stores i18n keys as reason — translated at the view layer via $t()
- */
+// Convert an API venue response object to the domain Venue model.
+// Reason strings are stored as i18n keys and translated at the view layer via $t().
 function apiVenueToDomain(
   apiVenue: VenueResponse,
   coordinatesUtil: ReturnType<typeof useCoordinates>,
@@ -181,11 +175,9 @@ function classifyFetchError(e: Error): VenueErrorCode {
   return VenueErrorCode.FETCH_FAILED
 }
 
-/**
- * useVenues Composable
- * Manages venues state and provides venue fetching/filtering actions
- * Combines Pinia store for shared state with business logic
- */
+// useVenues composable
+// Manages venue state and provides fetching and filtering actions.
+// Combines a Pinia store for shared state with the venue business logic.
 export function useVenues() {
   const store = useVenuesStore()
   const coordinates = useCoordinates()
@@ -226,9 +218,7 @@ export function useVenues() {
     }).catch(() => {})
   }
 
-  /**
-   * Fetch venues within a bounding box, serving from client cache when fresh
-   */
+  // Fetch venues within a bounding box, returning the cached result if it is still fresh.
   async function fetchVenuesByBoundingBox(
     bbox: BoundingBox,
     datetime?: Date
@@ -284,30 +274,22 @@ export function useVenues() {
     return null
   }
 
-  /**
-   * Update venue filters
-   */
+  // Update the active venue filters.
   function setFilters(newFilters: Partial<VenueFilters>): void {
     store.filters = { ...store.filters, ...newFilters }
   }
 
-  /**
-   * Add a single venue (e.g., from search results)
-   */
+  // Add a single venue to the store, for example from a search result.
   function addVenue(newVenue: Venue): void {
     store.addVenue(newVenue)
   }
 
-  /**
-   * Remove a venue by ID
-   */
+  // Remove a venue from the store by its ID.
   function removeVenue(venueId: string): void {
     store.removeVenue(venueId)
   }
 
-  /**
-   * Create a venue from a search result (Nominatim)
-   */
+  // Create a venue object from a Nominatim search result.
   function createVenueFromSearchResult(
     searchResult: SearchResult,
     datetime?: Date

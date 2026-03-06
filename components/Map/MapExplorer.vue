@@ -2,11 +2,11 @@
 import Button from 'primevue/button'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { IMapGateway } from '~/composables/map-adapter/IMapGateway'
-import { useVenues } from '~/composables/useVenues'
-import type { SearchResult, Venue } from '~/shared/types'
-import { useCookieConsentStore } from '~/stores/cookieConsent'
-import { attempt } from '~/utils/attempt'
+import type { IMapGateway } from '@/composables/map-adapter/IMapGateway'
+import { useVenues } from '@/composables/useVenues'
+import type { SearchResult, Venue } from '@/shared/types'
+import { useCookieConsentStore } from '@/stores/cookieConsent'
+import { attempt } from '@/utils/attempt'
 
 type Props = {
   gateway: IMapGateway

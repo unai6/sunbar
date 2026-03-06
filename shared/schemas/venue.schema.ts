@@ -1,8 +1,6 @@
 import { z } from 'zod'
 
-/**
- * Venue creation schema with Zod validation
- */
+// Venue creation schema with Zod validation.
 export const createVenueSchema = z.object({
   name: z
     .string()
@@ -56,9 +54,7 @@ export const createVenueSchema = z.object({
 
 export type CreateVenueInput = z.infer<typeof createVenueSchema>;
 
-/**
- * Initial form values
- */
+// Default initial values for the venue creation form.
 export const createVenueDefaults: CreateVenueInput = {
   name: '',
   venueType: 'bar',

@@ -2,10 +2,7 @@ import type { Coordinates } from './coordinates'
 import type { SunlightStatusInfo } from './sunlight-status'
 import type { VenueType } from './venue-type'
 
-/**
- * Venue Type
- * Represents a bar, restaurant, or cafe with its location and sunlight status
- */
+// Venue — represents a bar, restaurant, or cafe with its location and sunlight status.
 export type Venue = {
   id: string
   name: string

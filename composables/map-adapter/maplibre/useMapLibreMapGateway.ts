@@ -1,16 +1,14 @@
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { Map as MaplibreMap, Marker, GeoJSONSource, MapLayerMouseEvent } from 'maplibre-gl'
-import type { Venue } from '~/shared/types'
+import type { Venue } from '@/shared/types'
 import type { IMapGateway, MapCallbacks } from '../IMapGateway'
-import { useVenue } from '~/composables/useVenue'
-import { useMapViewStore } from '~/stores/mapView'
+import { useVenue } from '@/composables/useVenue'
+import { useMapViewStore } from '@/stores/mapView'
 
-/**
- * OpenFreeMap liberty style — free, no API key required, full OSM vector tiles
- * with building extrusion data for 3D rendering.
- * https://openfreemap.org
- */
+// OpenFreeMap liberty style — free, no API key required, full OSM vector tiles
+// with building extrusion data for 3D rendering.
+// https://openfreemap.org
 const STYLE_URL = 'https://tiles.openfreemap.org/styles/liberty'
 
 const FLY_DURATION_MS = 1000
@@ -18,16 +16,13 @@ const BOUNDS_DEBOUNCE_MS = 500
 const PITCH_3D = 60
 const PITCH_2D = 0
 
-/**
- * useMapLibreMapGateway
- * IMapGateway implementation backed by MapLibre GL JS + OpenStreetMap tiles.
- *
- * MapLibre uses WebGL1, avoiding the RGBA16F float-texture requirement that
- * causes ArcGIS SceneView to fail on Android System WebView.
- * 3D buildings come from OSM building extrusions embedded in the OpenFreeMap
- * liberty vector-tile style. Switching between 2D and 3D adjusts the camera
- * pitch — no layer swapping needed.
- */
+// useMapLibreMapGateway
+// IMapGateway implementation backed by MapLibre GL JS and OpenStreetMap tiles.
+// MapLibre uses WebGL1, which avoids the RGBA16F float-texture requirement that
+// causes ArcGIS SceneView to fail on Android System WebView.
+// 3D buildings come from OSM building extrusions already embedded in the
+// OpenFreeMap liberty vector-tile style. Switching between 2D and 3D simply
+// adjusts the camera pitch — no layer swapping is needed.
 export function useMapLibreMapGateway(): IMapGateway {
   const { isSunny } = useVenue()
   const mapViewStore = useMapViewStore()

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
 import Tag from 'primevue/tag'
-import { useVenue } from '~/composables/useVenue'
-import type { Venue, VenueType } from '~/shared/types'
+import { useVenue } from '@/composables/useVenue'
+import type { Venue, VenueType } from '@/shared/types'
 
 type Props = {
   venues: Venue[]

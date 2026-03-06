@@ -1,17 +1,15 @@
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
-import type { VenueErrorCode } from '~/shared/enums/venue-error-code'
-import type { BoundingBox, MapRef, Venue, VenueFilters } from '~/shared/types'
-import { useMapExplorerStore } from '~/stores/mapExplorer'
+import type { VenueErrorCode } from '@/shared/enums/venue-error-code'
+import type { BoundingBox, MapRef, Venue, VenueFilters } from '@/shared/types'
+import { useMapExplorerStore } from '@/stores/mapExplorer'
 
 const LOCATE_ME_ZOOM = 16
 const VENUE_SELECT_ZOOM = 17
 
-/**
- * useMapExplorer Composable
- * Manages map exploration state and coordinates between map, venues, and sun info
- * This is the main orchestrator composable for the map page
- */
+// useMapExplorer composable
+// Manages map exploration state and ties together the map, venues, and sun info.
+// This is the main orchestrator composable for the map page.
 export function useMapExplorer() {
   // Other composables
   const {
@@ -75,9 +73,7 @@ export function useMapExplorer() {
     return errorCode
   }
 
-  /**
-   * Handle bounds change from the map
-   */
+  // Handle a bounds-change event fired by the map.
   function handleBoundsChanged(bounds: BoundingBox): void {
     mapStore.currentBounds = bounds
 
@@ -85,9 +81,7 @@ export function useMapExplorer() {
     updateSunInfo(lat, lng, selectedDateTime.value)
   }
 
-  /**
-   * Handle date/time update
-   */
+  // Handle a date/time update from the user.
   async function handleDateTimeUpdate(
     datetime: Date
   ): Promise<VenueErrorCode | null> {
@@ -103,9 +97,7 @@ export function useMapExplorer() {
     return null
   }
 
-  /**
-   * Handle filter update
-   */
+  // Handle a filter update from the user.
   async function handleFilterUpdate(
     newFilters: Partial<VenueFilters>
   ): Promise<VenueErrorCode | null> {
@@ -113,9 +105,7 @@ export function useMapExplorer() {
     return handleSearch()
   }
 
-  /**
-   * Handle venue click on the map
-   */
+  // Handle a venue click on the map.
   function handleVenueClick(venue: Venue): void {
     mapRef.value?.closePopups()
     mapStore.selectedVenue = venue
@@ -123,9 +113,7 @@ export function useMapExplorer() {
     mapStore.showVenueDetail = true
   }
 
-  /**
-   * Handle venue selection from the list
-   */
+  // Handle a venue selection from the list panel.
   function handleVenueSelect(venue: Venue): void {
     mapStore.selectedVenueId = venue.id
     mapRef.value?.flyTo(
@@ -135,9 +123,7 @@ export function useMapExplorer() {
     )
   }
 
-  /**
-   * Handle "locate me" button click
-   */
+  // Handle the "locate me" button click.
   async function handleLocateMe(): Promise<void> {
     await getCurrentPosition()
     if (geoState.value.latitude && geoState.value.longitude) {
@@ -156,9 +142,7 @@ export function useMapExplorer() {
     }
   }
 
-  /**
-   * Called when the map finishes loading — fly to and mark user location if already known
-   */
+  // Called when the map finishes loading. Flies to and marks the user's location if it is already known.
   function handleMapReady(): void {
     if (geoState.value.latitude && geoState.value.longitude) {
       userLocation.value = [geoState.value.latitude, geoState.value.longitude]
@@ -167,9 +151,7 @@ export function useMapExplorer() {
     }
   }
 
-  /**
-   * Initialize the map explorer
-   */
+  // Initialize the map explorer.
   async function initialize(): Promise<void> {
     // Always reset to current time on mount
     setDateTime(new Date())

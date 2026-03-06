@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { useMapBounds } from '~/composables/map-adapter/arcgis/useMapBounds'
+import { useMapBounds } from '@/composables/map-adapter/arcgis/useMapBounds'
 
 type MockMapView = {
   extent: {

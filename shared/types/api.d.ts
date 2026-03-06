@@ -1,10 +1,6 @@
-/**
- * API-related types for venues
- */
+// API-related types for venues.
 
-/**
- * Venue shape returned by the Nuxt API to the client
- */
+// Venue shape returned by the Nuxt API to the client.
 export type VenueResponse = {
   id: string;
   name: string;
@@ -27,9 +23,7 @@ export type VenueResponse = {
   sunlightStatus?: 'sunny' | 'shaded' | 'partially_sunny';
 };
 
-/**
- * API response for venues endpoint
- */
+// API response shape for the venues endpoint.
 export type ApiResponse = {
   venues: VenueResponse[];
   sunPosition: {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { useSunlightStatus } from '~/composables/useSunlightStatus'
-import { SunlightStatus } from '~/shared/enums'
+import { useSunlightStatus } from '@/composables/useSunlightStatus'
+import { SunlightStatus } from '@/shared/enums'
 
 const {
   create,

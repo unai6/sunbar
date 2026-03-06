@@ -1,10 +1,8 @@
 import { ref } from 'vue'
 import type { SceneBaseMap } from '@/shared/types'
 
-/**
- * useMapView Composable
- * Manages MapView initialization, lifecycle, and interactions
- */
+// useMapView composable
+// Manages MapView (2D) initialization, lifecycle, and user interactions.
 export function useMapView() {
   const MIN_ZOOM = 100
   const MAX_ZOOM = 1

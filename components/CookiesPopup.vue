@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
 import { storeToRefs } from 'pinia'
-import { useCookieConsentStore } from '~/stores/cookieConsent'
+import { useCookieConsentStore } from '@/stores/cookieConsent'
 
 const { t } = useI18n()
 const store = useCookieConsentStore()

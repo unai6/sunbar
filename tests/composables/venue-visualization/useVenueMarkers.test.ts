@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { useVenueMarkers } from '~/composables/map-adapter/arcgis/useVenueMarkers'
-import { SunlightStatus } from '~/shared/enums'
-import type { Venue } from '~/shared/types'
+import { useVenueMarkers } from '@/composables/map-adapter/arcgis/useVenueMarkers'
+import { SunlightStatus } from '@/shared/enums'
+import type { Venue } from '@/shared/types'
 
 type MockGraphic = {
   geometry: MockPoint;

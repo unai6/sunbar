@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { VenueFilters } from '~/shared/types'
-import type { SunInfo } from '~/stores/sunInfo'
+import type { VenueFilters } from '@/shared/types'
+import type { SunInfo } from '@/stores/sunInfo'
 
 type Props = {
   loading: boolean

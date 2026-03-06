@@ -1,7 +1,5 @@
-/**
- * useMapBounds Composable
- * Manages map bounds emission with debouncing
- */
+// useMapBounds composable
+// Emits map bounds updates with debouncing to avoid excessive API calls.
 export function useMapBounds(
   webMercatorToGeographic: typeof import('@arcgis/core/geometry/support/webMercatorUtils').webMercatorToGeographic
 ) {

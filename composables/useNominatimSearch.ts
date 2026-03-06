@@ -1,10 +1,8 @@
 import { ref } from 'vue'
-import type { SearchResult } from '~/shared/types'
+import type { SearchResult } from '@/shared/types'
 
-/**
- * useNominatimSearch Composable
- * Search for places using server-side Nominatim geocoding API
- */
+// useNominatimSearch composable
+// Searches for places using the server-side Nominatim geocoding API.
 export function useNominatimSearch() {
   const searchResults = ref<SearchResult[]>([])
   const isSearching = ref(false)
@@ -13,11 +11,9 @@ export function useNominatimSearch() {
   const { public: { apiBaseUrl } } = useRuntimeConfig()
   const apiUrl = (path: string) => `${apiBaseUrl}${path}`
 
-  /**
-   * Search for a place by name
-   * @param query Search query (e.g., "La Rambla Barcelona", "Plaza Mayor Madrid")
-   * @returns Array of search results
-   */
+  // Search for a place by name.
+  // query: the search string, e.g. "La Rambla Barcelona" or "Plaza Mayor Madrid".
+  // Returns an array of search results.
   async function searchPlace(query: string): Promise<SearchResult[]> {
     if (!query || query.trim().length < 2) {
       searchResults.value = []
@@ -51,12 +47,8 @@ export function useNominatimSearch() {
     }
   }
 
-  /**
-   * Reverse geocode: get address from coordinates
-   * @param latitude Latitude
-   * @param longitude Longitude
-   * @returns Address string
-   */
+  // Reverse geocode: look up the address for a given latitude and longitude.
+  // Returns the address string, or null if the lookup fails.
   async function reverseGeocode(
     latitude: number,
     longitude: number
@@ -80,9 +72,7 @@ export function useNominatimSearch() {
     }
   }
 
-  /**
-   * Clear search results
-   */
+  // Clear search results and reset any error.
   function clearResults(): void {
     searchResults.value = []
     searchError.value = null

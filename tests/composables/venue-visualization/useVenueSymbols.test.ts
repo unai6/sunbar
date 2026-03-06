@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { useVenueSymbols } from '~/composables/map-adapter/arcgis/useVenueSymbols'
+import { useVenueSymbols } from '@/composables/map-adapter/arcgis/useVenueSymbols'
 
 type SimpleMarkerSymbolConfig = {
   size: number;

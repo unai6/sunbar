@@ -1,7 +1,5 @@
-/**
- * useVenueSymbols Composable
- * Creates marker symbols for sunny and shaded venues
- */
+// useVenueSymbols composable
+// Creates marker symbols for sunny and shaded venues.
 export function useVenueSymbols(
   SimpleMarkerSymbol: typeof import('@arcgis/core/symbols/SimpleMarkerSymbol').default
 ) {

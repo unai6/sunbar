@@ -1,16 +1,12 @@
-import type { SunlightStatusInfo, Venue } from '~/shared/types'
+import type { SunlightStatusInfo, Venue } from '@/shared/types'
 import { useSunlightStatus } from './useSunlightStatus'
 
-/**
- * useVenue Composable
- * Provides utilities for working with venues
- */
+// useVenue composable
+// Provides utility functions for working with individual venues.
 export function useVenue() {
   const { isSunny: isSunlightSunny } = useSunlightStatus()
 
-  /**
-   * Create a venue with validation
-   */
+  // Create a venue object, throwing if required fields are missing.
   function create(props: Venue): Venue {
     if (!props.id) {
       throw new Error('Venue must have an id')
@@ -21,23 +17,17 @@ export function useVenue() {
     return { ...props }
   }
 
-  /**
-   * Check if venue is sunny
-   */
+  // Return true if the venue is currently sunny.
   function isSunny(venue: Venue): boolean {
     return venue.sunlightStatus ? isSunlightSunny(venue.sunlightStatus) : false
   }
 
-  /**
-   * Check if venue has outdoor seating
-   */
+  // Return true if the venue has outdoor seating.
   function hasOutdoorSeating(venue: Venue): boolean {
     return venue.outdoor_seating === true
   }
 
-  /**
-   * Create a new venue with updated sunlight status
-   */
+  // Return a copy of the venue with an updated sunlight status.
   function withSunlightStatus(venue: Venue, status: SunlightStatusInfo): Venue {
     return { ...venue, sunlightStatus: status }
   }

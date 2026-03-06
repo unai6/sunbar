@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { useCoordinates } from '~/composables/useCoordinates'
-import { useSunInfo } from '~/composables/useSunInfo'
+import { useCoordinates } from '@/composables/useCoordinates'
+import { useSunInfo } from '@/composables/useSunInfo'
 
 const { create: createCoordinates } = useCoordinates()
 

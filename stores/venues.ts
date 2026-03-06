@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { useVenue } from '~/composables/useVenue'
-import type { ApiResponse, BoundingBox, Venue, VenueFilters } from '~/shared/types'
+import { useVenue } from '@/composables/useVenue'
+import type { ApiResponse, BoundingBox, Venue, VenueFilters } from '@/shared/types'
 
 export type BboxCacheEntry = {
   venues: Venue[]
@@ -11,11 +11,9 @@ export type BboxCacheEntry = {
 
 export const BBOX_CACHE_TTL_MS = 5 * 60 * 1000
 
-/**
- * Venues Store
- * Holds shared state for venues across the app
- * Business logic is handled in the useVenues composable
- */
+// Venues store
+// Holds shared venue state across the app.
+// Business logic lives in the useVenues composable.
 export const useVenuesStore = defineStore('venues', () => {
   const venue = useVenue()
 
@@ -50,9 +48,7 @@ export const useVenuesStore = defineStore('venues', () => {
     return result
   })
 
-  /**
-   * Add a single venue (e.g., from search results)
-   */
+  // Add a single venue to the list, for example from a search result.
   function addVenue(newVenue: Venue): void {
     // Check if venue already exists
     const existingIndex = venues.value.findIndex((v) => v.id === newVenue.id)
@@ -65,9 +61,7 @@ export const useVenuesStore = defineStore('venues', () => {
     }
   }
 
-  /**
-   * Remove a venue by ID
-   */
+  // Remove a venue from the list by its ID.
   function removeVenue(venueId: string): void {
     venues.value = venues.value.filter((v) => v.id !== venueId)
   }

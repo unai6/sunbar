@@ -1,5 +1,5 @@
 import { isTauri } from '@tauri-apps/api/core'
-import { BBOX_CACHE_TTL_MS, useVenuesStore, type BboxCacheEntry } from '~/stores/venues'
+import { BBOX_CACHE_TTL_MS, useVenuesStore, type BboxCacheEntry } from '@/stores/venues'
 
 export default defineNuxtPlugin(() => {
   if (!isTauri()) return
@@ -15,5 +15,6 @@ export default defineNuxtPlugin(() => {
     store.bboxCache = Object.fromEntries(
       Object.entries(parsed).filter(([, entry]) => now - entry.fetchedAt < BBOX_CACHE_TTL_MS)
     )
+  // eslint-disable-next-line no-empty
   } catch {}
 })

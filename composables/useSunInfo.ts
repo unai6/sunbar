@@ -1,7 +1,7 @@
 import SunCalc from 'suncalc'
 import { storeToRefs } from 'pinia'
-import type { Coordinates, SunPosition } from '~/shared/types'
-import { useSunInfoStore } from '~/stores/sunInfo'
+import type { Coordinates, SunPosition } from '@/shared/types'
+import { useSunInfoStore } from '@/stores/sunInfo'
 import { useCoordinates } from './useCoordinates'
 
 // --- Sun position utilities ---
@@ -48,10 +48,8 @@ function isDaytime(coordinates: Coordinates, datetime: Date): boolean {
 
 // --- Composable ---
 
-/**
- * useSunInfo Composable
- * Manages sun information state and provides sun calculation utilities
- */
+// useSunInfo composable
+// Manages sun information state and provides sun calculation utilities.
 export function useSunInfo() {
   const store = useSunInfoStore()
   const { sunInfo, selectedDateTime, currentLocation } = storeToRefs(store)

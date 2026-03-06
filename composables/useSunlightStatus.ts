@@ -1,14 +1,10 @@
-import { SunlightStatus } from '~/shared/enums'
-import type { SunlightStatusInfo } from '~/shared/types'
+import { SunlightStatus } from '@/shared/enums'
+import type { SunlightStatusInfo } from '@/shared/types'
 
-/**
- * useSunlightStatus Composable
- * Provides utilities for working with sunlight status
- */
+// useSunlightStatus composable
+// Provides utility functions for creating and checking sunlight status values.
 export function useSunlightStatus() {
-  /**
-   * Create a sunlight status with clamped confidence
-   */
+  // Create a sunlight status object. The confidence value is clamped to the 0–1 range.
   function create(
     status: SunlightStatus,
     confidence: number,
@@ -18,9 +14,7 @@ export function useSunlightStatus() {
     return { status, confidence: clampedConfidence, reason }
   }
 
-  /**
-   * Create a sunny status
-   */
+  // Create a sunny status object.
   function createSunny(
     confidence: number = 1,
     reason?: string
@@ -28,9 +22,7 @@ export function useSunlightStatus() {
     return create(SunlightStatus.SUNNY, confidence, reason)
   }
 
-  /**
-   * Create a shaded status
-   */
+  // Create a shaded status object.
   function createShaded(
     confidence: number = 1,
     reason?: string
@@ -38,9 +30,7 @@ export function useSunlightStatus() {
     return create(SunlightStatus.SHADED, confidence, reason)
   }
 
-  /**
-   * Create a partially sunny status
-   */
+  // Create a partially sunny status object.
   function createPartiallySunny(
     confidence: number = 0.5,
     reason?: string
@@ -48,16 +38,12 @@ export function useSunlightStatus() {
     return create(SunlightStatus.PARTIALLY_SUNNY, confidence, reason)
   }
 
-  /**
-   * Create a night status
-   */
+  // Create a night status object (sun is below the horizon).
   function createNight(): SunlightStatusInfo {
     return create(SunlightStatus.NIGHT, 1, 'Sun is below the horizon')
   }
 
-  /**
-   * Create an unknown status
-   */
+  // Create an unknown status object.
   function createUnknown(reason?: string): SunlightStatusInfo {
     return create(
       SunlightStatus.UNKNOWN,
@@ -66,9 +52,7 @@ export function useSunlightStatus() {
     )
   }
 
-  /**
-   * Check if status is sunny or partially sunny
-   */
+  // Return true if the status is sunny or partially sunny.
   function isSunny(status: SunlightStatusInfo): boolean {
     return (
       status.status === SunlightStatus.SUNNY ||
@@ -76,16 +60,12 @@ export function useSunlightStatus() {
     )
   }
 
-  /**
-   * Check if status is shaded
-   */
+  // Return true if the status is shaded.
   function isShaded(status: SunlightStatusInfo): boolean {
     return status.status === SunlightStatus.SHADED
   }
 
-  /**
-   * Check if it's nighttime
-   */
+  // Return true if the status is night.
   function isNight(status: SunlightStatusInfo): boolean {
     return status.status === SunlightStatus.NIGHT
   }

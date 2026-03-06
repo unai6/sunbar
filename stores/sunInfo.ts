@@ -16,11 +16,9 @@ export type SunInfo = {
   isDaytime: boolean
 }
 
-/**
- * Sun Info Store
- * Holds shared state for sun information across the app
- * Business logic is handled in the useSunInfo composable
- */
+// Sun Info store
+// Holds shared sun information state across the app.
+// Business logic lives in the useSunInfo composable.
 export const useSunInfoStore = defineStore('sunInfo', () => {
   const sunInfo = ref<SunInfo | null>(null)
   const selectedDateTime = ref<Date>(new Date())

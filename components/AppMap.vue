@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Dialog from 'primevue/dialog'
-import { useMapGateway } from '~/composables/map-adapter/useMapGateway'
-import { VenueErrorCode } from '~/shared/enums'
+import { useMapGateway } from '@/composables/map-adapter/useMapGateway'
+import { VenueErrorCode } from '@/shared/enums'
 
 enum ToastSeverity {
   ERROR = 'error',

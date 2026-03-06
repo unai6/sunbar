@@ -1,7 +1,5 @@
-/**
- * useUserLocationMarker Composable
- * Manages the user's location marker on the map
- */
+// useUserLocationMarker composable
+// Manages the user's location marker on the map.
 export function useUserLocationMarker(
   Graphic: typeof import('@arcgis/core/Graphic').default,
   Point: typeof import('@arcgis/core/geometry/Point').default,

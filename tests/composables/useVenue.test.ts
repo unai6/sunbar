@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { useCoordinates } from '~/composables/useCoordinates'
-import { useSunlightStatus } from '~/composables/useSunlightStatus'
-import { useVenue } from '~/composables/useVenue'
-import type { VenueType } from '~/shared/types'
+import { useCoordinates } from '@/composables/useCoordinates'
+import { useSunlightStatus } from '@/composables/useSunlightStatus'
+import { useVenue } from '@/composables/useVenue'
+import type { VenueType } from '@/shared/types'
 
 const { create: createCoordinates } = useCoordinates()
 const { createSunny: createSunnyStatus } = useSunlightStatus()

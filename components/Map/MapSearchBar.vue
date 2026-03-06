@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AutoComplete from 'primevue/autocomplete'
-import type { SearchResult } from '~/shared/types'
+import type { SearchResult } from '@/shared/types'
 
 const emit = defineEmits<{
   'place-selected': [result: SearchResult]

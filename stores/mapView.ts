@@ -3,22 +3,20 @@ import { ref } from 'vue'
 
 export type MapViewMode = '2d' | '3d';
 
-/**
- * ArcGIS SceneView needs WebGL2 + working RGBA16F texture allocation for its
- * HDR deferred rendering pipeline. Android emulators (gfxstream virtual GPU)
- * report WebGL2 as available but reject glTexImage2D with RGBA16F, producing
- * GL_INVALID_ENUM (0x500) and leaving SceneView in a blank broken state.
- * Real devices with actual GPUs handle RGBA16F natively. We probe the texture
- * allocation directly so the emulator is caught and 3D is suppressed there,
- * while real devices and browsers pass the check and show the toggle.
- */
+// ArcGIS SceneView requires WebGL2 and a working RGBA16F texture allocation for
+// its HDR deferred rendering pipeline. Android emulators (gfxstream virtual GPU)
+// report WebGL2 as available but silently reject glTexImage2D with RGBA16F,
+// producing GL_INVALID_ENUM (0x500) and leaving SceneView blank and broken.
+// Real devices with proper GPUs handle RGBA16F natively. We probe the texture
+// allocation directly so emulators are detected and 3D mode is disabled for them,
+// while real devices and desktop browsers pass the check and can use the toggle.
 function checkWebGL2Support(): boolean {
   try {
     const canvas = document.createElement('canvas')
     const gl = canvas.getContext('webgl2')
     if (!gl) return false
 
-    // Probe RGBA16F texture creation — the exact format ArcGIS SceneView
+    // Probe RGBA16F texture creation, which is the exact format ArcGIS SceneView
     // allocates for its HDR framebuffer. Emulator gfxstream rejects this with
     // GL_INVALID_ENUM; real device GPUs accept it without error.
     const texture = gl.createTexture()

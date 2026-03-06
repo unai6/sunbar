@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 
 export default defineConfig({
   plugins: [vue()],
@@ -11,12 +11,11 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      include: ['domain/**', 'application/**', 'infrastructure/**', 'composables/**']
+      include: ['composables/**']
     }
   },
   resolve: {
     alias: {
-      '~': resolve(__dirname, './'),
       '@': resolve(__dirname, './')
     }
   }

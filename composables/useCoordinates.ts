@@ -1,13 +1,9 @@
-import type { Coordinates } from '~/shared/types'
+import type { Coordinates } from '@/shared/types'
 
-/**
- * useCoordinates Composable
- * Provides utilities for working with geographic coordinates
- */
+// useCoordinates composable
+// Provides utility functions for creating and working with geographic coordinates.
 export function useCoordinates() {
-  /**
-   * Create coordinates with validation
-   */
+  // Create a Coordinates object, throwing if the values are out of range.
   function create(latitude: number, longitude: number): Coordinates {
     if (latitude < -90 || latitude > 90) {
       throw new Error('Latitude must be between -90 and 90')
@@ -18,30 +14,22 @@ export function useCoordinates() {
     return { latitude, longitude }
   }
 
-  /**
-   * Convert coordinates to [lat, lng] array
-   */
+  // Convert coordinates to a [lat, lng] tuple.
   function toArray(coords: Coordinates): [number, number] {
     return [coords.latitude, coords.longitude]
   }
 
-  /**
-   * Convert coordinates to {lat, lng} object
-   */
+  // Convert coordinates to a { lat, lng } object.
   function toLatLng(coords: Coordinates): { lat: number; lng: number } {
     return { lat: coords.latitude, lng: coords.longitude }
   }
 
-  /**
-   * Check if two coordinates are equal
-   */
+  // Return true if two coordinate objects have identical latitude and longitude values.
   function areEqual(a: Coordinates, b: Coordinates): boolean {
     return a.latitude === b.latitude && a.longitude === b.longitude
   }
 
-  /**
-   * Calculate distance between two coordinates in meters using Haversine formula
-   */
+  // Calculate the distance in meters between two coordinate points using the Haversine formula.
   function calculateDistance(from: Coordinates, to: Coordinates): number {
     const earthRadiusMeters = 6371e3
     const latitudeFromRadians = (from.latitude * Math.PI) / 180

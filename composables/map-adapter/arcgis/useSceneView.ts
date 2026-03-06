@@ -1,10 +1,8 @@
 import { ref } from 'vue'
 import type { SceneBaseMap } from '@/shared/types'
 
-/**
- * useSceneView Composable
- * Manages SceneView (3D) initialization, lifecycle, and interactions
- */
+// useSceneView composable
+// Manages SceneView (3D) initialization, lifecycle, and user interactions.
 
 export function useSceneView() {
   const FLY_TO_DURATION_MS = 1000
