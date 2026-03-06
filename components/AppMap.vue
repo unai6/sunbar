@@ -12,7 +12,10 @@ const toast = useToast()
 const { t } = useI18n()
 
 const showVenuesDrawer = ref(false)
+const showContributeDialog = ref(false)
 const showCreateVenueDialog = ref(false)
+const isPinDropMode = ref(false)
+const pinCoordinates = ref<{ latitude: number; longitude: number } | null>(null)
 
 const TOAST_DURATION_MS = 5000
 
@@ -113,6 +116,20 @@ async function handleVenueCreated(): Promise<void> {
   await handleSearch()
   showCreateVenueDialog.value = false
 }
+
+function handleStartCreateVenue(): void {
+  isPinDropMode.value = true
+}
+
+function handlePinConfirm(): void {
+  pinCoordinates.value = { latitude: mapCenter.value[0], longitude: mapCenter.value[1] }
+  isPinDropMode.value = false
+  showCreateVenueDialog.value = true
+}
+
+function handlePinCancel(): void {
+  isPinDropMode.value = false
+}
 </script>
 
 <template>
@@ -122,7 +139,7 @@ async function handleVenueCreated(): Promise<void> {
       :loading="loading"
       :venues-count="filteredVenues.length"
       @search="handleSearch"
-      @show-create-dialog="showCreateVenueDialog = true"
+      @contribute="showContributeDialog = true"
       @show-venues="showVenuesDrawer = true"
     />
 
@@ -184,11 +201,20 @@ async function handleVenueCreated(): Promise<void> {
           />
         </ClientOnly>
 
-        <!-- Create Venue Floating Button (Desktop Only) -->
+        <!-- Pin Drop Overlay -->
+        <PinDropOverlay
+          :visible="isPinDropMode"
+          @confirm="handlePinConfirm"
+          @cancel="handlePinCancel"
+        />
+
+        <!-- Contribute Floating Button (Desktop Only) -->
         <div class="hidden lg:block absolute z-[200] bottom-6 right-6">
-          <CreateVenueButton
+          <ContributeButton
+            v-if="!isPinDropMode"
+            v-model="showContributeDialog"
             variant="desktop"
-            @show-create-dialog="showCreateVenueDialog = true"
+            @click="showContributeDialog = true"
           />
         </div>
 
@@ -231,10 +257,16 @@ async function handleVenueCreated(): Promise<void> {
       <VenueDetail v-if="selectedVenue" :venue="selectedVenue" />
     </Dialog>
 
+    <!-- Contribute Dialog -->
+    <ContributeDialog
+      v-model="showContributeDialog"
+      @create-venue="handleStartCreateVenue"
+    />
+
     <!-- Create Venue Dialog -->
     <CreateVenueDialog
-      v-model:visible="showCreateVenueDialog"
-      :initial-coordinates="{ latitude: mapCenter[1], longitude: mapCenter[0] }"
+      v-model="showCreateVenueDialog"
+      :initial-coordinates="pinCoordinates ?? { latitude: mapCenter[0], longitude: mapCenter[1] }"
       @venue-created="handleVenueCreated"
     />
   </div>

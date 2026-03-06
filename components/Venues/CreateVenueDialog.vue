@@ -8,13 +8,16 @@ import Textarea from 'primevue/textarea'
 import { ZodError } from 'zod'
 import { createVenueDefaults, createVenueSchema, type CreateVenueInput } from '@/shared/schemas/venue.schema'
 
+const isOpen = defineModel<boolean>({
+  type: Boolean,
+  required: true
+})
+
 const props = defineProps<{
-  visible: boolean
   initialCoordinates?: { latitude: number; longitude: number }
 }>()
 
 const emit = defineEmits<{
-  'update:visible': [value: boolean]
   'venue-created': []
 }>()
 
@@ -153,27 +156,17 @@ function handleClose(): void {
   latitudeInput.value = ''
   longitudeInput.value = ''
   errors.value = {}
-  emit('update:visible', false)
-}
-
-function useCurrentMapCenter(): void {
-  if (props.initialCoordinates) {
-    formData.value.latitude = props.initialCoordinates.latitude
-    formData.value.longitude = props.initialCoordinates.longitude
-    latitudeInput.value = props.initialCoordinates.latitude.toString()
-    longitudeInput.value = props.initialCoordinates.longitude.toString()
-  }
+  isOpen.value = false
 }
 </script>
 
 <template>
   <Dialog
-    :visible="visible"
+    v-model:visible="isOpen"
     modal
     :closable="true"
     :draggable="false"
     class="w-full max-w-2xl mx-4"
-    @update:visible="emit('update:visible', $event)"
   >
     <template #header>
       <div class="flex items-center gap-2">
@@ -183,82 +176,38 @@ function useCurrentMapCenter(): void {
 
     <form class="space-y-4" @submit.prevent="handleSubmit">
       <!-- Venue Name -->
-      <div>
-        <label for="venue-name" class="block text-sm font-medium text-gray-700 mb-1">
-          {{ t('venueForm.label.name') }} <span class="text-red-500">*</span>
-        </label>
-        <InputText
-          id="venue-name"
-          v-model="formData.name"
-          class="w-full"
-          :class="{ 'p-invalid': errors.name }"
-          @blur="validateField('name')"
-        />
-        <small v-if="errors.name" class="text-red-500">{{ t(errors.name) }}</small>
-      </div>
-
-      <!-- Venue Type -->
-      <div>
-        <label for="venue-type" class="block text-sm font-medium text-gray-700 mb-1">
-          {{ t('venueForm.label.type') }} <span class="text-red-500">*</span>
-        </label>
-        <Select
-          id="venue-type"
-          v-model="formData.venueType"
-          class="w-full"
-          :options="venueTypes"
-          :class="{ 'p-invalid': errors.venueType }"
-          option-label="label"
-          option-value="value"
-        />
-        <small v-if="errors.venueType" class="text-red-500">{{ t(errors.venueType) }}</small>
-      </div>
-
-      <!-- Coordinates -->
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label for="latitude" class="block text-sm font-medium text-gray-700 mb-1">
-            {{ t('venueForm.label.latitude') }} <span class="text-red-500">*</span>
+          <label for="venue-name" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ t('venueForm.label.name') }} <span class="text-red-500">*</span>
           </label>
           <InputText
-            id="latitude"
-            v-model="latitudeInput"
+            id="venue-name"
+            v-model="formData.name"
             class="w-full"
-            type="number"
-            step="0.000001"
-            :class="{ 'p-invalid': errors.latitude }"
-            @blur="validateField('latitude')"
+            :class="{ 'p-invalid': errors.name }"
+            @blur="validateField('name')"
           />
-          <small v-if="errors.latitude" class="text-red-500">{{ t(errors.latitude) }}</small>
+          <small v-if="errors.name" class="text-red-500">{{ t(errors.name) }}</small>
         </div>
 
+        <!-- Venue Type -->
         <div>
-          <label for="longitude" class="block text-sm font-medium text-gray-700 mb-1">
-            {{ t('venueForm.label.longitude') }} <span class="text-red-500">*</span>
+          <label for="venue-type" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ t('venueForm.label.type') }} <span class="text-red-500">*</span>
           </label>
-          <InputText
-            id="longitude"
-            v-model="longitudeInput"
+          <Select
+            id="venue-type"
+            v-model="formData.venueType"
             class="w-full"
-            type="number"
-            step="0.000001"
-            :class="{ 'p-invalid': errors.longitude }"
-            @blur="validateField('longitude')"
+            :options="venueTypes"
+            :class="{ 'p-invalid': errors.venueType }"
+            option-label="label"
+            option-value="value"
           />
-          <small v-if="errors.longitude" class="text-red-500">{{ t(errors.longitude) }}</small>
+          <small v-if="errors.venueType" class="text-red-500">{{ t(errors.venueType) }}</small>
         </div>
       </div>
-
-      <Button
-        size="small"
-        severity="secondary"
-        outlined
-        type="button"
-        @click="useCurrentMapCenter"
-      >
-        <i class="pi pi-map-marker mr-2" />
-        {{ t('venueForm.action.useMapCenter') }}
-      </Button>
 
       <!-- Outdoor Seating -->
       <div class="flex items-center gap-2">
@@ -272,40 +221,42 @@ function useCurrentMapCenter(): void {
         </label>
       </div>
 
-      <!-- Phone -->
-      <div>
-        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
-          {{ t('venueForm.label.phone') }}
-        </label>
-        <InputText
-          id="phone"
-          v-model="formData.phone"
-          class="w-full"
-          type="tel"
-          placeholder="+34 123 456 789"
-          :class="{ 'p-invalid': errors.phone }"
-          @blur="validateField('phone')"
-        />
-        <small v-if="errors.phone" class="text-red-500">{{ t(errors.phone) }}</small>
-      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <!-- Phone -->
+        <div>
+          <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ t('venueForm.label.phone') }}
+          </label>
+          <InputText
+            id="phone"
+            v-model="formData.phone"
+            class="w-full"
+            type="tel"
+            placeholder="+34 123 456 789"
+            :class="{ 'p-invalid': errors.phone }"
+            @blur="validateField('phone')"
+          />
+          <small v-if="errors.phone" class="text-red-500">{{ t(errors.phone) }}</small>
+        </div>
 
-      <!-- Website -->
-      <div>
-        <label for="website" class="block text-sm font-medium text-gray-700 mb-1">
-          {{ t('venueForm.label.website') }}
-        </label>
-        <InputText
-          id="website"
-          v-model="formData.website"
-          class="w-full"
-          type="url"
-          placeholder="https://example.com"
-          :class="{ 'p-invalid': errors.website }"
-          @blur="validateField('website')"
-        />
-        <small v-if="errors.website" class="text-red-500">{{ t(errors.website) }}</small>
-      </div>
+        <!-- Website -->
+        <div>
+          <label for="website" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ t('venueForm.label.website') }}
+          </label>
+          <InputText
+            id="website"
+            v-model="formData.website"
+            class="w-full"
+            type="url"
+            placeholder="https://example.com"
+            :class="{ 'p-invalid': errors.website }"
+            @blur="validateField('website')"
+          />
+          <small v-if="errors.website" class="text-red-500">{{ t(errors.website) }}</small>
+        </div>
 
+      </div>
       <!-- Opening Hours -->
       <div>
         <label for="opening-hours" class="block text-sm font-medium text-gray-700 mb-1">

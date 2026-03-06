@@ -34,6 +34,7 @@
       "search": "Search",
       "locate": "Locate",
       "create": "Create",
+      "contribute": "Contribute",
       "venues": "Venues",
       "settings": "Settings"
     },
@@ -175,7 +176,8 @@
       "accept": "Accept",
       "cancel": "Cancel",
       "create": "Create",
-      "close": "Close"
+      "close": "Close",
+      "contribute": "Contribute"
     },
     "label": {
       "loading": "Loading...",
@@ -224,6 +226,18 @@
     },
     "link": {
       "privacy": "Privacy Policy"
+    }
+  },
+  "contribute": {
+    "title": "Contribute",
+    "description": "Help improve SunBar by adding or updating venue information.",
+    "action": {
+      "createVenue": "Add a new venue",
+      "createVenueHint": "Drop a pin on the map to set the location"
+    },
+    "pinDrop": {
+      "instruction": "Move the map to position the pin, then confirm.",
+      "confirm": "Place here"
     }
   },
   "privacy": {

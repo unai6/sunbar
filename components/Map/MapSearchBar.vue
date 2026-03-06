@@ -51,7 +51,7 @@ function handleClear(): void {
       :min-length="2"
       append-to="self"
       fluid
-      input-class="w-full px-4 py-1 text-sm rounded-kg border border-gray-200 shadow-sm focus:border-amber-600 focus:ring-2 focus:ring-amber-600/10 focus:outline-none"
+      input-class="w-full px-4 py-2 text-sm rounded-kg border border-gray-200 shadow-sm focus:border-amber-600 focus:ring-2 focus:ring-amber-600/10 focus:outline-none"
       panel-class="!w-full mt-2 rounded-xl shadow-lg border-0 overflow-hidden"
       @complete="handleSearch"
       @item-select="handleSelect"

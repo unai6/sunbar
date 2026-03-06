@@ -34,6 +34,7 @@
       "search": "Buscar",
       "locate": "Ubicar",
       "create": "Crear",
+      "contribute": "Contribuir",
       "venues": "Lugares",
       "settings": "Ajustes"
     },
@@ -102,7 +103,7 @@
   },
   "venueForm": {
     "title": {
-      "createVenue": "Contribuir"
+      "createVenue": "Crear"
     },
     "label": {
       "name": "Nombre del Local",
@@ -175,7 +176,8 @@
       "accept": "Aceptar",
       "cancel": "Cancelar",
       "create": "Crear",
-      "close": "Cerrar"
+      "close": "Cerrar",
+      "contribute": "Contribuir"
     },
     "label": {
       "loading": "Cargando...",
@@ -224,6 +226,18 @@
     },
     "link": {
       "privacy": "Política de Privacidad"
+    }
+  },
+  "contribute": {
+    "title": "Contribuir",
+    "description": "Ayuda a mejorar SunBar añadiendo o actualizando información de locales.",
+    "action": {
+      "createVenue": "Añadir un nuevo local",
+      "createVenueHint": "Coloca un pin en el mapa para fijar la ubicación"
+    },
+    "pinDrop": {
+      "instruction": "Mueve el mapa para posicionar el pin y luego confirma.",
+      "confirm": "Colocar aquí"
     }
   },
   "privacy": {

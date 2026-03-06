@@ -34,6 +34,7 @@
       "search": "Cercar",
       "locate": "Ubicar",
       "create": "Crear",
+      "contribute": "Contribuir",
       "venues": "Llocs",
       "settings": "Ajustos"
     },
@@ -175,7 +176,8 @@
       "accept": "Acceptar",
       "cancel": "Cancel·lar",
       "create": "Crear",
-      "close": "Tancar"
+      "close": "Tancar",
+      "contribute": "Contribuir"
     },
     "label": {
       "loading": "Carregant...",
@@ -224,6 +226,18 @@
     },
     "link": {
       "privacy": "Política de Privacitat"
+    }
+  },
+  "contribute": {
+    "title": "Contribuir",
+    "description": "Ajuda a millorar SunBar afegint o actualitzant informació de locals.",
+    "action": {
+      "createVenue": "Afegir un nou local",
+      "createVenueHint": "Col·loca un pin al mapa per fixar la ubicació"
+    },
+    "pinDrop": {
+      "instruction": "Mou el mapa per posicionar el pin i després confirma.",
+      "confirm": "Col·locar aquí"
     }
   },
   "privacy": {
