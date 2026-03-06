@@ -13,6 +13,7 @@
     ".output",
     "dist",
     ".data",
+    ".claude",
     ".netlify",
     "src-tauri"
   ]
