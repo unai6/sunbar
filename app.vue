@@ -3,6 +3,13 @@ import 'primeicons/primeicons.css'
 import Toast from 'primevue/toast'
 
 const { t } = useI18n()
+const i18nHead = useLocaleHead({ seo: true })
+
+useHead(() => ({
+  htmlAttrs: i18nHead.value.htmlAttrs,
+  link: [...(i18nHead.value.link || [])],
+  meta: [...(i18nHead.value.meta || [])]
+}))
 
 useHead({
   title: () => t('app.title.main'),

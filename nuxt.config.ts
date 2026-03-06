@@ -39,10 +39,9 @@ export default defineNuxtConfig({
     indexable: process.env.NUXT_SITE_ENV === 'production'
   },
 
-  sitemap: {
-    autoLastmod: true
+  robots: {
+    blockNonSeoRobots: true
   },
-
   i18n: {
     locales: [
       { code: 'es', name: 'Español', file: 'es.json' },
