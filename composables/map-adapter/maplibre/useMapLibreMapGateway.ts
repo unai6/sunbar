@@ -16,13 +16,7 @@ const BOUNDS_DEBOUNCE_MS = 500
 const PITCH_3D = 60
 const PITCH_2D = 0
 
-// useMapLibreMapGateway
 // IMapGateway implementation backed by MapLibre GL JS and OpenStreetMap tiles.
-// MapLibre uses WebGL1, which avoids the RGBA16F float-texture requirement that
-// causes ArcGIS SceneView to fail on Android System WebView.
-// 3D buildings come from OSM building extrusions already embedded in the
-// OpenFreeMap liberty vector-tile style. Switching between 2D and 3D simply
-// adjusts the camera pitch — no layer swapping is needed.
 export function useMapLibreMapGateway(): IMapGateway {
   const { isSunny } = useVenue()
   const mapViewStore = useMapViewStore()
@@ -45,8 +39,6 @@ export function useMapLibreMapGateway(): IMapGateway {
   watch(viewMode, (mode) => {
     map?.easeTo({ pitch: mode === '3d' ? PITCH_3D : PITCH_2D, duration: FLY_DURATION_MS })
   })
-
-  // ─── Internal helpers ────────────────────────────────────────────────────
 
   function scheduleBoundsEmit(): void {
     if (boundsTimer) clearTimeout(boundsTimer)
@@ -105,7 +97,7 @@ export function useMapLibreMapGateway(): IMapGateway {
       data: { type: 'FeatureCollection', features: [] }
     })
 
-    // Sunny venues — amber circle matching ArcGIS symbol colours
+    // Sunny venues: amber circle matching ArcGIS symbol colours
     map.addLayer({
       id: 'venues-sunny',
       type: 'circle',
@@ -119,7 +111,7 @@ export function useMapLibreMapGateway(): IMapGateway {
       }
     })
 
-    // Shaded venues — grey circle
+    // Shaded venues: grey circle
     map.addLayer({
       id: 'venues-shaded',
       type: 'circle',
@@ -144,8 +136,6 @@ export function useMapLibreMapGateway(): IMapGateway {
       map.on('mouseleave', layer, () => { if (map) map.getCanvas().style.cursor = '' })
     }
   }
-
-  // ─── IMapGateway implementation ──────────────────────────────────────────
 
   async function initialize(
     container: HTMLDivElement,
@@ -210,7 +200,7 @@ export function useMapLibreMapGateway(): IMapGateway {
   }
 
   function closePopups(): void {
-    // MapLibre popups are not used — venue clicks emit events directly
+    // MapLibre popups are not used, venue clicks emit events directly
   }
 
   function updateVenueMarkers(venues: Venue[]): void {
@@ -226,7 +216,7 @@ export function useMapLibreMapGateway(): IMapGateway {
       return
     }
 
-    // Custom pin DOM element matching the ArcGIS user-location symbol style
+    // Custom pin DOM element matching the ArcGIS user location symbol style
     const el = document.createElement('div')
     el.style.cssText = [
       'width:20px', 'height:20px', 'border-radius:50%',

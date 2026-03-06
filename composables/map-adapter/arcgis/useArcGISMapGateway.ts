@@ -12,10 +12,7 @@ import { useMapBounds } from './useMapBounds'
 import { useVenue } from '@/composables/useVenue'
 import { useMapViewStore } from '@/stores/mapView'
 
-// useArcGISMapGateway
 // IMapGateway implementation backed by the ArcGIS Maps SDK.
-// Manages both the 2D MapView and the 3D SceneView, switching between
-// them reactively when the viewMode in the mapView store changes.
 export function useArcGISMapGateway(): IMapGateway {
   const { isSunny } = useVenue()
   const { loadModules } = useArcGISModules()
@@ -24,10 +21,10 @@ export function useArcGISMapGateway(): IMapGateway {
   const mapViewStore = useMapViewStore()
   const { viewMode } = storeToRefs(mapViewStore)
 
-  // ArcGIS module references — populated after the first loadModules() call
+  // ArcGIS module references: populated after the first loadModules() call
   let arcGISModules: Awaited<ReturnType<typeof loadModules>> | null = null
 
-  // Marker / bounds helpers — initialised after modules are loaded
+  // Marker / bounds helpers: initialised after modules are loaded
   let venueMarkers: ReturnType<typeof useVenueMarkers> | null = null
   let userLocationMarker: ReturnType<typeof useUserLocationMarker> | null = null
   let mapBounds: ReturnType<typeof useMapBounds> | null = null
@@ -38,7 +35,7 @@ export function useArcGISMapGateway(): IMapGateway {
   let storedZoom: number = 12
   let storedCallbacks: MapCallbacks | null = null
 
-  // Last known venue list — restored to the new view after a mode switch
+  // Last known venue list: restored to the new view after a mode switch
   let storedVenues: Venue[] = []
 
   // Loading reflects the active view's own loading flag
