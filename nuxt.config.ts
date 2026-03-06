@@ -73,8 +73,8 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      // Required: all API calls go to sunbar-api (NUXT_PUBLIC_API_BASE_URL must be set)
-      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || ''
+      // Overridden at runtime by NUXT_PUBLIC_API_BASE_URL env var
+      apiBaseUrl: ''
     }
   },
 
@@ -170,7 +170,7 @@ export default defineNuxtConfig({
     }
   },
 
-  ssr: false,
+  ssr: true,
 
   compatibilityDate: '2024-09-01',
 

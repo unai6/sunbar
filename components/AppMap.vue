@@ -25,39 +25,14 @@ const ERROR_TOAST_MAP: Record<VenueErrorCode, { severity: ToastSeverity; key: st
   [VenueErrorCode.FETCH_FAILED]: { severity: ToastSeverity.ERROR, key: 'toast.error.fetchVenues' }
 }
 
-const {
-  loading,
-  filters,
-  sunnyVenues,
-  shadedVenues,
-  filteredVenues,
-  sunInfo,
-  selectedDateTime,
-  mapRef,
-  mapCenter,
-  mapZoom,
-  selectedVenueId,
-  selectedVenue,
-  showVenueDetail,
-  handleSearch: search,
-  handleBoundsChanged,
-  handleDateTimeUpdate: updateDateTime,
-  handleFilterUpdate: updateFilters,
-  handleVenueClick,
-  handleVenueSelect,
-  handleLocateMe,
-  handleMapReady,
-  initialize,
-  userLocation,
-  isAtUserLocation
-} = useMapExplorer()
+const mapExplorer = useMapExplorer()
 
 const gateway = useMapGateway()
 
-const isNight = computed(() => sunInfo.value !== null && !sunInfo.value.isDaytime)
+const isNight = computed(() => mapExplorer.sunInfo.value !== null && !mapExplorer.sunInfo.value.isDaytime)
 
 onMounted(async () => {
-  await initialize()
+  await mapExplorer.initialize()
 })
 
 function showVenueError(errorCode: VenueErrorCode): void {
@@ -71,22 +46,22 @@ function showVenueError(errorCode: VenueErrorCode): void {
 }
 
 async function handleSearch(): Promise<void> {
-  const errorCode = await search()
+  const errorCode = await mapExplorer.handleSearch()
   if (errorCode) showVenueError(errorCode)
 }
 
 async function handleDateTimeUpdate(datetime: Date): Promise<void> {
-  const errorCode = await updateDateTime(datetime)
+  const errorCode = await mapExplorer.handleDateTimeUpdate(datetime)
   if (errorCode) showVenueError(errorCode)
 }
 
-async function handleFilterUpdate(newFilters: Parameters<typeof updateFilters>[0]): Promise<void> {
-  const errorCode = await updateFilters(newFilters)
+async function handleFilterUpdate(newFilters: Parameters<typeof mapExplorer.handleFilterUpdate>[0]): Promise<void> {
+  const errorCode = await mapExplorer.handleFilterUpdate(newFilters)
   if (errorCode) showVenueError(errorCode)
 }
 
 async function onLocateMe(): Promise<void> {
-  const { error } = await attempt(() => handleLocateMe())
+  const { error } = await attempt(() => mapExplorer.handleLocateMe())
   if (error) {
     console.error('Geolocation error:', error)
 
@@ -122,7 +97,7 @@ function handleStartCreateVenue(): void {
 }
 
 function handlePinConfirm(): void {
-  pinCoordinates.value = { latitude: mapCenter.value[0], longitude: mapCenter.value[1] }
+  pinCoordinates.value = { latitude: mapExplorer.mapCenter.value[0], longitude: mapExplorer.mapCenter.value[1] }
   isPinDropMode.value = false
   showCreateVenueDialog.value = true
 }
@@ -136,8 +111,8 @@ function handlePinCancel(): void {
   <div class="relative h-full">
     <!-- Mobile Bottom Action Bar -->
     <MobileBottomActionBar
-      :loading="loading"
-      :venues-count="filteredVenues.length"
+      :loading="mapExplorer.loading.value"
+      :venues-count="mapExplorer.filteredVenues.value.length"
       @search="handleSearch"
       @contribute="showContributeDialog = true"
       @show-venues="showVenuesDrawer = true"
@@ -146,10 +121,10 @@ function handlePinCancel(): void {
     <!-- Mobile Venues Bottom Drawer -->
     <MobileVenuesDrawer
       v-model:visible="showVenuesDrawer"
-      :venues="filteredVenues"
-      :selected-venue-id="selectedVenueId"
-      :loading="loading"
-      @venue-select="handleVenueSelect"
+      :venues="mapExplorer.filteredVenues.value"
+      :selected-venue-id="mapExplorer.selectedVenueId.value"
+      :loading="mapExplorer.loading.value"
+      @venue-select="mapExplorer.handleVenueSelect"
     />
 
     <!-- Desktop Layout -->
@@ -157,13 +132,13 @@ function handlePinCancel(): void {
       <!-- Control Panel (desktop only) -->
       <aside class="hidden lg:block border-r border-gray-200 overflow-y-auto" aria-label="Search controls">
         <ControlPanel
-          :loading="loading"
-          :venues-count="filteredVenues.length"
-          :sunny-count="sunnyVenues.length"
-          :shaded-count="shadedVenues.length"
-          :sun-info="sunInfo"
-          :selected-date-time="selectedDateTime"
-          :filters="filters"
+          :loading="mapExplorer.loading.value"
+          :venues-count="mapExplorer.filteredVenues.value.length"
+          :sunny-count="mapExplorer.sunnyVenues.value.length"
+          :shaded-count="mapExplorer.shadedVenues.value.length"
+          :sun-info="mapExplorer.sunInfo.value"
+          :selected-date-time="mapExplorer.selectedDateTime.value"
+          :filters="mapExplorer.filters.value"
           @search="handleSearch"
           @update-datetime="handleDateTimeUpdate"
           @update-filters="handleFilterUpdate"
@@ -176,7 +151,7 @@ function handlePinCancel(): void {
         class="relative h-full pb-[calc(4rem_+_env(safe-area-inset-bottom,0px))] lg:pb-0"
       >
         <div
-          v-if="loading"
+          v-if="mapExplorer.loading.value"
           class="absolute inset-0 flex items-center justify-center z-10 transition-colors"
           :class="isNight ? 'bg-slate-900/80' : 'bg-white/80'"
         >
@@ -186,18 +161,18 @@ function handlePinCancel(): void {
 
         <ClientOnly>
           <MapExplorer
-            ref="mapRef"
+            :ref="mapExplorer.mapRef"
             :gateway="gateway"
-            :venues="filteredVenues"
-            :center="mapCenter"
-            :zoom="mapZoom"
-            :selected-date-time="selectedDateTime"
-            :is-user-located="!!userLocation"
-            :is-at-user-location="isAtUserLocation"
-            @bounds-changed="handleBoundsChanged"
-            @venue-click="handleVenueClick"
+            :venues="mapExplorer.filteredVenues.value"
+            :center="mapExplorer.mapCenter.value"
+            :zoom="mapExplorer.mapZoom.value"
+            :selected-date-time="mapExplorer.selectedDateTime.value"
+            :is-user-located="!!mapExplorer.userLocation.value"
+            :is-at-user-location="mapExplorer.isAtUserLocation.value"
+            @bounds-changed="mapExplorer.handleBoundsChanged"
+            @venue-click="mapExplorer.handleVenueClick"
             @locate-me="onLocateMe"
-            @map-ready="handleMapReady"
+            @map-ready="mapExplorer.handleMapReady"
           />
         </ClientOnly>
 
@@ -223,10 +198,10 @@ function handlePinCancel(): void {
           class="lg:hidden absolute bottom-0 left-2 right-2 z-[200] pointer-events-auto pb-[calc(5rem_+_env(safe-area-inset-bottom,0px))]"
         >
           <MapControls
-            :selected-date-time="selectedDateTime"
-            :filters="filters"
-            :sunny-count="sunnyVenues.length"
-            :shaded-count="shadedVenues.length"
+            :selected-date-time="mapExplorer.selectedDateTime.value"
+            :filters="mapExplorer.filters.value"
+            :sunny-count="mapExplorer.sunnyVenues.value.length"
+            :shaded-count="mapExplorer.shadedVenues.value.length"
             @update-datetime="handleDateTimeUpdate"
             @update-filters="handleFilterUpdate"
           />
@@ -236,25 +211,25 @@ function handlePinCancel(): void {
       <!-- Venue List Sidebar (desktop only) -->
       <aside class="hidden lg:block border-l border-gray-200 overflow-y-auto" aria-label="Venue results">
         <VenueList
-          :venues="filteredVenues"
-          :selected-venue-id="selectedVenueId"
-          :loading="loading"
-          @venue-select="handleVenueSelect"
+          :venues="mapExplorer.filteredVenues.value"
+          :selected-venue-id="mapExplorer.selectedVenueId.value"
+          :loading="mapExplorer.loading.value"
+          @venue-select="mapExplorer.handleVenueSelect"
         />
       </aside>
     </div>
 
     <!-- Venue Detail Dialog -->
     <Dialog
-      v-model:visible="showVenueDetail"
-      :header="selectedVenue?.name || $t('venueDetail.title.venueDetails')"
+      v-model:visible="mapExplorer.showVenueDetail.value"
+      :header="mapExplorer.selectedVenue.value?.name || $t('venueDetail.title.venueDetails')"
       :modal="true"
       :dismissable-mask="true"
       :closable="true"
       :draggable="false"
       class="venue-dialog"
     >
-      <VenueDetail v-if="selectedVenue" :venue="selectedVenue" />
+      <VenueDetail v-if="mapExplorer.selectedVenue.value" :venue="mapExplorer.selectedVenue.value" />
     </Dialog>
 
     <!-- Contribute Dialog -->
@@ -266,7 +241,7 @@ function handlePinCancel(): void {
     <!-- Create Venue Dialog -->
     <CreateVenueDialog
       v-model="showCreateVenueDialog"
-      :initial-coordinates="pinCoordinates ?? { latitude: mapCenter[0], longitude: mapCenter[1] }"
+      :initial-coordinates="pinCoordinates ?? { latitude: mapExplorer.mapCenter.value[0], longitude: mapExplorer.mapCenter.value[1] }"
       @venue-created="handleVenueCreated"
     />
   </div>

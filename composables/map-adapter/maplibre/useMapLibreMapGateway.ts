@@ -220,7 +220,7 @@ export function useMapLibreMapGateway(): IMapGateway {
     const el = document.createElement('div')
     el.style.cssText = [
       'width:20px', 'height:20px', 'border-radius:50%',
-      'background:#FF0080', 'border:3px solid #FFFFFF',
+      'background:#FF0000', 'border:3px solid #FFFFFF',
       'box-shadow:0 2px 6px rgba(0,0,0,0.4)', 'cursor:default'
     ].join(';')
 

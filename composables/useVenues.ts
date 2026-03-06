@@ -186,6 +186,7 @@ export function useVenues() {
   const venue = useVenue()
 
   const { public: { apiBaseUrl } } = useRuntimeConfig()
+  console.info('[useVenues] API base URL:', apiBaseUrl)
   const apiUrl = (path: string) => `${apiBaseUrl}${path}`
 
   const {
@@ -214,7 +215,9 @@ export function useVenues() {
           ? Object.fromEntries(entries.toSorted(([, a], [, b]) => b.fetchedAt - a.fetchedAt).slice(0, 20))
           : store.bboxCache
         localStorage.setItem('sunbar_bbox_cache', JSON.stringify(cache))
-      } catch {}
+      } catch {
+        // Ignore quota errors or serialization issues
+      }
     }).catch(() => {})
   }
 
