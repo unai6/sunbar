@@ -1,6 +1,6 @@
 {
   "name": "sunbar",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "Find sunny bars and restaurants",
   "private": true,
   "type": "module",
