@@ -1,10 +1,10 @@
 {
   "app": {
     "title": {
-      "main": "SunBar - Find Sunny Terraces"
+      "main": "SunBar - Sunny Terraces | Find Sun-Drenched Bars & Restaurants"
     },
     "meta": {
-      "description": "Discover bars and restaurants with sunny terraces"
+      "description": "Discover in real time which bars and restaurants have their terrace in the sun right now. Search by area, filter by time and enjoy the sunshine."
     }
   },
   "header": {

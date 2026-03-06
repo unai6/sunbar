@@ -1,10 +1,10 @@
 {
   "app": {
     "title": {
-      "main": "SunBar - Troba Terrasses Assolellades"
+      "main": "SunBar - Terrasses al Sol | Bars i Restaurants amb Terrassa Assolellada"
     },
     "meta": {
-      "description": "Descobreix bars i restaurants amb terrasses assolellades"
+      "description": "Descobreix en temps real quins bars i restaurants tenen la terrassa al sol ara mateix. Cerca per zona, filtra per hora i gaudeix del sol."
     }
   },
   "header": {

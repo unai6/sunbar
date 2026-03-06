@@ -9,7 +9,28 @@ useHead({
   meta: [
     { name: 'description', content: () => t('app.meta.description') },
     { property: 'og:title', content: () => t('app.title.main') },
-    { property: 'og:description', content: () => t('app.meta.description') }
+    { property: 'og:description', content: () => t('app.meta.description') },
+    { name: 'twitter:title', content: () => t('app.title.main') },
+    { name: 'twitter:description', content: () => t('app.meta.description') }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: () => JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: 'SunBar',
+        url: 'https://sunbbar.com',
+        description: t('app.meta.description'),
+        applicationCategory: 'LifestyleApplication',
+        operatingSystem: 'Web',
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'EUR'
+        }
+      })
+    }
   ]
 })
 </script>

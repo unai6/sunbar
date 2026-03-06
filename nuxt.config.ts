@@ -34,7 +34,7 @@ export default defineNuxtConfig({
   ],
 
   site: {
-    url: process.env.BASE_URL ||'https://sunbar.unaigo.com',
+    url: process.env.BASE_URL || 'https://sunbbar.com',
     name: 'SunBar'
   },
 
@@ -89,13 +89,14 @@ export default defineNuxtConfig({
         { name: 'msapplication-config', content: '/browserconfig.xml' },
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'SunBar' },
-        { property: 'og:image', content: '/icon-512x512.png' },
-        { property: 'og:image:alt', content: 'SunBar - Find Sunny Terraces' },
-        { property: 'og:image:width', content: '512' },
-        { property: 'og:image:height', content: '512' },
-        { name: 'twitter:card', content: 'summary' },
-        { name: 'twitter:image', content: '/icon-512x512.png' },
-        { name: 'twitter:image:alt', content: 'SunBar - Find Sunny Terraces' }
+        { property: 'og:image', content: 'https://sunbbar.com/og-image.png' },
+        { property: 'og:image:alt', content: 'SunBar - Find Sunny Terraces Near You' },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:site', content: '@sunbbar' },
+        { name: 'twitter:image', content: 'https://sunbbar.com/og-image.png' },
+        { name: 'twitter:image:alt', content: 'SunBar - Find Sunny Terraces Near You' }
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/icon.svg' },

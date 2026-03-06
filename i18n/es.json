@@ -1,10 +1,10 @@
 {
   "app": {
     "title": {
-      "main": "SunBar - Encuentra Terrazas Soleadas"
+      "main": "SunBar - Terrazas al Sol | Bares y Restaurantes con Terraza Soleada"
     },
     "meta": {
-      "description": "Descubre bares y restaurantes con terrazas soleadas"
+      "description": "Descubre en tiempo real qué bares y restaurantes tienen la terraza al sol ahora mismo. Busca por zona, filtra por hora y disfruta del sol."
     }
   },
   "header": {
