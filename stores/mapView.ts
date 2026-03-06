@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, skipHydrate } from 'pinia'
 import { ref } from 'vue'
 
 export type MapViewMode = '2d' | '3d';
@@ -31,7 +31,7 @@ function checkWebGL2Support(): boolean {
 }
 
 export const useMapViewStore = defineStore('mapView', () => {
-  const is3dSupported = ref(checkWebGL2Support())
+  const is3dSupported = ref(import.meta.client ? checkWebGL2Support() : false)
   const viewMode = ref<MapViewMode>('2d')
 
   function setViewMode(mode: MapViewMode) {
@@ -46,7 +46,7 @@ export const useMapViewStore = defineStore('mapView', () => {
 
   return {
     viewMode,
-    is3dSupported,
+    is3dSupported: skipHydrate(is3dSupported),
     setViewMode,
     toggle
   }
