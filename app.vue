@@ -18,7 +18,8 @@ useHead({
     { property: 'og:title', content: () => t('app.title.main') },
     { property: 'og:description', content: () => t('app.meta.description') },
     { name: 'twitter:title', content: () => t('app.title.main') },
-    { name: 'twitter:description', content: () => t('app.meta.description') }
+    { name: 'twitter:description', content: () => t('app.meta.description') },
+    ...i18nHead.value.meta || []
   ],
   script: [
     {
@@ -38,7 +39,9 @@ useHead({
         }
       })
     }
-  ]
+  ],
+  htmlAttrs: i18nHead.value.htmlAttrs,
+  link: [...(i18nHead.value.link || [])]
 })
 </script>
 

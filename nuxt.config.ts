@@ -43,10 +43,11 @@ export default defineNuxtConfig({
     blockNonSeoRobots: true
   },
   i18n: {
+    baseUrl: process.env.BASE_URL || 'https://sunbbar.com',
     locales: [
-      { code: 'es', name: 'Español', file: 'es.json' },
-      { code: 'en', name: 'English', file: 'en.json' },
-      { code: 'ca', name: 'Català', file: 'ca.json' }
+      { code: 'es', name: 'Español', file: 'es.json', language: 'es-ES' },
+      { code: 'en', name: 'English', file: 'en.json', language: 'en-US' },
+      { code: 'ca', name: 'Català', file: 'ca.json', language: 'ca-ES' }
     ],
     defaultLocale: 'es',
     langDir: './',
@@ -95,7 +96,7 @@ export default defineNuxtConfig({
         { property: 'og:image:height', content: '630' },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:site', content: '@sunbbar' },
-        { name: 'twitter:image', content: 'https://sunbbar.com/og-image.png' },
+        { name: 'twitter:image', content: 'https://+.com/og-image.png' },
         { name: 'twitter:image:alt', content: 'SunBar - Find Sunny Terraces Near You' }
       ],
       link: [
