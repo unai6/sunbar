@@ -1,6 +1,6 @@
 {
   "name": "sunbar",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Find sunny bars and restaurants using GIS shadow analysis",
   "private": true,
   "type": "module",
