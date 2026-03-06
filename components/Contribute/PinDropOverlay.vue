@@ -17,7 +17,7 @@ const emit = defineEmits<{
       <!-- Center pin -->
       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-full z-[401]">
         <div class="flex flex-col items-center animate-bounce-in">
-          <i class="pi pi-map-marker text-3xl text-red-500/80 drop-shadow-lg" />
+          <i class="pi pi-map-marker text-4xl text-red-500/80 drop-shadow-lg" />
           <div class="w-2 h-2 rounded-full bg-red-500/40 mt-[-2px]" />
         </div>
       </div>
