@@ -35,7 +35,8 @@ export default defineNuxtConfig({
 
   site: {
     url: process.env.BASE_URL || 'https://sunbbar.com',
-    name: 'SunBar'
+    name: 'SunBar',
+    indexable: process.env.NUXT_SITE_ENV === 'production'
   },
 
   sitemap: {
