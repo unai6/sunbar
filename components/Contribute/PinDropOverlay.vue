@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Button from 'primevue/button'
-
 defineProps<{
   visible: boolean
 }>()
@@ -33,29 +31,31 @@ const emit = defineEmits<{
         </div>
       </div>
 
-      <!-- Instruction banner -->
-      <div class="absolute top-40 left-1/2 -translate-x-1/2 z-[401] pointer-events-auto">
-        <div class="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg px-4 py-2 text-center max-w-xs">
-          <p class="text-sm font-bold text-gray-800">{{ $t('contribute.pinDrop.instruction') }}</p>
-        </div>
-      </div>
-
-      <!-- Action buttons -->
-      <div class="absolute bottom-20 lg:bottom-0 flex justify-center w-full bg-white p-2 rounded-md left-1/2 -translate-x-1/2 z-[401] pointer-events-auto">
-        <div class="flex gap-2">
-          <Button
-            severity="secondary"
-            outlined
-            :label="$t('common.cta.cancel')"
-            icon="pi pi-times"
-            @click="emit('cancel')"
-          />
-          <Button
-            severity="warning"
-            :label="$t('contribute.pinDrop.confirm')"
-            icon="pi pi-check"
-            @click="emit('confirm')"
-          />
+      <!-- Floating action card below pin -->
+      <div
+        class="absolute top-1/2 left-1/2 z-[401] pointer-events-auto"
+        style="transform: translate(-50%, 12px)"
+      >
+        <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl px-4 py-3 flex flex-col items-center gap-3 min-w-[160px]">
+          <p class="text-xs font-semibold text-gray-600 text-center leading-tight">
+            {{ $t('contribute.pinDrop.instruction') }}
+          </p>
+          <div class="flex gap-2">
+            <button
+              class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition-colors cursor-pointer"
+              :aria-label="$t('common.cta.cancel')"
+              @click="emit('cancel')"
+            >
+              <i class="pi pi-times text-sm" />
+            </button>
+            <button
+              class="w-10 h-10 rounded-full bg-amber-400 hover:bg-amber-500 flex items-center justify-center text-white transition-colors shadow-sm cursor-pointer"
+              :aria-label="$t('contribute.pinDrop.confirm')"
+              @click="emit('confirm')"
+            >
+              <i class="pi pi-check text-sm" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
